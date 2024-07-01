@@ -1,3 +1,37 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand">Stardew Valley Calendar</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div
+    class="collapse navbar-collapse d-flex justify-content-between"
+    id="navbarSupportedContent"
+  >
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        @if (calendar$ | async; as calendar) {
+        <a class="nav-link">{{ calendar.name }}</a>
+        }
+      </li>
+    </ul>
+    <div>
+      <button class="btn btn-primary">Create New</button>
+      <button class="btn btn-danger" [disabled]="disableDelete()">
+        Delete
+      </button>
+    </div>
+  </div>
+</nav>
+
 <div class="container">
   <div class="row">
     <div class="col-8"><app-calendar></app-calendar></div>

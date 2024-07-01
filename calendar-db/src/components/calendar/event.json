@@ -11,27 +11,29 @@
       "type": "string",
       "required": true
     },
-    "priority": {
-      "type": "enumeration",
-      "enum": [
-        "game",
-        "high",
-        "medium",
-        "low"
-      ],
-      "required": true
-    },
     "description": {
       "type": "text",
       "required": true
-    },
-    "player": {
-      "type": "string"
     },
     "dueDate": {
       "type": "component",
       "repeatable": false,
       "component": "calendar.game-date"
+    },
+    "gameDate": {
+      "type": "component",
+      "repeatable": false,
+      "component": "calendar.game-date",
+      "required": true
+    },
+    "tag": {
+      "type": "enumeration",
+      "enum": [
+        "highPriority",
+        "mediumPriority",
+        "lowPriority"
+      ],
+      "required": true
     }
   }
 }

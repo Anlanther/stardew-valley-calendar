@@ -9,11 +9,13 @@ export interface CalendarEvent extends Schema.Component {
   };
   attributes: {
     title: Attribute.String & Attribute.Required;
-    priority: Attribute.Enumeration<['game', 'high', 'medium', 'low']> &
-      Attribute.Required;
     description: Attribute.Text & Attribute.Required;
-    player: Attribute.String;
     dueDate: Attribute.Component<'calendar.game-date'>;
+    gameDate: Attribute.Component<'calendar.game-date'> & Attribute.Required;
+    tag: Attribute.Enumeration<
+      ['highPriority', 'mediumPriority', 'lowPriority']
+    > &
+      Attribute.Required;
   };
 }
 
@@ -28,7 +30,10 @@ export interface CalendarGameDate extends Schema.Component {
     season: Attribute.Enumeration<['spring', 'summer', 'fall', 'winter']> &
       Attribute.Required;
     day: Attribute.Integer & Attribute.Required;
-    year: Attribute.Integer & Attribute.Required;
+    year: Attribute.Integer;
+    isRecurring: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<false>;
   };
 }
 

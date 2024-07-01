@@ -374,8 +374,12 @@ export interface ApiCalendarCalendar extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    event: Attribute.Component<'calendar.event', true>;
-    gameDate: Attribute.Component<'calendar.game-date'> & Attribute.Required;
+    name: Attribute.UID & Attribute.Required;
+    calendar_events: Attribute.Relation<
+      'api::calendar.calendar',
+      'oneToMany',
+      'api::calendar-event.calendar-event'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -387,6 +391,42 @@ export interface ApiCalendarCalendar extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::calendar.calendar',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCalendarEventCalendarEvent extends Schema.CollectionType {
+  collectionName: 'calendar_events';
+  info: {
+    singularName: 'calendar-event';
+    pluralName: 'calendar-events';
+    displayName: 'Calendar Event';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    event: Attribute.Component<'calendar.event'> & Attribute.Required;
+    calendar: Attribute.Relation<
+      'api::calendar-event.calendar-event',
+      'manyToOne',
+      'api::calendar.calendar'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::calendar-event.calendar-event',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::calendar-event.calendar-event',
       'oneToOne',
       'admin::user'
     > &
@@ -831,6 +871,7 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'api::calendar.calendar': ApiCalendarCalendar;
+      'api::calendar-event.calendar-event': ApiCalendarEventCalendarEvent;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;

@@ -8,7 +8,19 @@ module.exports = () => ({
       alwaysAddComponentSuffix: false,
       usePrettierIfAvailable: true,
       logLevel: 2,
-      destinationFolder: undefined,
+      destinationFolder: "api-models",
+    },
+  },
+  graphql: {
+    config: {
+      endpoint: "/graphql",
+      shadowCRUD: true,
+      playgroundAlways: false,
+      depthLimit: 7,
+      amountLimit: 100,
+      apolloServer: {
+        tracing: false,
+      },
     },
   },
 });
