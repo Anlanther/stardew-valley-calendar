@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col">Mon</div>
+  <div class="col">Tue</div>
+  <div class="col">Wed</div>
+  <div class="col">Thu</div>
+  <div class="col">Fri</div>
+  <div class="col">Sat</div>
+  <div class="col">Sun</div>
+</div>
+<div class="row">
+  @for (day of firstWeek; track day) {
+  <div class="col"><app-event [day]="day"></app-event></div>
+  }
+</div>
+<div class="row">
+  @for (day of secondWeek; track day) {
+  <div class="col"><app-event [day]="day"></app-event></div>
+  }
+</div>
+<div class="row">
+  @for (day of thirdWeek; track day) {
+  <div class="col"><app-event [day]="day"></app-event></div>
+  }
+</div>
+<div class="row">
+  @for (day of forthWeek; track day) {
+  <div class="col"><app-event [day]="day"></app-event></div>
+  }
+</div>

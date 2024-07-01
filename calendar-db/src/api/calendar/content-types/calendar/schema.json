@@ -20,7 +20,8 @@
     "gameDate": {
       "type": "component",
       "repeatable": false,
-      "component": "calendar.game-date"
+      "component": "calendar.game-date",
+      "required": true
     }
   }
 }

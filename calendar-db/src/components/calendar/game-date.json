@@ -2,7 +2,8 @@
   "collectionName": "components_calendar_game_dates",
   "info": {
     "displayName": "Game Date",
-    "icon": "calendar"
+    "icon": "calendar",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -13,10 +14,16 @@
         "summer",
         "fall",
         "winter"
-      ]
+      ],
+      "required": true
     },
     "day": {
-      "type": "integer"
+      "type": "integer",
+      "required": true
+    },
+    "year": {
+      "type": "integer",
+      "required": true
     }
   }
 }
