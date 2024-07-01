@@ -33,27 +33,5 @@
       <ng-template matTabContent><app-grid></app-grid></ng-template>
     </mat-tab>
   </mat-tab-group>
-  } @else {
-  <form class="example-form">
-    <mat-form-field class="example-full-width">
-      <mat-label>Name</mat-label>
-      <input
-        type="text"
-        matInput
-        [formControl]="calendarNameFormControl"
-        placeholder="My First Calendar"
-      />
-      @if (yearFormControl.hasError('required')) {
-      <mat-error>Name is <strong>required</strong></mat-error>
-      }
-    </mat-form-field>
-    <button
-      type="button"
-      class="btn btn-primary"
-      [disabled]="!calendarNameFormControl.valid"
-    >
-      Create
-    </button>
-  </form>
-  }
+  } @else { Please create a new or choose an existing calendar }
 </div>

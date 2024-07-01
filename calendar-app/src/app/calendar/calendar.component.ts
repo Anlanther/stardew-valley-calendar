@@ -50,7 +50,6 @@ export class CalendarComponent {
     Validators.required,
     Validators.min(1),
   ]);
-  calendarNameFormControl = new FormControl('', [Validators.required]);
 
   store = inject(Store<AppStore>);
 
@@ -58,9 +57,5 @@ export class CalendarComponent {
 
   constructor() {
     this.calendar$ = this.store.select(AppFeature.selectActiveCalendar);
-  }
-
-  createCalendar() {
-    const calendarName = this.calendarNameFormControl.value!;
   }
 }

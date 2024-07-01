@@ -12,15 +12,16 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
-      "type": "uid",
-      "required": true
-    },
-    "calendar_events": {
+    "calendarEvents": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::calendar-event.calendar-event",
       "mappedBy": "calendar"
+    },
+    "name": {
+      "type": "string",
+      "unique": true,
+      "required": true
     }
   }
 }

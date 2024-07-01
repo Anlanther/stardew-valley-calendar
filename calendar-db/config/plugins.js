@@ -8,7 +8,7 @@ module.exports = () => ({
       alwaysAddComponentSuffix: false,
       usePrettierIfAvailable: true,
       logLevel: 2,
-      destinationFolder: "api-models",
+      destinationFolder: undefined,
     },
   },
   graphql: {
