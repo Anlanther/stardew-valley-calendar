@@ -9,17 +9,20 @@ export enum Season {
 export interface GameDate {
   season: Season;
   day: number;
-  year: number;
+  year?: number;
+  isRecurring: boolean;
 }
 export interface GameDate_Plain {
   season: Season;
   day: number;
-  year: number;
+  year?: number;
+  isRecurring: boolean;
 }
 
 export interface GameDate_NoRelations {
   season: Season;
   day: number;
-  year: number;
+  year?: number;
+  isRecurring: boolean;
 }
 

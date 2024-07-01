@@ -12,16 +12,15 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "event": {
-      "type": "component",
-      "repeatable": true,
-      "component": "calendar.event"
-    },
-    "gameDate": {
-      "type": "component",
-      "repeatable": false,
-      "component": "calendar.game-date",
+    "name": {
+      "type": "uid",
       "required": true
+    },
+    "calendar_events": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::calendar-event.calendar-event",
+      "mappedBy": "calendar"
     }
   }
 }

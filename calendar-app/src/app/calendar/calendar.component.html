@@ -1,5 +1,24 @@
 <div class="container">
   <h2>Calendar</h2>
+
+  @if (calendar$ | async) {
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Year</mat-label>
+      <input
+        type="number"
+        matInput
+        [formControl]="yearFormControl"
+        placeholder="1"
+      />
+      @if (yearFormControl.hasError('min') &&
+      !yearFormControl.hasError('required')) {
+      <mat-error>Please enter a valid year</mat-error>
+      } @if (yearFormControl.hasError('required')) {
+      <mat-error>Year is <strong>required</strong></mat-error>
+      }
+    </mat-form-field>
+  </form>
   <mat-tab-group>
     <mat-tab label="Fall">
       <ng-template matTabContent><app-grid></app-grid> </ng-template>
@@ -14,4 +33,27 @@
       <ng-template matTabContent><app-grid></app-grid></ng-template>
     </mat-tab>
   </mat-tab-group>
+  } @else {
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="calendarNameFormControl"
+        placeholder="My First Calendar"
+      />
+      @if (yearFormControl.hasError('required')) {
+      <mat-error>Name is <strong>required</strong></mat-error>
+      }
+    </mat-form-field>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="!calendarNameFormControl.valid"
+    >
+      Create
+    </button>
+  </form>
+  }
 </div>

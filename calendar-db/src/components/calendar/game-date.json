@@ -23,6 +23,11 @@
     },
     "year": {
       "type": "integer",
+      "required": false
+    },
+    "isRecurring": {
+      "type": "boolean",
+      "default": false,
       "required": true
     }
   }
