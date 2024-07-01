@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_calendar_events",
+  "info": {
+    "displayName": "Event",
+    "icon": "calendar",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "enumeration",
+      "enum": [
+        "game",
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "description": {
+      "type": "text"
+    },
+    "player": {
+      "type": "string"
+    },
+    "dueDate": {
+      "type": "component",
+      "repeatable": false,
+      "component": "calendar.game-date"
+    }
+  }
+}
