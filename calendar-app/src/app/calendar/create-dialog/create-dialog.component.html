@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Create Calendar</h2>
+<mat-dialog-content>
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="calendarNameFormControl"
+        placeholder="My First Calendar"
+      />
+      @if (calendarNameFormControl.hasError('required')) {
+      <mat-error>Name is <strong>required</strong></mat-error>
+      }
+    </mat-form-field>
+  </form></mat-dialog-content
+>
+<mat-dialog-actions>
+  <button
+    type="button"
+    class="btn btn-primary"
+    [disabled]="!calendarNameFormControl.valid"
+    (click)="createCalendar()"
+  >
+    Create
+  </button>
+</mat-dialog-actions>

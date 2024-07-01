@@ -1,34 +1,43 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { Story } from '../../models/story.model';
+import { Calendar } from '../../models/calendar.model';
 import { DataService } from '../data.service';
-import { StoryCollection } from '../models/story-collection.model';
+import { StrapiCollection } from '../models/strapi-collection.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StoryDataService {
-  constructor(private dataService: DataService) {}
+export class CalendarDataService {
+  private dataService = inject(DataService);
 
-  getStories(): Observable<Story[]> {
-    const queryName = `getStories`;
-
-    return this.dataService.graphql<Story>(this.getQuery(queryName)).pipe(
-      map((response) => {
-        return response.appStories.data.map(
-          (story: { attributes: StoryCollection }) => ({ ...story.attributes })
-        );
-      })
-    );
+  create(name: string): Observable<Calendar> {
+    return this.dataService
+      .graphql<Calendar>(this.getCreateQuery(), { name })
+      .pipe(
+        map((response) => {
+          return response.createCalendar.data.map(
+            (calendar: StrapiCollection<Calendar>) => ({
+              ...calendar.attributes,
+              id: calendar.id,
+            })
+          );
+        })
+      );
   }
 
-  private getQuery(queryName: string, settings?: string) {
-    return `query ${queryName}{
-      appStories ${settings ?? ''}{
+  private getCreateQuery() {
+    return `
+    mutation createCalendar($name: String) {
+      createCalendar(data: { name: $name }) {
         data {
+          id
           attributes {
-            title
-            author
+            name
+            calendarEvents {
+              data {
+                id
+              }
+            }
           }
         }
       }

@@ -23,8 +23,16 @@
         }
       </li>
     </ul>
-    <div>
-      <button class="btn btn-primary">Create New</button>
+    <div class="d-flex">
+      <select class="custom-select custom-select-lg mb-3">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <button class="btn btn-primary" (click)="openCreateDialog()">
+        Create New
+      </button>
       <button class="btn btn-danger" [disabled]="disableDelete()">
         Delete
       </button>
@@ -35,6 +43,6 @@
 <div class="container">
   <div class="row">
     <div class="col-8"><app-calendar></app-calendar></div>
-    <div class="col-4">2 of 2</div>
+    <div class="col-4"><app-day-form></app-day-form></div>
   </div>
 </div>

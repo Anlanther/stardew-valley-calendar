@@ -7,24 +7,24 @@ import { AdminPanelRelationPropertyModification } from '../../../../common/schem
 export interface Calendar {
   id: number;
   attributes: {
-    createdAt: Date;    updatedAt: Date;    publishedAt?: Date;    name: string;
-    calendar_events: { data: CalendarEvent[] };
+    createdAt: Date;    updatedAt: Date;    publishedAt?: Date;    calendarEvents: { data: CalendarEvent[] };
+    name: string;
   };
 }
 export interface Calendar_Plain {
   id: number;
-  createdAt: Date;  updatedAt: Date;  publishedAt?: Date;  name: string;
-  calendar_events: CalendarEvent_Plain[];
+  createdAt: Date;  updatedAt: Date;  publishedAt?: Date;  calendarEvents: CalendarEvent_Plain[];
+  name: string;
 }
 
 export interface Calendar_NoRelations {
   id: number;
-  createdAt: Date;  updatedAt: Date;  publishedAt?: Date;  name: string;
-  calendar_events: number[];
+  createdAt: Date;  updatedAt: Date;  publishedAt?: Date;  calendarEvents: number[];
+  name: string;
 }
 
 export interface Calendar_AdminPanelLifeCycle {
   id: number;
-  createdAt: Date;  updatedAt: Date;  publishedAt?: Date;  name: string;
-  calendar_events: AdminPanelRelationPropertyModification<CalendarEvent_Plain>;
+  createdAt: Date;  updatedAt: Date;  publishedAt?: Date;  calendarEvents: AdminPanelRelationPropertyModification<CalendarEvent_Plain>;
+  name: string;
 }
