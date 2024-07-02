@@ -1,7 +1,7 @@
 {
   "collectionName": "components_calendar_events",
   "info": {
-    "displayName": "Event",
+    "displayName": "Game Event",
     "icon": "calendar",
     "description": ""
   },
@@ -28,11 +28,7 @@
     },
     "tag": {
       "type": "enumeration",
-      "enum": [
-        "highPriority",
-        "mediumPriority",
-        "lowPriority"
-      ],
+      "enum": ["highPriority", "mediumPriority", "lowPriority"],
       "required": true
     }
   }

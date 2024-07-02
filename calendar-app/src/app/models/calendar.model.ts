@@ -1,5 +1,8 @@
+import { CalendarEvent } from './calendar-event.model';
+
 export interface Calendar {
   id: string;
   name: string;
-  calendarEvents: [];
+  calendarEvents: CalendarEvent[];
+  publishedAt: string;
 }

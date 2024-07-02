@@ -17,19 +17,13 @@
     id="navbarSupportedContent"
   >
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        @if (calendar$ | async; as calendar) {
-        <a class="nav-link">{{ calendar.name }}</a>
-        }
-      </li>
+      <button class="btn btn-link" (click)="openEditDialog()">
+        @if (activeCalendar$ | async; as calendar) {
+        {{ calendar.name }}
+        } @else { Edit Calendar }
+      </button>
     </ul>
     <div class="d-flex">
-      <select class="custom-select custom-select-lg mb-3">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
       <button class="btn btn-primary" (click)="openCreateDialog()">
         Create New
       </button>
@@ -40,7 +34,7 @@
   </div>
 </nav>
 
-<div class="container">
+<div class="container-xxl">
   <div class="row">
     <div class="col-8"><app-calendar></app-calendar></div>
     <div class="col-4"><app-day-form></app-day-form></div>
