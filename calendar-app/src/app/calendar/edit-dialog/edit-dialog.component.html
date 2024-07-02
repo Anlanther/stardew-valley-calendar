@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Edit Calendar</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Select an option</mat-label>
+    <mat-select [formControl]="availableCalendarsFormControl">
+      @for(availableCalendar of data.availableCalendars; track
+      availableCalendar) {
+      <mat-option value="{{ availableCalendar.id }}">
+        {{ availableCalendar.name }}
+      </mat-option>
+      }
+    </mat-select>
+  </mat-form-field></mat-dialog-content
+>
+<mat-dialog-actions>
+  <button
+    class="btn btn-primary"
+    [disabled]="!availableCalendarsFormControl.value"
+    (click)="confirm()"
+  >
+    Select
+  </button>
+</mat-dialog-actions>

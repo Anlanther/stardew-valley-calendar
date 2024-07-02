@@ -9,9 +9,10 @@ import {
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-  selector: 'app-calendar-dialog',
+  selector: 'app-create-dialog',
   standalone: true,
   imports: [
     FormsModule,
@@ -20,6 +21,8 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     CommonModule,
     MatDialogModule,
+    MatSelectModule,
+    MatInputModule,
   ],
   templateUrl: './create-dialog.component.html',
   styleUrl: './create-dialog.component.scss',

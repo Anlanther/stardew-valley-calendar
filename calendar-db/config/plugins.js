@@ -5,7 +5,7 @@ module.exports = () => ({
       acceptedNodeEnvs: ["development"],
       commonInterfacesFolderName: "schemas-to-ts",
       alwaysAddEnumSuffix: false,
-      alwaysAddComponentSuffix: false,
+      alwaysAddComponentSuffix: true,
       usePrettierIfAvailable: true,
       logLevel: 2,
       destinationFolder: undefined,
@@ -16,7 +16,7 @@ module.exports = () => ({
       endpoint: "/graphql",
       shadowCRUD: true,
       playgroundAlways: false,
-      depthLimit: 7,
+      depthLimit: 20,
       amountLimit: 100,
       apolloServer: {
         tracing: false,
