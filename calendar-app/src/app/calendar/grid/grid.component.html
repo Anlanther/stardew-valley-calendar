@@ -9,21 +9,49 @@
 </div>
 <div class="row">
   @for (day of firstWeek; track day) {
-  <div class="col"><app-event [day]="day"></app-event></div>
+  <div class="col">
+    <app-event
+      [day]="day"
+      [year]="activeYear()"
+      [season]="season"
+      [calendar]="activeCalendar"
+    ></app-event>
+  </div>
   }
 </div>
 <div class="row">
   @for (day of secondWeek; track day) {
-  <div class="col"><app-event [day]="day"></app-event></div>
+  <div class="col">
+    <app-event
+      [day]="day"
+      [year]="activeYear()"
+      [season]="season"
+      [calendar]="activeCalendar"
+    ></app-event>
+  </div>
   }
 </div>
 <div class="row">
   @for (day of thirdWeek; track day) {
-  <div class="col"><app-event [day]="day"></app-event></div>
+  <div class="col">
+    <app-event
+      [day]="day"
+      [year]="activeYear()"
+      [season]="season"
+      [calendar]="activeCalendar"
+    ></app-event>
+  </div>
   }
 </div>
 <div class="row">
   @for (day of forthWeek; track day) {
-  <div class="col"><app-event [day]="day"></app-event></div>
+  <div class="col">
+    <app-event
+      [day]="day"
+      [year]="activeYear()"
+      [season]="season"
+      [calendar]="activeCalendar"
+    ></app-event>
+  </div>
   }
 </div>

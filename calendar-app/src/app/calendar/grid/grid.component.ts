@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input, inject, signal } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { tap } from 'rxjs';
+import { AppStore } from '../../models/app-store.model';
+import { Calendar } from '../../models/calendar.model';
+import { Season } from '../../models/season.model';
+import { AppFeature } from '../../state/app.state';
 import { EventComponent } from '../event/event.component';
 
 @Component({
@@ -9,6 +15,11 @@ import { EventComponent } from '../event/event.component';
   styleUrl: './grid.component.scss',
 })
 export class GridComponent {
+  @Input() activeCalendar!: Calendar;
+  @Input() season!: Season;
+
+  store = inject(Store<AppStore>);
+
   get firstWeek() {
     return this.getDaysOfWeek(0);
   }
@@ -20,6 +31,14 @@ export class GridComponent {
   }
   get forthWeek() {
     return this.getDaysOfWeek(3);
+  }
+
+  activeYear = signal<number>(1);
+
+  constructor() {
+    this.store
+      .select(AppFeature.selectSelectedYear)
+      .pipe(tap((year) => this.activeYear.set(year)));
   }
 
   getDaysOfWeek(week: number) {

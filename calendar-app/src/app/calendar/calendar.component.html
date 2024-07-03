@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Calendar</h2>
 
-  @if (calendar$ | async) {
+  @if (activeCalendar$ | async; as activeCalendar) {
   <form class="example-form">
     <mat-form-field class="example-full-width">
       <mat-label>Year</mat-label>
@@ -20,17 +20,37 @@
     </mat-form-field>
   </form>
   <mat-tab-group>
-    <mat-tab label="Fall">
-      <ng-template matTabContent><app-grid></app-grid> </ng-template>
-    </mat-tab>
     <mat-tab label="Spring">
-      <ng-template matTabContent><app-grid></app-grid></ng-template>
+      <ng-template matTabContent
+        ><app-grid
+          [activeCalendar]="activeCalendar"
+          [season]="spring"
+        ></app-grid
+      ></ng-template>
     </mat-tab>
     <mat-tab label="Summer">
-      <ng-template matTabContent><app-grid></app-grid></ng-template>
+      <ng-template matTabContent
+        ><app-grid
+          [activeCalendar]="activeCalendar"
+          [season]="summer"
+        ></app-grid
+      ></ng-template>
+      <mat-tab label="Fall">
+        <ng-template matTabContent
+          ><app-grid
+            [activeCalendar]="activeCalendar"
+            [season]="fall"
+          ></app-grid
+        ></ng-template>
+      </mat-tab>
     </mat-tab>
     <mat-tab label="Winter">
-      <ng-template matTabContent><app-grid></app-grid></ng-template>
+      <ng-template matTabContent
+        ><app-grid
+          [activeCalendar]="activeCalendar"
+          [season]="winter"
+        ></app-grid
+      ></ng-template>
     </mat-tab>
   </mat-tab-group>
   } @else { Please create a new or choose an existing calendar }
