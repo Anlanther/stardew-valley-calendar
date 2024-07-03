@@ -1,4 +1,8 @@
-<div class="d-flex flex-column">
-  <div class="p-2">{{ day }}</div>
-  <div class="p-2">Events</div>
+<div class="d-flex">
+  {{ day }}
+  <mat-list role="list">
+    @for (gameEvent of gameEvents; track gameEvent) {
+    <mat-list-item role="listitem">{{ gameEvent.title }}</mat-list-item>
+    }
+  </mat-list>
 </div>

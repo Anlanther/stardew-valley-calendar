@@ -46,16 +46,16 @@ export class CalendarComponent {
     return Season.WINTER;
   }
 
-  yearFormControl = new FormControl('', [
+  yearFormControl = new FormControl(1, [
     Validators.required,
     Validators.min(1),
   ]);
 
   store = inject(Store<AppStore>);
 
-  calendar$: Observable<CalendarState>;
+  activeCalendar$: Observable<CalendarState>;
 
   constructor() {
-    this.calendar$ = this.store.select(AppFeature.selectActiveCalendar);
+    this.activeCalendar$ = this.store.select(AppFeature.selectActiveCalendar);
   }
 }
