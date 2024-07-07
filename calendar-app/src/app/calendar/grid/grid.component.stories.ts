@@ -1,4 +1,4 @@
-import { MatListModule } from '@angular/material/list';
+import { StoreModule } from '@ngrx/store';
 import {
   StoryObj,
   componentWrapperDecorator,
@@ -7,36 +7,46 @@ import {
 } from '@storybook/angular';
 import { Season } from '../../models/season.model';
 import { Tag } from '../../models/tag.model';
-import { EventComponent } from './event.component';
+import { EventComponent } from '../event/event.component';
+import { GridComponent } from './grid.component';
 
-const meta: Meta<EventComponent> = {
-  component: EventComponent,
-  title: 'Event Component',
+const meta: Meta<GridComponent> = {
+  component: GridComponent,
+  title: 'Grid Component',
   tags: ['autodocs'],
   decorators: [
     moduleMetadata({
-      imports: [MatListModule],
+      imports: [EventComponent, StoreModule.forRoot({})],
     }),
     componentWrapperDecorator(
-      (story) =>
-        `<div style="margin: 3em; outline: solid grey 1px;
-  min-width: 50px;">${story}</div>`,
+      (story) => `<div style="margin: 3em;">${story}</div>`,
     ),
   ],
 };
 
 export default meta;
-type Story = StoryObj<EventComponent>;
+type Story = StoryObj<GridComponent>;
 
 export const Default: Story = {
   args: {
-    day: 1,
-    year: 1,
     season: Season.FALL,
-    calendar: {
+    activeCalendar: {
       id: '1',
-      name: '',
+      name: 'Active Calendar',
       calendarEvents: [
+        {
+          id: '1',
+          description: '',
+          tag: Tag.Festival,
+          title: 'An Event',
+          gameDate: {
+            id: '1',
+            day: 1,
+            isRecurring: false,
+            year: 1,
+            season: Season.FALL,
+          },
+        },
         {
           id: '1',
           description: '',
@@ -53,7 +63,7 @@ export const Default: Story = {
         {
           id: '1',
           description: '',
-          tag: Tag.Sebastian,
+          tag: Tag.Building,
           title: 'An Event',
           gameDate: {
             id: '1',
@@ -66,7 +76,7 @@ export const Default: Story = {
         {
           id: '1',
           description: '',
-          tag: Tag.Festival,
+          tag: Tag.MrQi,
           title: 'An Event',
           gameDate: {
             id: '1',

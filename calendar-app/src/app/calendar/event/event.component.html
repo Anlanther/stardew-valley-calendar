@@ -1,8 +1,14 @@
 <div class="d-flex">
-  {{ day }}
-  <mat-list role="list">
-    @for (gameEvent of gameEvents; track gameEvent) {
-    <mat-list-item role="listitem">{{ gameEvent.title }}</mat-list-item>
-    }
-  </mat-list>
+  <div class="date">
+    {{ day }}
+  </div>
+  <div class="events">
+    <div>
+      <div class="d-flex">
+        @for (gameEvent of gameEvents; track gameEvent) {
+          <img [src]="gameEvent.url" alt="icon" class="event-icon" />
+        }
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,3 +1,13 @@
+.grid-container {
+  min-width: 400px;
+  padding: 3px;
+}
+
 .col {
   outline: solid grey 1px;
+  min-width: 50px;
+}
+
+.day {
+  height: 100px;
 }
