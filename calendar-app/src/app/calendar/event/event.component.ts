@@ -1,10 +1,13 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
+import { Store } from '@ngrx/store';
 import { ICON_METADATA } from '../../constants/icon-metadata.constant';
+import { AppStore } from '../../models/app-store.model';
 import { CalendarEvent } from '../../models/calendar-event.model';
 import { Calendar } from '../../models/calendar.model';
 import { Season } from '../../models/season.model';
 import { EventDateUtils } from '../../services/event-date.utils';
+import { AppActions } from '../../state/app.actions';
 
 interface CalendarEventDisplay extends CalendarEvent {
   url: string;
@@ -24,6 +27,7 @@ export class EventComponent implements OnInit {
   @Input() calendar!: Calendar;
 
   eventDateUtils = inject(EventDateUtils);
+  store = inject(Store<AppStore>);
 
   gameEvents: CalendarEventDisplay[] = [];
 
@@ -33,5 +37,9 @@ export class EventComponent implements OnInit {
         .getEventsForDate(this.day, this.season, this.year, this.calendar)
         .map((event) => ({ ...event, url: ICON_METADATA.get(event.tag)!.url })),
     ];
+  }
+
+  setActiveEvent() {
+    this.store.dispatch(AppActions.updateActiveEvents(this.gameEvents));
   }
 }

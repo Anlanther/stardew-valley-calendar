@@ -1,4 +1,5 @@
 import { createActionGroup, emptyProps } from '@ngrx/store';
+import { CalendarEvent } from '../models/calendar-event.model';
 import { Calendar } from '../models/calendar.model';
 
 export const AppActions = createActionGroup({
@@ -11,5 +12,8 @@ export const AppActions = createActionGroup({
     'Get Calendars Success': (calendars: Calendar[]) => ({ calendars }),
     'Update Active Calendar': (calendar: Calendar) => ({ calendar }),
     'Load Calendar': (id: string) => ({ id }),
+    'Update Active Events': (calendarEvents: CalendarEvent[]) => ({
+      calendarEvents,
+    }),
   },
 });

@@ -9,7 +9,14 @@ export const AppFeature = createFeature({
       baseSelectors.selectAvailableCalendars,
       baseSelectors.selectActiveCalendar,
       (available, active) =>
-        available.filter((all) => (active ? all.id !== active.id : true))
+        available.filter((all) => (active ? all.id !== active.id : true)),
+    ),
+    selectSelectedDate: createSelector(
+      baseSelectors.selectSelectedYear,
+      baseSelectors.selectSelectedSeason,
+      baseSelectors.selectSelectedDay,
+      (year, season, day) =>
+        `${day} ${season[0].toUpperCase() + season.substring(1)}, ${year}`,
     ),
   }),
 });

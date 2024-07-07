@@ -11,22 +11,10 @@ export class EventDateUtils {
     day: number,
     season: Season,
     year: number,
-    calendar: Calendar
+    calendar: Calendar,
   ): CalendarEvent[] {
     return calendar.calendarEvents.filter((event) => {
       let normalCondition = false;
-      let dueCondition = false;
-      if (event.dueDate) {
-        const isCorrectSeason = event.dueDate.season === season;
-        const isCorrectDay = event.dueDate.day === day;
-        const isCorrectYear = event.dueDate.isRecurring
-          ? true
-          : event.dueDate.year === year;
-
-        if (isCorrectSeason && isCorrectDay && isCorrectYear) {
-          dueCondition = true;
-        }
-      }
       const isCorrectSeason = event.gameDate.season === season;
       const isCorrectDay = event.gameDate.day === day;
       const isCorrectYear = event.gameDate.isRecurring
@@ -37,7 +25,7 @@ export class EventDateUtils {
         normalCondition = true;
       }
 
-      return normalCondition || dueCondition;
+      return normalCondition;
     });
   }
 }
