@@ -31,7 +31,55 @@ export interface CalendarGameEvent extends Schema.Component {
     dueDate: Attribute.Component<'calendar.game-date'>;
     gameDate: Attribute.Component<'calendar.game-date'> & Attribute.Required;
     tag: Attribute.Enumeration<
-      ['highPriority', 'mediumPriority', 'lowPriority']
+      [
+        'crop',
+        'birthday',
+        'building',
+        'festival',
+        'abigail',
+        'alex',
+        'birdie',
+        'bouncer',
+        'caroline',
+        'clint',
+        'demetrius',
+        'dwarf',
+        'elliott',
+        'emily',
+        'evelyn',
+        'george',
+        'gil',
+        'governor',
+        'grandpa',
+        'gunther',
+        'gus',
+        'haley',
+        'harvey',
+        'jas',
+        'jodi',
+        'kent',
+        'krobus',
+        'leah',
+        'leo',
+        'lewis',
+        'linus',
+        'marlon',
+        'marnie',
+        'maru',
+        'morris',
+        'mr. qi',
+        'pam',
+        'penny',
+        'pierre',
+        'robin',
+        'sam',
+        'sandy',
+        'sebastian',
+        'shane',
+        'vincent',
+        'willy',
+        'wizard'
+      ]
     > &
       Attribute.Required;
   };
