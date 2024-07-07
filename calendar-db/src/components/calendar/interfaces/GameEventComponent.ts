@@ -56,14 +56,12 @@ export enum Tag {
 export interface GameEventComponent {
   title: string;
   description: string;
-  dueDate?: GameDateComponent;
   gameDate: GameDateComponent;
   tag: Tag;
 }
 export interface GameEventComponent_Plain {
   title: string;
   description: string;
-  dueDate?: GameDateComponent_Plain;
   gameDate: GameDateComponent_Plain;
   tag: Tag;
 }
@@ -71,7 +69,6 @@ export interface GameEventComponent_Plain {
 export interface GameEventComponent_NoRelations {
   title: string;
   description: string;
-  dueDate?: GameDateComponent_NoRelations;
   gameDate: GameDateComponent_NoRelations;
   tag: Tag;
 }

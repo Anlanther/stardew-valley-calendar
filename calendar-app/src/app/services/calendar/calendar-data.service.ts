@@ -22,9 +22,9 @@ export class CalendarDataService {
             (calendar: Calendar_Data) => ({
               ...calendar.attributes,
               id: calendar.id,
-            })
+            }),
           );
-        })
+        }),
       );
   }
 
@@ -46,7 +46,7 @@ export class CalendarDataService {
             id: calendar.id,
             name: calendar.attributes.name,
           }));
-        })
+        }),
       );
   }
 
@@ -74,28 +74,15 @@ export class CalendarDataService {
       id: data.id,
       name: data.attributes.name,
       publishedAt: data.attributes.publishedAt?.toString() ?? '',
-      calendarEvents: data.attributes.gameEvents.map((event) =>
-        event.dueDate
-          ? {
-              id: event.id,
-              title: event.title,
-              description: event.description,
-              tag: event.tag,
-              gameDate: {
-                ...getGameDateUnion(event.gameDate),
-              },
-              dueDate: { ...getGameDateUnion(event.dueDate) },
-            }
-          : {
-              id: event.id,
-              title: event.title,
-              description: event.description,
-              tag: event.tag,
-              gameDate: {
-                ...getGameDateUnion(event.gameDate),
-              },
-            }
-      ),
+      calendarEvents: data.attributes.gameEvents.map((event) => ({
+        id: event.id,
+        title: event.title,
+        description: event.description,
+        tag: event.tag,
+        gameDate: {
+          ...getGameDateUnion(event.gameDate),
+        },
+      })),
     };
     return calendar;
   }
@@ -113,13 +100,6 @@ export class CalendarDataService {
               title
               description
               tag
-              dueDate {
-                id
-                season
-                day
-                year
-                isRecurring
-              }
               gameDate {
                 id
                 season

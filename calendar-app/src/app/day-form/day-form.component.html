@@ -1,1 +1,63 @@
-<h2>Day Form</h2>
+<div class="container">
+  @if (activeCalendar$ | async; as activeCalendar) {
+    <h2>Day Form</h2>
+    <h3>{{ selectedDate$ | async }}</h3>
+    @if (activeEvents$ | async; as activeEvents) {
+      <div class="form-body">
+        <cdk-accordion class="form-accordion">
+          @for (
+            activeEvent of activeEvents;
+            track activeEvent;
+            let index = $index
+          ) {
+            <cdk-accordion-item
+              #accordionItem="cdkAccordionItem"
+              class="form-accordion-item"
+              role="button"
+              tabindex="0"
+              [attr.id]="'accordion-header-' + index"
+              [attr.aria-expanded]="accordionItem.expanded"
+              [attr.aria-controls]="'accordion-body-' + index"
+            >
+              <div
+                class="form-accordion-item-header"
+                (click)="accordionItem.toggle()"
+              >
+                {{ activeEvent.title }}
+              </div>
+              <div
+                class="form-accordion-item-body"
+                role="region"
+                [style.display]="accordionItem.expanded ? '' : 'none'"
+                [attr.id]="'accordion-body-' + index"
+                [attr.aria-labelledby]="'accordion-header-' + index"
+              >
+                {{ activeEvent.description }}
+                <div class="event-actions">
+                  <button
+                    class="btn btn-outline-primary"
+                    (click)="openCreateDialog()"
+                  >
+                    Edit Event
+                  </button>
+                  <button
+                    class="btn btn-outline-danger"
+                    (click)="openCreateDialog()"
+                  >
+                    Delete Event
+                  </button>
+                </div>
+              </div>
+            </cdk-accordion-item>
+          }
+        </cdk-accordion>
+      </div>
+
+      <button class="btn btn-primary" (click)="openCreateDialog()">
+        Create Event
+      </button>
+    } @else {
+      <p>Please select a day from the calendar on the left.</p>
+    }
+  }
+</div>

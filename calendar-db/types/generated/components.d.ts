@@ -28,7 +28,6 @@ export interface CalendarGameEvent extends Schema.Component {
   attributes: {
     title: Attribute.String & Attribute.Required;
     description: Attribute.Text & Attribute.Required;
-    dueDate: Attribute.Component<'calendar.game-date'>;
     gameDate: Attribute.Component<'calendar.game-date'> & Attribute.Required;
     tag: Attribute.Enumeration<
       [
