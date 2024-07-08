@@ -7,8 +7,7 @@ import { Season } from '../models/season.model';
   providedIn: 'root',
 })
 export class EventDateUtils {
-  getEventsForDate(
-    day: number,
+  static getEventsForDate(
     season: Season,
     year: number,
     calendar: Calendar,
@@ -16,15 +15,15 @@ export class EventDateUtils {
     return calendar.calendarEvents.filter((event) => {
       let normalCondition = false;
       const isCorrectSeason = event.gameDate.season === season;
-      const isCorrectDay = event.gameDate.day === day;
       const isCorrectYear = event.gameDate.isRecurring
         ? true
         : event.gameDate.year === year;
 
-      if (isCorrectDay && isCorrectSeason && isCorrectYear) {
+      if (isCorrectSeason && isCorrectYear) {
         normalCondition = true;
       }
 
+      console.log('static', isCorrectSeason, isCorrectYear, normalCondition);
       return normalCondition;
     });
   }

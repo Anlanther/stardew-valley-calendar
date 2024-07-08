@@ -7,20 +7,22 @@ import { AppActions } from './app.actions';
 
 export interface AppState {
   activeCalendar: CalendarState;
-  activeCalendarEvents: EventState;
+  activeFormEvents: EventState;
   selectedYear: number;
   selectedDay: number;
   selectedSeason: Season;
   availableCalendars: Calendar[];
+  isLoading: boolean;
 }
 
 export const initialState: AppState = {
   activeCalendar: null,
-  activeCalendarEvents: null,
+  activeFormEvents: null,
   selectedYear: 1,
   selectedDay: 1,
-  selectedSeason: Season.FALL,
+  selectedSeason: Season.SPRING,
   availableCalendars: [],
+  isLoading: false,
 };
 
 export const appReducer = createReducer<AppState>(
@@ -37,8 +39,16 @@ export const appReducer = createReducer<AppState>(
     ...state,
     availableCalendars: action.calendars,
   })),
-  on(AppActions.updateActiveEvents, (state, action) => ({
+  on(AppActions.updateActiveFormEvents, (state, action) => ({
     ...state,
-    activeCalendarEvents: [...action.calendarEvents],
+    activeFormEvents: [...action.calendarEvents],
+  })),
+  on(AppActions.updateYear, (state, action) => ({
+    ...state,
+    selectedYear: action.year,
+  })),
+  on(AppActions.updateSeason, (state, action) => ({
+    ...state,
+    selectedSeason: action.season,
   })),
 );

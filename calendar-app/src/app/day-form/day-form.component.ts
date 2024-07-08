@@ -1,7 +1,7 @@
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppStore } from '../models/app-store.model';
 import { CalendarState } from '../models/calendar-state.model';
@@ -26,11 +26,13 @@ export class DayFormComponent {
   expandedIndex = 0;
 
   constructor() {
-    this.activeCalendar$ = this.store.select(AppFeature.selectActiveCalendar);
-    this.activeEvents$ = this.store.select(
-      AppFeature.selectActiveCalendarEvents,
+    this.activeCalendar$ = this.store.pipe(
+      select(AppFeature.selectActiveCalendar),
     );
-    this.selectedDate$ = this.store.select(AppFeature.selectSelectedDate);
+    this.activeEvents$ = this.store.pipe(
+      select(AppFeature.selectActiveFormEvents),
+    );
+    this.selectedDate$ = this.store.pipe(select(AppFeature.selectSelectedDate));
   }
 
   openCreateDialog() {}

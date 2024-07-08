@@ -1,13 +1,13 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import { ICON_METADATA } from '../../constants/icon-metadata.constant';
 import { AppStore } from '../../models/app-store.model';
 import { CalendarEvent } from '../../models/calendar-event.model';
-import { Calendar } from '../../models/calendar.model';
-import { Season } from '../../models/season.model';
 import { EventDateUtils } from '../../services/event-date.utils';
 import { AppActions } from '../../state/app.actions';
+import { AppFeature } from '../../state/app.state';
 
 interface CalendarEventDisplay extends CalendarEvent {
   url: string;
@@ -20,26 +20,40 @@ interface CalendarEventDisplay extends CalendarEvent {
   templateUrl: './event.component.html',
   styleUrl: './event.component.scss',
 })
-export class EventComponent implements OnInit {
+export class EventComponent implements OnInit, OnDestroy {
   @Input() day!: number;
-  @Input() year!: number;
-  @Input() season!: Season;
-  @Input() calendar!: Calendar;
 
   eventDateUtils = inject(EventDateUtils);
   store = inject(Store<AppStore>);
 
   gameEvents: CalendarEventDisplay[] = [];
 
+  calendarSeasonEvents$: Observable<CalendarEvent[]>;
+  subs = new Subscription();
+
+  constructor() {
+    this.calendarSeasonEvents$ = this.store.pipe(
+      select(AppFeature.selectCalendarSeasonEvents),
+    );
+  }
+
   ngOnInit(): void {
-    this.gameEvents = [
-      ...this.eventDateUtils
-        .getEventsForDate(this.day, this.season, this.year, this.calendar)
-        .map((event) => ({ ...event, url: ICON_METADATA.get(event.tag)!.url })),
-    ];
+    this.subs.add(
+      this.calendarSeasonEvents$.subscribe((calendarEvents) => {
+        const filteredEvents = calendarEvents
+          .filter((event) => event.gameDate.day === this.day)
+          .map((e) => ({ ...e, url: ICON_METADATA.get(e.tag)!.url }));
+
+        this.gameEvents = [...filteredEvents];
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   setActiveEvent() {
-    this.store.dispatch(AppActions.updateActiveEvents(this.gameEvents));
+    this.store.dispatch(AppActions.updateActiveFormEvents(this.gameEvents));
   }
 }
