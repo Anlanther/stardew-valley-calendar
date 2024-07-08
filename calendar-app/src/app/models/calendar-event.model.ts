@@ -6,6 +6,5 @@ export interface CalendarEvent {
   title: string;
   tag: Tag;
   description: string;
-  dueDate?: GameDate;
   gameDate: GameDate;
 }

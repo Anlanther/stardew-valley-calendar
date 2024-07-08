@@ -2,56 +2,46 @@
   <h2>Calendar</h2>
 
   @if (activeCalendar$ | async; as activeCalendar) {
-  <form class="example-form">
-    <mat-form-field class="example-full-width">
-      <mat-label>Year</mat-label>
-      <input
-        type="number"
-        matInput
-        [formControl]="yearFormControl"
-        placeholder="1"
-      />
-      @if (yearFormControl.hasError('min') &&
-      !yearFormControl.hasError('required')) {
-      <mat-error>Please enter a valid year</mat-error>
-      } @if (yearFormControl.hasError('required')) {
-      <mat-error>Year is <strong>required</strong></mat-error>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <mat-label>Year</mat-label>
+        <input
+          type="number"
+          matInput
+          [formControl]="yearFormControl"
+          placeholder="1"
+        />
+        @if (
+          yearFormControl.hasError("min") &&
+          !yearFormControl.hasError("required")
+        ) {
+          <mat-error>Please enter a valid year</mat-error>
+        }
+        @if (yearFormControl.hasError("required")) {
+          <mat-error>Year is <strong>required</strong></mat-error>
+        }
+      </mat-form-field>
+      @if (yearFormControl.valid) {
+        <button class="btn btn-primary" (click)="updateYear()">Confirm</button>
       }
-    </mat-form-field>
-  </form>
-  <mat-tab-group>
-    <mat-tab label="Spring">
-      <ng-template matTabContent
-        ><app-grid
-          [activeCalendar]="activeCalendar"
-          [season]="spring"
-        ></app-grid
-      ></ng-template>
-    </mat-tab>
-    <mat-tab label="Summer">
-      <ng-template matTabContent
-        ><app-grid
-          [activeCalendar]="activeCalendar"
-          [season]="summer"
-        ></app-grid
-      ></ng-template>
-      <mat-tab label="Fall">
-        <ng-template matTabContent
-          ><app-grid
-            [activeCalendar]="activeCalendar"
-            [season]="fall"
-          ></app-grid
-        ></ng-template>
-      </mat-tab>
-    </mat-tab>
-    <mat-tab label="Winter">
-      <ng-template matTabContent
-        ><app-grid
-          [activeCalendar]="activeCalendar"
-          [season]="winter"
-        ></app-grid
-      ></ng-template>
-    </mat-tab>
-  </mat-tab-group>
-  } @else { Please create a new or choose an existing calendar }
+    </form>
+    @if (selectedYear$ | async; as selectedYear) {
+      <mat-tab-group (selectedTabChange)="onTabChange($event)">
+        <mat-tab label="Spring">
+          <ng-template matTabContent><app-grid></app-grid></ng-template>
+        </mat-tab>
+        <mat-tab label="Summer">
+          <ng-template matTabContent><app-grid></app-grid></ng-template>
+          <mat-tab label="Fall">
+            <ng-template matTabContent><app-grid></app-grid></ng-template>
+          </mat-tab>
+        </mat-tab>
+        <mat-tab label="Winter">
+          <ng-template matTabContent><app-grid></app-grid></ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    }
+  } @else {
+    Please create a new or choose an existing calendar
+  }
 </div>
