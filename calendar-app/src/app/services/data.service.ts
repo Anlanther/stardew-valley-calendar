@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
+import { DeepPartial } from '../models/deep-partial.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class DataService {
   };
   constructor(private http: HttpClient) {}
 
-  graphql<T>(query: string, variables?: Partial<T>) {
+  graphql<T>(query: string, variables?: DeepPartial<T>) {
     return this.http
       .post(this.apiUrl, JSON.stringify({ query, variables }), this.httpOptions)
       .pipe(map((response: any) => response.data));
