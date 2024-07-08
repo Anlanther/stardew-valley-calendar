@@ -1,6 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { BIRTHDAY_EVENTS } from '../../constants/birthday-events.constant';
+import { CROPS_DEADLINES } from '../../constants/crops-deadline.constant';
 import { Calendar } from '../../models/calendar.model';
+import { DeepPartial } from '../../models/deep-partial.model';
 import { GameDate } from '../../models/game-date.model';
 import { DataService } from '../data.service';
 import { GameDateComponent } from '../models/GameDateComponent';
@@ -11,11 +14,16 @@ import { Calendar_Data } from '../models/calendar';
 })
 export class CalendarDataService {
   private dataService = inject(DataService);
-
   create(name: string): Observable<Calendar> {
     const publishedAt = new Date().toISOString();
+    const variables: DeepPartial<Calendar> = {
+      name,
+      publishedAt,
+      calendarEvents: [...BIRTHDAY_EVENTS, ...CROPS_DEADLINES],
+    };
+
     return this.dataService
-      .graphql<Calendar>(this.getCreateQuery(), { name, publishedAt })
+      .graphql<Calendar>(this.getCreateQuery(), variables)
       .pipe(
         map((response) => {
           return response.createCalendar.data.map(
@@ -132,16 +140,34 @@ export class CalendarDataService {
 
   private getCreateQuery() {
     return `
-    mutation createCalendar($name: String, $publishedAt: DateTime) {
-      createCalendar(data: { name: $name, publishedAt: $publishedAt }) {
+    mutation createCalendar(
+      $name: String
+      $calendarEvents: [ComponentCalendarGameEventInput]
+      $publishedAt: DateTime
+    ) {
+      createCalendar(
+        data: { name: $name, gameEvents: $calendarEvents, publishedAt: $publishedAt }
+      ) {
         data {
           id
           attributes {
             name
+            gameEvents {
+              id
+              title
+              description
+              gameDate {
+                id
+                season
+                day
+                year
+                isRecurring
+              }
+              tag
+            }
           }
         }
       }
-    }
-    `;
+    }`;
   }
 }
