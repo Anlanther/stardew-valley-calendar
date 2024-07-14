@@ -33,7 +33,7 @@ export class AppComponent {
           return calendar
             ? this.disableDelete.set(false)
             : this.disableDelete.set(true);
-        })
+        }),
       );
   }
 
@@ -42,6 +42,6 @@ export class AppComponent {
   }
 
   openEditDialog() {
-    this.store.dispatch(AppActions.editCalendar());
+    this.store.dispatch(AppActions.updateCalendar());
   }
 }

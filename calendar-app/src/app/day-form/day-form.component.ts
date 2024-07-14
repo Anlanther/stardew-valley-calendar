@@ -22,7 +22,6 @@ export class DayFormComponent {
   activeEvents$: Observable<EventState>;
   selectedDate$: Observable<string>;
 
-  items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
   expandedIndex = 0;
 
   constructor() {
@@ -35,5 +34,6 @@ export class DayFormComponent {
     this.selectedDate$ = this.store.pipe(select(AppFeature.selectSelectedDate));
   }
 
-  openCreateDialog() {}
+  openEditDialog() {}
+  openDeleteDialog() {}
 }

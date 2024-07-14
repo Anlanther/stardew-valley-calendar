@@ -1,0 +1,83 @@
+{
+  "kind": "collectionType",
+  "collectionName": "game_events",
+  "info": {
+    "singularName": "game-event",
+    "pluralName": "game-events",
+    "displayName": "Game Event",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "tag": {
+      "type": "enumeration",
+      "enum": [
+        "crop",
+        "birthday",
+        "building",
+        "festival",
+        "abigail",
+        "alex",
+        "birdie",
+        "bouncer",
+        "caroline",
+        "clint",
+        "demetrius",
+        "dwarf",
+        "elliott",
+        "emily",
+        "evelyn",
+        "george",
+        "gil",
+        "governor",
+        "grandpa",
+        "gunther",
+        "gus",
+        "haley",
+        "harvey",
+        "jas",
+        "jodi",
+        "kent",
+        "krobus",
+        "leah",
+        "leo",
+        "lewis",
+        "linus",
+        "marlon",
+        "marnie",
+        "maru",
+        "morris",
+        "mr. qi",
+        "pam",
+        "penny",
+        "pierre",
+        "robin",
+        "sam",
+        "sandy",
+        "sebastian",
+        "shane",
+        "vincent",
+        "willy",
+        "wizard"
+      ],
+      "required": true
+    },
+    "gameDate": {
+      "type": "component",
+      "repeatable": false,
+      "component": "calendar.game-date",
+      "required": true
+    }
+  }
+}

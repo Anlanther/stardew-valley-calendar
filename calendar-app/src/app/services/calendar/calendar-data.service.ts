@@ -1,12 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { BIRTHDAY_EVENTS } from '../../constants/birthday-events.constant';
-import { CROPS_DEADLINES } from '../../constants/crops-deadline.constant';
 import { Calendar } from '../../models/calendar.model';
 import { DeepPartial } from '../../models/deep-partial.model';
-import { GameDate } from '../../models/game-date.model';
 import { DataService } from '../data.service';
-import { GameDateComponent } from '../models/GameDateComponent';
+import { EventDateUtils } from '../event-date.utils';
 import { Calendar_Data } from '../models/calendar';
 
 @Injectable({
@@ -14,12 +11,12 @@ import { Calendar_Data } from '../models/calendar';
 })
 export class CalendarDataService {
   private dataService = inject(DataService);
+
   create(name: string): Observable<Calendar> {
     const publishedAt = new Date().toISOString();
     const variables: DeepPartial<Calendar> = {
       name,
       publishedAt,
-      calendarEvents: [...BIRTHDAY_EVENTS, ...CROPS_DEADLINES],
     };
 
     return this.dataService
@@ -59,36 +56,18 @@ export class CalendarDataService {
   }
 
   private convertToCalendar(data: Calendar_Data): Calendar {
-    const getGameDateUnion = (gameDate: GameDateComponent) => {
-      const gameDateUnion: GameDate = gameDate.isRecurring
-        ? {
-            id: gameDate.id,
-            day: gameDate.day,
-            isRecurring: gameDate.isRecurring,
-            season: gameDate.season,
-          }
-        : {
-            id: gameDate.id,
-            day: gameDate.day,
-            isRecurring: gameDate.isRecurring,
-            season: gameDate.season,
-            year: gameDate.year!,
-          };
-
-      return gameDateUnion;
-    };
-
     const calendar: Calendar = {
       id: data.id,
       name: data.attributes.name,
       publishedAt: data.attributes.publishedAt?.toString() ?? '',
-      calendarEvents: data.attributes.gameEvents.map((event) => ({
+      calendarEvents: data.attributes.gameEvents.data.map((event) => ({
         id: event.id,
-        title: event.title,
-        description: event.description,
-        tag: event.tag,
+        title: event.attributes.title,
+        description: event.attributes.description,
+        tag: event.attributes.tag,
+        publishedAt: event.attributes.publishedAt ?? '',
         gameDate: {
-          ...getGameDateUnion(event.gameDate),
+          ...EventDateUtils.getGameDateUnion(event.attributes.gameDate),
         },
       })),
     };
@@ -104,16 +83,19 @@ export class CalendarDataService {
           attributes {
             name
             gameEvents {
+            data {
               id
-              title
-              description
-              tag
-              gameDate {
-                id
-                season
-                day
-                year
-                isRecurring
+              attributes {
+                title
+                description
+                tag
+                gameDate {
+                  id
+                  season
+                  day
+                  year
+                  isRecurring
+                }
               }
             }
           }
@@ -139,35 +121,49 @@ export class CalendarDataService {
   }
 
   private getCreateQuery() {
-    return `
-    mutation createCalendar(
-      $name: String
-      $calendarEvents: [ComponentCalendarGameEventInput]
-      $publishedAt: DateTime
-    ) {
-      createCalendar(
-        data: { name: $name, gameEvents: $calendarEvents, publishedAt: $publishedAt }
-      ) {
+    return ` 
+    mutation createCalendar($name: String, $publishedAt: DateTime) {
+      createCalendar(data: { name: $name, publishedAt: $publishedAt }) {
         data {
           id
           attributes {
             name
             gameEvents {
-              id
-              title
-              description
-              gameDate {
+              data {
                 id
-                season
-                day
-                year
-                isRecurring
+                attributes {
+                  title
+                  description
+                  tag
+                  gameDate {
+                    id
+                    season
+                    day
+                    year
+                    isRecurring
+                  }
+                }
               }
-              tag
             }
           }
         }
       }
-    }`;
+    }
+`;
+  }
+
+  private getDeleteQuery() {
+    return `
+    mutation deleteCalendar($id: ID!) {
+      deleteCalendar(id: $id) {
+        data {
+          id
+          attributes {
+            name
+          }
+        }
+      }
+    }
+`;
   }
 }
