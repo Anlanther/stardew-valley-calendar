@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { Calendar } from '../models/calendar.model';
+import { GameDate } from '../models/game-date.model';
 import { Season } from '../models/season.model';
+import { GameDateComponent } from './models/GameDateComponent';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +28,24 @@ export class EventDateUtils {
       console.log('static', isCorrectSeason, isCorrectYear, normalCondition);
       return normalCondition;
     });
+  }
+
+  static getGameDateUnion(gameDate: GameDateComponent): GameDate {
+    const gameDateUnion: GameDate = gameDate.isRecurring
+      ? {
+          id: gameDate.id,
+          day: gameDate.day,
+          isRecurring: gameDate.isRecurring,
+          season: gameDate.season,
+        }
+      : {
+          id: gameDate.id,
+          day: gameDate.day,
+          isRecurring: gameDate.isRecurring,
+          season: gameDate.season,
+          year: gameDate.year!,
+        };
+
+    return gameDateUnion;
   }
 }

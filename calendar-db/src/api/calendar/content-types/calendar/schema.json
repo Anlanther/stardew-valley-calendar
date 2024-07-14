@@ -18,9 +18,9 @@
       "required": true
     },
     "gameEvents": {
-      "type": "component",
-      "repeatable": true,
-      "component": "calendar.game-event"
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::game-event.game-event"
     }
   }
 }

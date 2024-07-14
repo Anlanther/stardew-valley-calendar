@@ -12,7 +12,6 @@ export interface AppState {
   selectedDay: number;
   selectedSeason: Season;
   availableCalendars: Calendar[];
-  isLoading: boolean;
 }
 
 export const initialState: AppState = {
@@ -22,7 +21,6 @@ export const initialState: AppState = {
   selectedDay: 1,
   selectedSeason: Season.SPRING,
   availableCalendars: [],
-  isLoading: false,
 };
 
 export const appReducer = createReducer<AppState>(

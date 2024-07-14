@@ -7,4 +7,5 @@ export interface CalendarEvent {
   tag: Tag;
   description: string;
   gameDate: GameDate;
+  publishedAt: string;
 }

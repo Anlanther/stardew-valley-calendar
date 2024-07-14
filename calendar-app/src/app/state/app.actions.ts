@@ -7,7 +7,7 @@ export const AppActions = createActionGroup({
   source: 'App',
   events: {
     'Create Calendar': emptyProps(),
-    'Edit Calendar': emptyProps(),
+    'Update Calendar': emptyProps(),
     'Create Calendar Success': (calendar: Calendar) => ({ calendar }),
     'Get Calendars': emptyProps(),
     'Get Calendars Success': (calendars: Calendar[]) => ({ calendars }),
@@ -18,5 +18,13 @@ export const AppActions = createActionGroup({
     }),
     'Update Year': (year: number) => ({ year }),
     'Update Season': (season: Season) => ({ season }),
+    'Delete Calendar Event': (id: string) => ({ id }),
+    'Delete Calendar Success': emptyProps(),
+    'Update Calendar Event': (calendarEvent: CalendarEvent) => ({
+      calendarEvent,
+    }),
+    'Update Calendar Event Success': (calendarEvent: CalendarEvent) => ({
+      calendarEvent,
+    }),
   },
 });

@@ -7,7 +7,9 @@ import { exhaustMap, filter, map, switchMap } from 'rxjs';
 import { CreateDialogComponent } from '../calendar/create-dialog/create-dialog.component';
 import { EditDialogComponent } from '../calendar/edit-dialog/edit-dialog.component';
 import { AppStore } from '../models/app-store.model';
+import { CalendarEvent } from '../models/calendar-event.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
+import { GameEventDataService } from '../services/game-event/game-event-data.service';
 import { AppActions } from './app.actions';
 import { AppFeature } from './app.state';
 
@@ -17,6 +19,7 @@ export class AppEffects {
   private store = inject(Store<AppStore>);
   private dialog = inject(MatDialog);
   private calendarDataService = inject(CalendarDataService);
+  private gameEventDataService = inject(GameEventDataService);
 
   getAllCalendars$ = createEffect(() =>
     this.actions$.pipe(
@@ -24,9 +27,9 @@ export class AppEffects {
       switchMap(() =>
         this.calendarDataService
           .getAll()
-          .pipe(map((calendars) => AppActions.getCalendarsSuccess(calendars)))
-      )
-    )
+          .pipe(map((calendars) => AppActions.getCalendarsSuccess(calendars))),
+      ),
+    ),
   );
 
   createCalendar$ = createEffect(() =>
@@ -40,14 +43,14 @@ export class AppEffects {
       switchMap((dialogRes: { name: string }) =>
         this.calendarDataService
           .create(dialogRes.name)
-          .pipe(map((calendar) => AppActions.createCalendarSuccess(calendar)))
-      )
-    )
+          .pipe(map((calendar) => AppActions.createCalendarSuccess(calendar))),
+      ),
+    ),
   );
 
   editCalendar$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.editCalendar),
+      ofType(AppActions.updateCalendar),
       concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectAvailableCalendars)),
         this.store.pipe(select(AppFeature.selectActiveCalendar)),
@@ -62,9 +65,9 @@ export class AppEffects {
       switchMap((dialogRes: { id: string }) =>
         this.calendarDataService
           .get(dialogRes.id)
-          .pipe(map((calendar) => AppActions.loadCalendar(calendar.id)))
-      )
-    )
+          .pipe(map((calendar) => AppActions.loadCalendar(calendar.id))),
+      ),
+    ),
   );
 
   loadCalendar$ = createEffect(() =>
@@ -73,8 +76,46 @@ export class AppEffects {
       switchMap(({ id }) =>
         this.calendarDataService
           .get(id)
-          .pipe(map((calendar) => AppActions.updateActiveCalendar(calendar)))
-      )
-    )
+          .pipe(map((calendar) => AppActions.updateActiveCalendar(calendar))),
+      ),
+    ),
+  );
+
+  updateCalendarEvent$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.updateCalendarEvent),
+      exhaustMap(({ calendarEvent }) => {
+        const dialogRef = this.dialog.open(EditDialogComponent, {
+          data: { calendarEvent },
+        });
+        return dialogRef.afterClosed();
+      }),
+      filter((dialogRes) => !!dialogRes),
+      switchMap((dialogRes: { calendarEvent: CalendarEvent }) =>
+        this.gameEventDataService
+          .update(dialogRes.calendarEvent)
+          .pipe(
+            map((calendar) => AppActions.updateCalendarEventSuccess(calendar)),
+          ),
+      ),
+    ),
+  );
+
+  deleteCalendarEvent$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.deleteCalendarEvent),
+      exhaustMap(({ id }) => {
+        const dialogRef = this.dialog.open(EditDialogComponent, {
+          data: { id },
+        });
+        return dialogRef.afterClosed();
+      }),
+      filter((dialogRes) => !!dialogRes),
+      switchMap((dialogRes: { id: string }) =>
+        this.gameEventDataService
+          .delete(dialogRes.id)
+          .pipe(map((calendar) => AppActions.loadCalendar(calendar.id))),
+      ),
+    ),
   );
 }
