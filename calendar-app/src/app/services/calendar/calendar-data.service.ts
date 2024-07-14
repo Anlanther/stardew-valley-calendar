@@ -83,18 +83,19 @@ export class CalendarDataService {
           attributes {
             name
             gameEvents {
-            data {
-              id
-              attributes {
-                title
-                description
-                tag
-                gameDate {
-                  id
-                  season
-                  day
-                  year
-                  isRecurring
+              data {
+                id
+                attributes {
+                  title
+                  description
+                  tag
+                  gameDate {
+                    id
+                    season
+                    day
+                    year
+                    isRecurring
+                  }
                 }
               }
             }

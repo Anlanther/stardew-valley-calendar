@@ -25,7 +25,6 @@ export class EventDateUtils {
         normalCondition = true;
       }
 
-      console.log('static', isCorrectSeason, isCorrectYear, normalCondition);
       return normalCondition;
     });
   }
