@@ -43,7 +43,6 @@ export class EditDialogComponent {
 
   confirm() {
     const selectedCalendarId = this.availableCalendarsFormControl.value!;
-    console.log(selectedCalendarId);
     this.dialogRef.close({
       id: selectedCalendarId,
     });
