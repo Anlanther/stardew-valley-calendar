@@ -19,10 +19,8 @@
     <ul class="navbar-nav mr-auto">
       <button class="btn btn-link" (click)="openEditDialog()">
         @if (activeCalendar$ | async; as calendar) {
-          {{ calendar.name }}
-        } @else {
-          Edit Calendar
-        }
+        {{ calendar.name }}
+        } @else { Edit Calendar }
       </button>
     </ul>
     <div class="d-flex">

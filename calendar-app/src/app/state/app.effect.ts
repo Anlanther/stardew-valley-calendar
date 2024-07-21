@@ -4,8 +4,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { exhaustMap, filter, map, switchMap } from 'rxjs';
-import { CreateDialogComponent } from '../calendar/create-dialog/create-dialog.component';
-import { EditDialogComponent } from '../calendar/edit-dialog/edit-dialog.component';
+import { CreateCalendarDialogComponent } from '../dialogs/calendar/create-dialog/create-dialog.component';
+import { EditCalendarDialogComponent } from '../dialogs/calendar/edit-dialog/edit-dialog.component';
 import { AppStore } from '../models/app-store.model';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
@@ -36,7 +36,7 @@ export class AppEffects {
     this.actions$.pipe(
       ofType(AppActions.createCalendar),
       exhaustMap(() => {
-        const dialogRef = this.dialog.open(CreateDialogComponent);
+        const dialogRef = this.dialog.open(CreateCalendarDialogComponent);
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
@@ -56,7 +56,7 @@ export class AppEffects {
         this.store.pipe(select(AppFeature.selectActiveCalendar)),
       ]),
       exhaustMap(([, availableCalendars, activeCalendar]) => {
-        const dialogRef = this.dialog.open(EditDialogComponent, {
+        const dialogRef = this.dialog.open(EditCalendarDialogComponent, {
           data: { availableCalendars, activeCalendar },
         });
         return dialogRef.afterClosed();
@@ -85,7 +85,7 @@ export class AppEffects {
     this.actions$.pipe(
       ofType(AppActions.updateCalendarEvent),
       exhaustMap(({ calendarEvent }) => {
-        const dialogRef = this.dialog.open(EditDialogComponent, {
+        const dialogRef = this.dialog.open(EditCalendarDialogComponent, {
           data: { calendarEvent },
         });
         return dialogRef.afterClosed();
@@ -105,7 +105,7 @@ export class AppEffects {
     this.actions$.pipe(
       ofType(AppActions.deleteCalendarEvent),
       exhaustMap(({ id }) => {
-        const dialogRef = this.dialog.open(EditDialogComponent, {
+        const dialogRef = this.dialog.open(EditCalendarDialogComponent, {
           data: { id },
         });
         return dialogRef.afterClosed();

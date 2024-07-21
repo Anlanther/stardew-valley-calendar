@@ -1,14 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import {
-  FormControl,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
+import { FormControl, Validators } from '@angular/forms';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { AppStore } from '../models/app-store.model';
@@ -16,20 +8,9 @@ import { CalendarState } from '../models/calendar-state.model';
 import { Season } from '../models/season.model';
 import { AppActions } from '../state/app.actions';
 import { AppFeature } from '../state/app.state';
-import { GridComponent } from './grid/grid.component';
 
 @Component({
   selector: 'app-calendar',
-  standalone: true,
-  imports: [
-    GridComponent,
-    MatTabsModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    CommonModule,
-  ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',
 })
