@@ -1,5 +1,3 @@
-import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -10,8 +8,6 @@ import { AppFeature } from '../state/app.state';
 
 @Component({
   selector: 'app-day-form',
-  standalone: true,
-  imports: [CommonModule, CdkAccordionModule],
   templateUrl: './day-form.component.html',
   styleUrl: './day-form.component.scss',
 })

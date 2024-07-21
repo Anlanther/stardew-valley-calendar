@@ -1,5 +1,4 @@
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatListModule } from '@angular/material/list';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { ICON_METADATA } from '../../constants/icon-metadata.constant';
@@ -15,8 +14,6 @@ interface CalendarEventDisplay extends CalendarEvent {
 
 @Component({
   selector: 'app-event',
-  standalone: true,
-  imports: [MatListModule],
   templateUrl: './event.component.html',
   styleUrl: './event.component.scss',
 })
