@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AppStore } from '../models/app-store.model';
 import { CalendarState } from '../models/calendar-state.model';
 import { EventState } from '../models/event-state.model';
+import { AppActions } from '../state/app.actions';
 import { AppFeature } from '../state/app.state';
 
 @Component({
@@ -32,4 +33,8 @@ export class DayFormComponent {
 
   openEditDialog() {}
   openDeleteDialog() {}
+
+  openCreateDialog() {
+    this.store.dispatch(AppActions.createEvent());
+  }
 }

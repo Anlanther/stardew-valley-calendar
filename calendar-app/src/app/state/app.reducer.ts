@@ -3,7 +3,32 @@ import { CalendarState } from '../models/calendar-state.model';
 import { Calendar } from '../models/calendar.model';
 import { EventState } from '../models/event-state.model';
 import { Season } from '../models/season.model';
+import { Tag } from '../models/tag.model';
 import { AppActions } from './app.actions';
+
+const IS_TESTING = true;
+
+const TESTING_CALENDAR: Calendar = {
+  id: '5',
+  name: '1',
+  publishedAt: '',
+  calendarEvents: [
+    {
+      id: '1',
+      title: '1',
+      description: 'A description',
+      tag: Tag.Abigail,
+      publishedAt: '',
+      gameDate: {
+        id: '7',
+        day: 1,
+        isRecurring: false,
+        season: Season.SPRING,
+        year: 1,
+      },
+    },
+  ],
+};
 
 export interface AppState {
   activeCalendar: CalendarState;
@@ -15,7 +40,7 @@ export interface AppState {
 }
 
 export const initialState: AppState = {
-  activeCalendar: null,
+  activeCalendar: IS_TESTING ? TESTING_CALENDAR : null,
   activeFormEvents: null,
   selectedYear: 1,
   selectedDay: 1,

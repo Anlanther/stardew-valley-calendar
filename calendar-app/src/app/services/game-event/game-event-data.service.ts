@@ -5,7 +5,7 @@ import { DeepPartial } from '../../models/deep-partial.model';
 import { DataService } from '../data.service';
 import { EventDateUtils } from '../event-date.utils';
 import { Calendar_Data } from '../models/calendar';
-import { GameEvent_Data } from '../models/game-event';
+import { GameEvent_Data, GameEvent_Plain } from '../models/game-event';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +16,27 @@ export class GameEventDataService {
   createDefaults(): Observable<CalendarEvent> {
     const publishedAt = new Date().toISOString();
     const variables: DeepPartial<CalendarEvent> = {
+      publishedAt,
+    };
+
+    return this.dataService
+      .graphql<CalendarEvent>(this.getCreateQuery(), variables)
+      .pipe(
+        map((response) => {
+          return response.createCalendar.data.map(
+            (calendar: Calendar_Data) => ({
+              ...calendar.attributes,
+              id: calendar.id,
+            }),
+          );
+        }),
+      );
+  }
+
+  create(calendarEvent: CalendarEvent): Observable<CalendarEvent> {
+    const publishedAt = new Date().toISOString();
+    const variables: DeepPartial<GameEvent_Plain> = {
+      ...calendarEvent,
       publishedAt,
     };
 

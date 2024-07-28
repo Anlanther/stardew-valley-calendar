@@ -26,5 +26,9 @@ export const AppActions = createActionGroup({
     'Update Calendar Event Success': (calendarEvent: CalendarEvent) => ({
       calendarEvent,
     }),
+    'Create Event': emptyProps(),
+    'Create Event Success': (calendarEvent: CalendarEvent) => ({
+      calendarEvent,
+    }),
   },
 });

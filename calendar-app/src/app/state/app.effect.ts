@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { exhaustMap, filter, map, switchMap } from 'rxjs';
 import { CreateCalendarDialogComponent } from '../dialogs/calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from '../dialogs/calendar/edit-dialog/edit-dialog.component';
+import { CreateEventDialogComponent } from '../dialogs/day-form/create-dialog/create-dialog.component';
 import { AppStore } from '../models/app-store.model';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
@@ -115,6 +116,29 @@ export class AppEffects {
         this.gameEventDataService
           .delete(dialogRes.id)
           .pipe(map((calendar) => AppActions.loadCalendar(calendar.id))),
+      ),
+    ),
+  );
+
+  createCalendarEvent$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.createEvent),
+      concatLatestFrom(() => [
+        this.store.pipe(select(AppFeature.selectSelectedDay)),
+        this.store.pipe(select(AppFeature.selectSelectedSeason)),
+        this.store.pipe(select(AppFeature.selectSelectedYear)),
+      ]),
+      exhaustMap(([, day, season, year]) => {
+        const dialogRef = this.dialog.open(CreateEventDialogComponent, {
+          data: { day, season, year },
+        });
+        return dialogRef.afterClosed();
+      }),
+      filter((dialogRes) => !!dialogRes),
+      switchMap((dialogRes: { calendarEvent: CalendarEvent }) =>
+        this.gameEventDataService
+          .create(dialogRes.calendarEvent)
+          .pipe(map((calendar) => AppActions.createEventSuccess(calendar))),
       ),
     ),
   );

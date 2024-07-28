@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>Create Event</h2>
+<mat-dialog-content class="container">
+  <form [formGroup]="eventForm" class="row">
+    <div class="col">
+      <div class="d-flex flex-column">
+        <mat-form-field>
+          <mat-label>Title</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="title"
+            placeholder="Defeat 5 slimes"
+          />
+          @if (eventForm.hasError("required")) {
+            <mat-error>Title is <strong>required</strong></mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Tag</mat-label>
+          <mat-select formControlName="tag">
+            @for (tag of tags; track tag) {
+              <mat-option value="{{ tag }}">
+                {{ tag }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            placeholder="Task from adventurers guild."
+          ></textarea>
+        </mat-form-field>
+        <mat-slide-toggle formControlName="isRecurring">
+          Recurring
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    type="button"
+    class="btn btn-primary"
+    [disabled]="!eventForm.valid"
+    (click)="createEvent()"
+  >
+    Create
+  </button>
+</mat-dialog-actions>
