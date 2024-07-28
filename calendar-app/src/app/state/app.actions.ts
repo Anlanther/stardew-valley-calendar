@@ -30,5 +30,6 @@ export const AppActions = createActionGroup({
     'Create Event Success': (calendarEvent: CalendarEvent) => ({
       calendarEvent,
     }),
+    'Added Event to Calendar': (calendar: Calendar) => ({ calendar }),
   },
 });

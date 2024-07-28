@@ -74,4 +74,8 @@ export const appReducer = createReducer<AppState>(
     ...state,
     selectedSeason: action.season,
   })),
+  on(AppActions.addedEventToCalendar, (state, action) => ({
+    ...state,
+    activeCalendar: action.calendar,
+  })),
 );
