@@ -8,9 +8,13 @@ import { CreateCalendarDialogComponent } from '../dialogs/calendar/create-dialog
 import { EditCalendarDialogComponent } from '../dialogs/calendar/edit-dialog/edit-dialog.component';
 import { CreateEventDialogComponent } from '../dialogs/day-form/create-dialog/create-dialog.component';
 import { AppStore } from '../models/app-store.model';
-import { CalendarEvent } from '../models/calendar-event.model';
+import {
+  CalendarEvent,
+  UnsavedCalendarEvent,
+} from '../models/calendar-event.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
 import { GameEventDataService } from '../services/game-event/game-event-data.service';
+import { Calendar_NoRelations } from '../services/models/calendar';
 import { AppActions } from './app.actions';
 import { AppFeature } from './app.state';
 
@@ -135,11 +139,32 @@ export class AppEffects {
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      switchMap((dialogRes: { calendarEvent: CalendarEvent }) =>
+      switchMap((dialogRes: { calendarEvent: UnsavedCalendarEvent }) =>
         this.gameEventDataService
           .create(dialogRes.calendarEvent)
           .pipe(map((calendar) => AppActions.createEventSuccess(calendar))),
       ),
+    ),
+  );
+
+  updateCurrentCalendar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.createEventSuccess),
+      concatLatestFrom(() =>
+        this.store.pipe(select(AppFeature.selectActiveCalendar)),
+      ),
+      switchMap(([action, activeCalendar]) => {
+        const existingEvents = activeCalendar?.calendarEvents
+          ? [...activeCalendar.calendarEvents.map((event) => event.id)]
+          : [];
+        const updatedCalendar: Partial<Calendar_NoRelations> = {
+          id: activeCalendar?.id,
+          gameEvents: [...existingEvents, action.calendarEvent.id],
+        };
+        return this.calendarDataService
+          .update(updatedCalendar)
+          .pipe(map((calendar) => AppActions.addedEventToCalendar(calendar)));
+      }),
     ),
   );
 }

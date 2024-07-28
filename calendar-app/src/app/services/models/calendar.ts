@@ -27,7 +27,7 @@ export interface Calendar_NoRelations {
   updatedAt: Date;
   publishedAt?: Date;
   name: string;
-  gameEvents: number[];
+  gameEvents: string[];
 }
 
 export interface Calendar_AdminPanelLifeCycle {

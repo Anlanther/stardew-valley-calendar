@@ -1,6 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { CalendarEvent } from '../../models/calendar-event.model';
+import {
+  CalendarEvent,
+  UnsavedCalendarEvent,
+} from '../../models/calendar-event.model';
 import { DeepPartial } from '../../models/deep-partial.model';
 import { DataService } from '../data.service';
 import { EventDateUtils } from '../event-date.utils';
@@ -19,76 +22,60 @@ export class GameEventDataService {
       publishedAt,
     };
 
-    return this.dataService
-      .graphql<CalendarEvent>(this.getCreateQuery(), variables)
-      .pipe(
-        map((response) => {
-          return response.createCalendar.data.map(
-            (calendar: Calendar_Data) => ({
-              ...calendar.attributes,
-              id: calendar.id,
-            }),
-          );
-        }),
-      );
+    return this.dataService.graphql(this.getCreateQuery(), variables).pipe(
+      map((response) => {
+        return response.createCalendar.data.map((calendar: Calendar_Data) => ({
+          ...calendar.attributes,
+          id: calendar.id,
+        }));
+      }),
+    );
   }
 
-  create(calendarEvent: CalendarEvent): Observable<CalendarEvent> {
+  create(calendarEvent: UnsavedCalendarEvent): Observable<CalendarEvent> {
     const publishedAt = new Date().toISOString();
     const variables: DeepPartial<GameEvent_Plain> = {
       ...calendarEvent,
       publishedAt,
     };
 
-    return this.dataService
-      .graphql<CalendarEvent>(this.getCreateQuery(), variables)
-      .pipe(
-        map((response) => {
-          return response.createCalendar.data.map(
-            (calendar: Calendar_Data) => ({
-              ...calendar.attributes,
-              id: calendar.id,
-            }),
-          );
-        }),
-      );
+    return this.dataService.graphql(this.getCreateQuery(), variables).pipe(
+      map((response) => {
+        return {
+          ...response.createGameEvent.data.attributes,
+          id: response.createGameEvent.data.id,
+        };
+      }),
+    );
   }
 
   update(calendarEvent: CalendarEvent): Observable<CalendarEvent> {
     const variables: DeepPartial<CalendarEvent> = {};
 
-    return this.dataService
-      .graphql<CalendarEvent>(this.getUpdateQuery(), variables)
-      .pipe(
-        map((response) => {
-          return response.createCalendar.data.map(
-            (calendar: Calendar_Data) => ({
-              ...calendar.attributes,
-              id: calendar.id,
-            }),
-          );
-        }),
-      );
+    return this.dataService.graphql(this.getUpdateQuery(), variables).pipe(
+      map((response) => {
+        return response.createCalendar.data.map((calendar: Calendar_Data) => ({
+          ...calendar.attributes,
+          id: calendar.id,
+        }));
+      }),
+    );
   }
 
   delete(id: string): Observable<CalendarEvent> {
     const variables: DeepPartial<CalendarEvent> = {};
 
-    return this.dataService
-      .graphql<CalendarEvent>(this.getDeleteQuery(), variables)
-      .pipe(
-        map((response) => {
-          return response.createCalendar.data.map(
-            (calendar: Calendar_Data) => ({
-              ...calendar.attributes,
-              id: calendar.id,
-            }),
-          );
-        }),
-      );
+    return this.dataService.graphql(this.getDeleteQuery(), variables).pipe(
+      map((response) => {
+        return response.createCalendar.data.map((calendar: Calendar_Data) => ({
+          ...calendar.attributes,
+          id: calendar.id,
+        }));
+      }),
+    );
   }
 
-  private convertToCalendarEvent(data: GameEvent_Data): CalendarEvent {
+  convertToCalendarEvent(data: GameEvent_Data): CalendarEvent {
     const calendarEvent: CalendarEvent = {
       id: data.id,
       title: data.attributes.title,
@@ -131,11 +118,19 @@ export class GameEventDataService {
     return ` 
     mutation createGameEvent(
       $title: String
+      $tag: ENUM_GAMEEVENT_TAG
+      $description: String
       $gameDate: ComponentCalendarGameDateInput
       $publishedAt: DateTime
     ) {
       createGameEvent(
-        data: { title: $title, publishedAt: $publishedAt, gameDate: $gameDate }
+        data: {
+          title: $title
+          publishedAt: $publishedAt
+          gameDate: $gameDate
+          description: $description
+          tag: $tag
+        }
       ) {
         data {
           id

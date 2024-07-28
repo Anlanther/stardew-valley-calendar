@@ -4,7 +4,7 @@ import { Calendar } from '../../models/calendar.model';
 import { DeepPartial } from '../../models/deep-partial.model';
 import { DataService } from '../data.service';
 import { EventDateUtils } from '../event-date.utils';
-import { Calendar_Data } from '../models/calendar';
+import { Calendar_Data, Calendar_NoRelations } from '../models/calendar';
 
 @Injectable({
   providedIn: 'root',
@@ -19,23 +19,19 @@ export class CalendarDataService {
       publishedAt,
     };
 
-    return this.dataService
-      .graphql<Calendar>(this.getCreateQuery(), variables)
-      .pipe(
-        map((response) => {
-          return response.createCalendar.data.map(
-            (calendar: Calendar_Data) => ({
-              ...calendar.attributes,
-              id: calendar.id,
-            }),
-          );
-        }),
-      );
+    return this.dataService.graphql(this.getCreateQuery(), variables).pipe(
+      map((response) => {
+        return response.createCalendar.data.map((calendar: Calendar_Data) => ({
+          ...calendar.attributes,
+          id: calendar.id,
+        }));
+      }),
+    );
   }
 
   get(id: string): Observable<Calendar> {
     return this.dataService
-      .graphql<Calendar>(this.getOneQuery(), { id })
+      .graphql(this.getOneQuery(), { id })
       .pipe(map((response) => this.convertToCalendar(response.calendar.data)));
   }
 
@@ -43,19 +39,25 @@ export class CalendarDataService {
     const queryName = 'getAllCalendars';
     const settings = `(pagination: { limit: -1 })`;
 
+    return this.dataService.graphql(this.getQuery(queryName, settings)).pipe(
+      map((response) => {
+        return response.calendars.data.map((calendar: Calendar_Data) => ({
+          id: calendar.id,
+          name: calendar.attributes.name,
+        }));
+      }),
+    );
+  }
+
+  update(calendar: Partial<Calendar_NoRelations>): Observable<Calendar> {
     return this.dataService
-      .graphql<Calendar[]>(this.getQuery(queryName, settings))
+      .graphql(this.getUpdateQuery(), calendar)
       .pipe(
-        map((response) => {
-          return response.calendars.data.map((calendar: Calendar_Data) => ({
-            id: calendar.id,
-            name: calendar.attributes.name,
-          }));
-        }),
+        map((response) => this.convertToCalendar(response.updateCalendar.data)),
       );
   }
 
-  private convertToCalendar(data: Calendar_Data): Calendar {
+  convertToCalendar(data: Calendar_Data): Calendar {
     const calendar: Calendar = {
       id: data.id,
       name: data.attributes.name,
@@ -72,6 +74,37 @@ export class CalendarDataService {
       })),
     };
     return calendar;
+  }
+
+  private getUpdateQuery() {
+    return `
+    mutation updateCalendar($id: ID!, $gameEvents: [ID]) {
+      updateCalendar(id: $id, data: { gameEvents: $gameEvents }) {
+        data {
+          id
+          attributes {
+            name
+            gameEvents {
+              data {
+                id
+                attributes {
+                  title
+                  description
+                  tag
+                  gameDate {
+                    id
+                    season
+                    day
+                    year
+                    isRecurring
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }`;
   }
 
   private getOneQuery() {
