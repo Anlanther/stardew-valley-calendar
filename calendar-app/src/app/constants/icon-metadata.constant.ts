@@ -25,7 +25,7 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Abigail,
     {
-      url: '/assets/abigail-icon.png',
+      url: 'abigail-icon.png',
     },
   ],
   [
