@@ -3,10 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
-import { exhaustMap, filter, map, switchMap } from 'rxjs';
+import { exhaustMap, filter, map, switchMap, tap } from 'rxjs';
 import { CreateCalendarDialogComponent } from '../dialogs/calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from '../dialogs/calendar/edit-dialog/edit-dialog.component';
 import { CreateEventDialogComponent } from '../dialogs/day-form/create-dialog/create-dialog.component';
+import { DeleteDialogComponent } from '../dialogs/delete/delete-dialog.component';
 import { AppStore } from '../models/app-store.model';
 import {
   CalendarEvent,
@@ -106,12 +107,12 @@ export class AppEffects {
     ),
   );
 
-  deleteCalendarEvent$ = createEffect(() =>
+  deleteEvent$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.deleteCalendarEvent),
-      exhaustMap(({ id }) => {
-        const dialogRef = this.dialog.open(EditCalendarDialogComponent, {
-          data: { id },
+      ofType(AppActions.deleteEvent),
+      exhaustMap((action) => {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+          data: { id: action.id, name: action.name, object: 'event' },
         });
         return dialogRef.afterClosed();
       }),
@@ -119,7 +120,33 @@ export class AppEffects {
       switchMap((dialogRes: { id: string }) =>
         this.gameEventDataService
           .delete(dialogRes.id)
-          .pipe(map((calendar) => AppActions.loadCalendar(calendar.id))),
+          .pipe(map((id) => AppActions.deleteEventSuccess(id))),
+      ),
+    ),
+  );
+
+  deleteCalendar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.deleteCalendar),
+      concatLatestFrom(() => [
+        this.store.pipe(select(AppFeature.selectActiveCalendar)),
+      ]),
+      exhaustMap(([, activeCalendar]) => {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+          data: {
+            id: activeCalendar?.id,
+            name: activeCalendar?.name,
+            object: 'calendar',
+          },
+        });
+        return dialogRef.afterClosed();
+      }),
+      filter((dialogRes) => !!dialogRes),
+      tap((x) => console.log('testing', x)),
+      switchMap((dialogRes: { id: string }) =>
+        this.calendarDataService
+          .delete(dialogRes.id)
+          .pipe(map((id) => AppActions.deleteCalendarSuccess(id))),
       ),
     ),
   );

@@ -9,16 +9,16 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CreateCalendarDialogComponent } from './calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from './calendar/edit-dialog/edit-dialog.component';
 import { CreateEventDialogComponent } from './day-form/create-dialog/create-dialog.component';
-import { DeleteEventDialogComponent } from './day-form/delete-dialog/delete-dialog.component';
 import { EditEventDialogComponent } from './day-form/edit-dialog/edit-dialog.component';
+import { DeleteDialogComponent } from './delete/delete-dialog.component';
 
 @NgModule({
   declarations: [
     CreateCalendarDialogComponent,
     EditCalendarDialogComponent,
-    DeleteEventDialogComponent,
     EditEventDialogComponent,
     CreateEventDialogComponent,
+    DeleteDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -33,7 +33,6 @@ import { EditEventDialogComponent } from './day-form/edit-dialog/edit-dialog.com
   exports: [
     CreateCalendarDialogComponent,
     EditCalendarDialogComponent,
-    DeleteEventDialogComponent,
     EditEventDialogComponent,
     CreateEventDialogComponent,
   ],

@@ -18,8 +18,13 @@ export const AppActions = createActionGroup({
     }),
     'Update Year': (year: number) => ({ year }),
     'Update Season': (season: Season) => ({ season }),
-    'Delete Calendar Event': (id: string) => ({ id }),
-    'Delete Calendar Success': emptyProps(),
+    'Delete Event': (id: string, name: string) => ({
+      id,
+      name,
+    }),
+    'Delete Event Success': (id: string) => ({ id }),
+    'Delete Calendar': emptyProps(),
+    'Delete Calendar Success': (id: string) => ({ id }),
     'Update Calendar Event': (calendarEvent: CalendarEvent) => ({
       calendarEvent,
     }),

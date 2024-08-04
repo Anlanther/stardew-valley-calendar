@@ -57,6 +57,12 @@ export class CalendarDataService {
       );
   }
 
+  delete(id: string): Observable<string> {
+    return this.dataService
+      .graphql(this.getDeleteQuery(), { id })
+      .pipe(map((response) => response.deleteCalendar.data.id));
+  }
+
   convertToCalendar(data: Calendar_Data): Calendar {
     const calendar: Calendar = {
       id: data.id,
@@ -192,9 +198,6 @@ export class CalendarDataService {
       deleteCalendar(id: $id) {
         data {
           id
-          attributes {
-            name
-          }
         }
       }
     }

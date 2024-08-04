@@ -31,8 +31,11 @@ export class DayFormComponent {
     this.selectedDate$ = this.store.pipe(select(AppFeature.selectSelectedDate));
   }
 
-  openEditDialog() {}
-  openDeleteDialog() {}
+  openEditDialog(id: string) {}
+
+  openDeleteDialog(id: string, name: string) {
+    this.store.dispatch(AppActions.deleteEvent(id, name));
+  }
 
   openCreateDialog() {
     this.store.dispatch(AppActions.createEvent());

@@ -53,8 +53,4 @@ export class CreateEventDialogComponent {
 
     this.dialogRef.close({ calendarEvent });
   }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 }
