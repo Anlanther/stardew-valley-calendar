@@ -5,21 +5,15 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Birthday,
     {
-      url: 'https://stardewvalleywiki.com/mediawiki/images/1/16/Bundle_Reward.png',
+      url: 'birthday-icon.png',
     },
   ],
-  [
-    Tag.Crop,
-    { url: 'https://stardewvalleywiki.com/mediawiki/images/d/db/Parsnip.png' },
-  ],
-  [
-    Tag.Building,
-    { url: 'https://stardewvalleywiki.com/mediawiki/images/f/f8/Barn.png' },
-  ],
+  [Tag.Crop, { url: 'parsnip-icon.png' }],
+  [Tag.Building, { url: '' }],
   [
     Tag.Festival,
     {
-      url: 'https://stardewvalleywiki.com/mediawiki/images/c/cc/Tree_of_the_Winter_Star.png',
+      url: '',
     },
   ],
   [
@@ -31,253 +25,253 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Alex,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/d/d1/Alex-Portrait_192px.png/revision/latest?cb=20160306010528',
+      url: 'alex-icon.png',
     },
   ],
   [
     Tag.Birdie,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/3/37/Birdie_Portrait.png/revision/latest?cb=20210401204955',
+      url: '',
     },
   ],
   [
     Tag.Bouncer,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/f/f5/Bouncer.png/revision/latest?cb=20160319185112',
+      url: '',
     },
   ],
   [
     Tag.Caroline,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/1/11/Caroline-Portrait_192px.png/revision/latest?cb=20160313190952',
+      url: '',
     },
   ],
   [
     Tag.Clint,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/1/12/Clint-Portrait_192px.png/revision/latest?cb=20160313191138',
+      url: 'clint-icon.png',
     },
   ],
   [
     Tag.Demetrius,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/3/3e/Demetrius-Portrait_192px.png/revision/latest?cb=20160313191439',
+      url: 'demetrius-icon.png',
     },
   ],
   [
     Tag.Dwarf,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/3/30/Dwarf-Portrait_192px.png/revision/latest?cb=20151218091942',
+      url: 'dwarf-icon.png',
     },
   ],
   [
     Tag.Elliott,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/6/65/Elliott-Portrait_192px.png/revision/latest?cb=20160306050502',
+      url: 'elliott-icon.png',
     },
   ],
   [
     Tag.Emily,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/e/e6/Emily-Portrait_192px.png/revision/latest?cb=20160313191750',
+      url: 'emily-icon.png',
     },
   ],
   [
     Tag.Evelyn,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/7/7f/Evelyn-Portrait_192px.png/revision/latest?cb=20151218090219',
+      url: 'evelyn-icon.png',
     },
   ],
   [
     Tag.George,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/c/c2/George-Portrait_192px.png/revision/latest?cb=20151218084526',
+      url: 'george-icon.png',
     },
   ],
   [
     Tag.Gil,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/9/90/Gil-Portrait_192px.png/revision/latest?cb=20151218092137',
+      url: '',
     },
   ],
   [
     Tag.Governor,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/7/75/Governor-Portrait_192px.png/revision/latest?cb=20151218092147',
+      url: '',
     },
   ],
   [
     Tag.Grandpa,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/8/88/Grandpa.png/revision/latest?cb=20160319185058',
+      url: '',
     },
   ],
   [
     Tag.Gunther,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/d/d5/Gunther-Portrait_192px.png/revision/latest?cb=20151218084621',
+      url: '',
     },
   ],
   [
     Tag.Gus,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/e/e2/Gus-Portrait_192px.png/revision/latest?cb=20151217135445',
+      url: '',
     },
   ],
   [
     Tag.Haley,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/2/2d/Haley-Portrait_192px.png/revision/latest?cb=20160306051708',
+      url: 'haley-icon.png',
     },
   ],
   [
     Tag.Harvey,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/9/96/Harvey-Portrait_192px.png/revision/latest?cb=20160306050846',
+      url: 'harvey-icon.png',
     },
   ],
   [
     Tag.Jas,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/8/89/Jas-Portrait_192px.png/revision/latest?cb=20151218083700',
+      url: '',
     },
   ],
   [
     Tag.Jodi,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/7/7b/Jodi-Portrait_192px.png/revision/latest?cb=20151218080354',
+      url: '',
     },
   ],
   [
     Tag.Kent,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/c/c9/Kent-Portrait_192px.png/revision/latest?cb=20160308100606',
+      url: '',
     },
   ],
   [
     Tag.Krobus,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/7/79/Krobus-Portrait_192px.png/revision/latest?cb=20151218091929',
+      url: 'krobus-icon.png',
     },
   ],
   [
     Tag.Leah,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/8/8c/Leah-Portrait_192px.png/revision/latest?cb=20160306051756',
+      url: 'leah-icon.png',
     },
   ],
   [
     Tag.Leo,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/1/1d/Leo.png/revision/latest?cb=20210325121322',
+      url: 'leo-icon.png',
     },
   ],
   [
     Tag.Lewis,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/9/97/Lewis-Portrait_192px.png/revision/latest?cb=20151217125422',
+      url: '',
     },
   ],
   [
     Tag.Linus,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/0/06/Linus-Portrait_192px.png/revision/latest?cb=20151218090232',
+      url: 'linus-icon.png',
     },
   ],
   [
     Tag.Marlon,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/1/1a/Marlon-Portrait_192px.png/revision/latest?cb=20151218092127',
+      url: '',
     },
   ],
   [
     Tag.Marnie,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/4/4a/Marnie-Portrait_192px.png/revision/latest?cb=20151218084545',
+      url: 'marnie-icon.png',
     },
   ],
   [
     Tag.Maru,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/8/8f/Maru-Portrait_192px.png/revision/latest?cb=20160306051924',
+      url: 'maru-icon.png',
     },
   ],
   [
     Tag.Morris,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/a/aa/Morris-Portrait_192px.png/revision/latest?cb=20151218090830',
+      url: '',
     },
   ],
   [
     Tag.MrQi,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/b/b3/Mr._Qi_portrait.png/revision/latest?cb=20220506204240',
+      url: '',
     },
   ],
   [
     Tag.Pam,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/0/0e/Pam-Portrait_192px.png/revision/latest?cb=20151223111134',
+      url: 'pam-icon.png',
     },
   ],
   [
     Tag.Penny,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/4/4c/Penny-Portrait_192px.png/revision/latest?cb=20200519101135',
+      url: 'penny-icon.png',
     },
   ],
   [
     Tag.Pierre,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/4/4e/Pierre-Portrait_192px.png/revision/latest?cb=20151218080909',
+      url: 'pierre-icon.png',
     },
   ],
   [
     Tag.Robin,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/f/fd/Robin-Portrait_192px.png/revision/latest?cb=20160304204531',
+      url: 'robbin-icon.png',
     },
   ],
   [
     Tag.Sam,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/d/dc/Sam-Portrait_192px.png/revision/latest?cb=20160306051048',
+      url: 'sam-icon.png',
     },
   ],
   [
     Tag.Sandy,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/d/df/Sandy-Portrait_192px.png/revision/latest?cb=20151218083253',
+      url: '',
     },
   ],
   [
     Tag.Sebastian,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/c/c3/Sebastian-Portrait_192px.png/revision/latest?cb=20160306051229',
+      url: 'sebastian-icon.png',
     },
   ],
   [
     Tag.Shane,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/0/0c/Shane-Portrait_192px.png/revision/latest?cb=20151218083242',
+      url: '',
     },
   ],
   [
     Tag.Vincent,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/2/2d/Vincent-Portrait_192px.png/revision/latest?cb=20151217141209',
+      url: 'vincent-icon.png',
     },
   ],
   [
     Tag.Willy,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/d/db/Willy-Portrait_192px.png/revision/latest?cb=20151218090818',
+      url: 'willy-icon.png',
     },
   ],
   [
     Tag.Wizard,
     {
-      url: 'https://static.wikia.nocookie.net/stardewvalley/images/a/a8/Wizard-Portrait_192px.png/revision/latest?cb=20151218084610',
+      url: 'wizard-icon.png',
     },
   ],
 ]);
