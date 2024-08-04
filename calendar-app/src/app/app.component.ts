@@ -28,7 +28,7 @@ export class AppComponent {
           return calendar
             ? this.disableDelete.set(false)
             : this.disableDelete.set(true);
-        })
+        }),
       );
   }
 
@@ -38,5 +38,9 @@ export class AppComponent {
 
   openEditDialog() {
     this.store.dispatch(AppActions.updateCalendar());
+  }
+
+  deleteCalendar() {
+    this.store.dispatch(AppActions.deleteCalendar());
   }
 }

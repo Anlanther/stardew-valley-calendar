@@ -1,0 +1,15 @@
+services:
+  calenar-app:
+    build:
+      context: ./calendar-app
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    depends_on:
+      - strapi-server
+  strapi-server:
+    build:
+      context: ./calendar-db
+      dockerfile: Dockerfile
+    ports:
+      - "1337:1337"

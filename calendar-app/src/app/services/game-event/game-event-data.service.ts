@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import {
   CalendarEvent,
   UnsavedCalendarEvent,
@@ -52,30 +52,26 @@ export class GameEventDataService {
   update(calendarEvent: CalendarEvent): Observable<CalendarEvent> {
     const variables: DeepPartial<CalendarEvent> = {};
 
-    return this.dataService.graphql(this.getUpdateQuery(), variables).pipe(
-      map((response) => {
-        return response.createCalendar.data.map((calendar: Calendar_Data) => ({
-          ...calendar.attributes,
-          id: calendar.id,
-        }));
-      }),
-    );
+    return this.dataService
+      .graphql(this.getUpdateQuery(), variables)
+      .pipe(
+        map((response) =>
+          this.convertToCalendarEvent(response.updateGameEvent.data),
+        ),
+      );
   }
 
-  delete(id: string): Observable<CalendarEvent> {
-    const variables: DeepPartial<CalendarEvent> = {};
+  delete(id: string): Observable<string> {
+    const variables: DeepPartial<CalendarEvent> = { id };
 
     return this.dataService.graphql(this.getDeleteQuery(), variables).pipe(
-      map((response) => {
-        return response.createCalendar.data.map((calendar: Calendar_Data) => ({
-          ...calendar.attributes,
-          id: calendar.id,
-        }));
-      }),
+      tap((x) => console.log('test', x)),
+      map((response) => response.deleteGameEvent.data.id),
     );
   }
 
   convertToCalendarEvent(data: GameEvent_Data): CalendarEvent {
+    console.log('convert', data);
     const calendarEvent: CalendarEvent = {
       id: data.id,
       title: data.attributes.title,
@@ -94,21 +90,7 @@ export class GameEventDataService {
     return `
     mutation updateGameEvent($id: ID!, $gameEvent: GameEventInput!) {
       updateGameEvent(id: $id, data: $gameEvent) {
-        data {
-          id
-          attributes {
-            title
-            description
-            tag
-            gameDate {
-              id
-              season
-              day
-              year
-              isRecurring
-            }
-          }
-        }
+        ${this.getObject()}
       }
     }
 `;
@@ -132,21 +114,7 @@ export class GameEventDataService {
           tag: $tag
         }
       ) {
-        data {
-          id
-          attributes {
-            title
-            description
-            tag
-            gameDate {
-              id
-              season
-              day
-              year
-              isRecurring
-            }
-          }
-        }
+        ${this.getObject()}
       }
     }
 `;
@@ -158,12 +126,28 @@ export class GameEventDataService {
       deleteGameEvent(id: $id) {
         data {
           id
-          attributes {
-            title
-          }
         }
       }
     }
 `;
+  }
+
+  private getObject() {
+    return `
+      data {
+        id
+        attributes {
+          title
+          description
+          tag
+          gameDate {
+            id
+            season
+            day
+            year
+            isRecurring
+          }
+        }
+      }`;
   }
 }

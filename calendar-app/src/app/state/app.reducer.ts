@@ -3,32 +3,7 @@ import { CalendarState } from '../models/calendar-state.model';
 import { Calendar } from '../models/calendar.model';
 import { EventState } from '../models/event-state.model';
 import { Season } from '../models/season.model';
-import { Tag } from '../models/tag.model';
 import { AppActions } from './app.actions';
-
-const IS_TESTING = true;
-
-const TESTING_CALENDAR: Calendar = {
-  id: '5',
-  name: '1',
-  publishedAt: '',
-  calendarEvents: [
-    {
-      id: '1',
-      title: '1',
-      description: 'A description',
-      tag: Tag.Abigail,
-      publishedAt: '',
-      gameDate: {
-        id: '7',
-        day: 1,
-        isRecurring: false,
-        season: Season.SPRING,
-        year: 1,
-      },
-    },
-  ],
-};
 
 export interface AppState {
   activeCalendar: CalendarState;
@@ -40,7 +15,7 @@ export interface AppState {
 }
 
 export const initialState: AppState = {
-  activeCalendar: IS_TESTING ? TESTING_CALENDAR : null,
+  activeCalendar: null,
   activeFormEvents: null,
   selectedYear: 1,
   selectedDay: 1,
@@ -77,5 +52,40 @@ export const appReducer = createReducer<AppState>(
   on(AppActions.addedEventToCalendar, (state, action) => ({
     ...state,
     activeCalendar: action.calendar,
+  })),
+  on(AppActions.createEventSuccess, (state, action) => ({
+    ...state,
+    activeCalendar: state.activeCalendar
+      ? {
+          ...state.activeCalendar,
+          calendarEvents: [
+            ...state.activeCalendar.calendarEvents,
+            action.calendarEvent,
+          ],
+        }
+      : null,
+    activeFormEvents: state.activeFormEvents
+      ? [...state.activeFormEvents, action.calendarEvent]
+      : null,
+  })),
+  on(AppActions.deleteEventSuccess, (state, action) => ({
+    ...state,
+    activeCalendar: state.activeCalendar
+      ? {
+          ...state.activeCalendar,
+          calendarEvents:
+            state.activeCalendar?.calendarEvents.filter(
+              (calendar) => calendar.id !== action.id,
+            ) ?? [],
+        }
+      : null,
+    activeFormEvents: state.activeFormEvents
+      ? state.activeFormEvents.filter((event) => event.id !== action.id)
+      : null,
+  })),
+  on(AppActions.deleteCalendarSuccess, (state) => ({
+    ...state,
+    activeCalendar: null,
+    activeFormEvents: null,
   })),
 );

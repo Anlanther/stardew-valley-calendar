@@ -19,15 +19,21 @@
     <ul class="navbar-nav mr-auto">
       <button class="btn btn-link" (click)="openEditDialog()">
         @if (activeCalendar$ | async; as calendar) {
-        {{ calendar.name }}
-        } @else { Edit Calendar }
+          {{ calendar.name }}
+        } @else {
+          Edit Calendar
+        }
       </button>
     </ul>
     <div class="d-flex">
       <button class="btn btn-primary" (click)="openCreateDialog()">
         Create New
       </button>
-      <button class="btn btn-danger" [disabled]="disableDelete()">
+      <button
+        class="btn btn-danger"
+        [disabled]="disableDelete()"
+        (click)="deleteCalendar()"
+      >
         Delete
       </button>
     </div>
