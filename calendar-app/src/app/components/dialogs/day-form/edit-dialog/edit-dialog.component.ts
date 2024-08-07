@@ -1,47 +1,51 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UnsavedCalendarEvent } from '../../../models/calendar-event.model';
-import { UnsavedGameDate } from '../../../models/game-date.model';
-import { Season } from '../../../models/season.model';
-import { Tag } from '../../../models/tag.model';
+import {
+  CalendarEvent,
+  UnsavedCalendarEvent,
+} from '../../../../models/calendar-event.model';
+import { UnsavedGameDate } from '../../../../models/game-date.model';
+import { Season } from '../../../../models/season.model';
+import { Tag } from '../../../../models/tag.model';
 
 @Component({
-  selector: 'app-create-event-dialog',
-  templateUrl: './create-dialog.component.html',
-  styleUrl: './create-dialog.component.scss',
+  selector: 'app-edit-event-dialog',
+  templateUrl: './edit-dialog.component.html',
+  styleUrl: './edit-dialog.component.scss',
 })
-export class CreateEventDialogComponent {
+export class EditEventDialogComponent {
   private fb = inject(FormBuilder);
-  dialogRef = inject(MatDialogRef<CreateEventDialogComponent>);
-  data: { day: number; season: Season; year: number } = inject(MAT_DIALOG_DATA);
+  dialogRef = inject(MatDialogRef<EditEventDialogComponent>);
+  data: { calendarEvent: CalendarEvent; activeYear: number } =
+    inject(MAT_DIALOG_DATA);
 
   eventForm!: FormGroup;
   tags = Object.values(Tag);
 
   constructor() {
     this.eventForm = this.fb.group({
-      title: ['', [Validators.required]],
-      description: [''],
-      tag: ['', [Validators.required]],
-      isRecurring: [false],
+      title: [this.data.calendarEvent.title, [Validators.required]],
+      description: [this.data.calendarEvent.description],
+      tag: [this.data.calendarEvent.tag, [Validators.required]],
+      isRecurring: [this.data.calendarEvent.gameDate.isRecurring],
     });
   }
 
-  createEvent() {
+  editEvent() {
     const isRecurring: boolean = this.eventForm.get('isRecurring')?.value;
 
     const gameDate: UnsavedGameDate = isRecurring
       ? {
-          day: this.data.day,
+          day: this.data.calendarEvent.gameDate.day,
           isRecurring: true,
           season: this.eventForm.get('season')?.value ?? Season.SPRING,
         }
       : {
-          day: this.data.day,
+          day: this.data.calendarEvent.gameDate.day,
           isRecurring: false,
           season: this.eventForm.get('season')?.value ?? Season.SPRING,
-          year: this.data.year,
+          year: this.data.activeYear,
         };
 
     const calendarEvent: UnsavedCalendarEvent = {

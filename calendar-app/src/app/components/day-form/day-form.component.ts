@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppStore } from '../models/app-store.model';
-import { CalendarState } from '../models/calendar-state.model';
-import { EventState } from '../models/event-state.model';
-import { AppActions } from '../state/app.actions';
-import { AppFeature } from '../state/app.state';
+import { AppStore } from '../../models/app-store.model';
+import { CalendarEvent } from '../../models/calendar-event.model';
+import { CalendarState } from '../../models/calendar-state.model';
+import { EventState } from '../../models/event-state.model';
+import { AppActions } from '../../state/app.actions';
+import { AppFeature } from '../../state/app.state';
 
 @Component({
   selector: 'app-day-form',
@@ -31,7 +32,9 @@ export class DayFormComponent {
     this.selectedDate$ = this.store.pipe(select(AppFeature.selectSelectedDate));
   }
 
-  openEditDialog(id: string) {}
+  openEditDialog(event: CalendarEvent) {
+    this.store.dispatch(AppActions.updateEvent(event));
+  }
 
   openDeleteDialog(id: string, name: string) {
     this.store.dispatch(AppActions.deleteEvent(id, name));

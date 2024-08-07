@@ -4,10 +4,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { exhaustMap, filter, map, switchMap, tap } from 'rxjs';
-import { CreateCalendarDialogComponent } from '../dialogs/calendar/create-dialog/create-dialog.component';
-import { EditCalendarDialogComponent } from '../dialogs/calendar/edit-dialog/edit-dialog.component';
-import { CreateEventDialogComponent } from '../dialogs/day-form/create-dialog/create-dialog.component';
-import { DeleteDialogComponent } from '../dialogs/delete/delete-dialog.component';
+import { CreateCalendarDialogComponent } from '../components/dialogs/calendar/create-dialog/create-dialog.component';
+import { EditCalendarDialogComponent } from '../components/dialogs/calendar/edit-dialog/edit-dialog.component';
+import { CreateEventDialogComponent } from '../components/dialogs/day-form/create-dialog/create-dialog.component';
+import { EditEventDialogComponent } from '../components/dialogs/day-form/edit-dialog/edit-dialog.component';
+import { DeleteDialogComponent } from '../components/dialogs/delete/delete-dialog.component';
 import { AppStore } from '../models/app-store.model';
 import {
   CalendarEvent,
@@ -89,10 +90,13 @@ export class AppEffects {
 
   updateCalendarEvent$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.updateCalendarEvent),
-      exhaustMap(({ calendarEvent }) => {
-        const dialogRef = this.dialog.open(EditCalendarDialogComponent, {
-          data: { calendarEvent },
+      ofType(AppActions.updateEvent),
+      concatLatestFrom(() =>
+        this.store.pipe(select(AppFeature.selectSelectedYear)),
+      ),
+      exhaustMap(([{ calendarEvent }, activeYear]) => {
+        const dialogRef = this.dialog.open(EditEventDialogComponent, {
+          data: { calendarEvent, activeYear },
         });
         return dialogRef.afterClosed();
       }),
@@ -100,9 +104,7 @@ export class AppEffects {
       switchMap((dialogRes: { calendarEvent: CalendarEvent }) =>
         this.gameEventDataService
           .update(dialogRes.calendarEvent)
-          .pipe(
-            map((calendar) => AppActions.updateCalendarEventSuccess(calendar)),
-          ),
+          .pipe(map((calendar) => AppActions.updateEventSuccess(calendar))),
       ),
     ),
   );

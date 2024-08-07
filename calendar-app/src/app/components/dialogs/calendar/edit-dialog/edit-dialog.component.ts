@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CalendarState } from '../../../models/calendar-state.model';
-import { Calendar } from '../../../models/calendar.model';
+import { CalendarState } from '../../../../models/calendar-state.model';
+import { Calendar } from '../../../../models/calendar.model';
 
 @Component({
   selector: 'app-edit-calendar-dialog',

@@ -1,12 +1,12 @@
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { ICON_METADATA } from '../../constants/icon-metadata.constant';
-import { AppStore } from '../../models/app-store.model';
-import { CalendarEvent } from '../../models/calendar-event.model';
-import { EventDateUtils } from '../../services/event-date.utils';
-import { AppActions } from '../../state/app.actions';
-import { AppFeature } from '../../state/app.state';
+import { ICON_METADATA } from '../../../constants/icon-metadata.constant';
+import { AppStore } from '../../../models/app-store.model';
+import { CalendarEvent } from '../../../models/calendar-event.model';
+import { EventDateUtils } from '../../../services/event-date.utils';
+import { AppActions } from '../../../state/app.actions';
+import { AppFeature } from '../../../state/app.state';
 
 interface CalendarEventDisplay extends CalendarEvent {
   url: string;

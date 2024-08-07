@@ -5,8 +5,8 @@ import {
   moduleMetadata,
   type Meta,
 } from '@storybook/angular';
-import { Season } from '../../models/season.model';
-import { Tag } from '../../models/tag.model';
+import { Season } from '../../../models/season.model';
+import { Tag } from '../../../models/tag.model';
 import { EventComponent } from '../event/event.component';
 import { GridComponent } from './grid.component';
 
