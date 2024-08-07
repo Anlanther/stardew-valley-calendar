@@ -88,4 +88,8 @@ export const appReducer = createReducer<AppState>(
     activeCalendar: null,
     activeFormEvents: null,
   })),
+  on(AppActions.updateActiveDay, (state, action) => ({
+    ...state,
+    selectedDay: action.day,
+  })),
 );

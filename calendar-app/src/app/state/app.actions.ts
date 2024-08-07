@@ -12,6 +12,7 @@ export const AppActions = createActionGroup({
     'Get Calendars': emptyProps(),
     'Get Calendars Success': (calendars: Calendar[]) => ({ calendars }),
     'Update Active Calendar': (calendar: Calendar) => ({ calendar }),
+    'Update Active Day': (day: number) => ({ day }),
     'Load Calendar': (id: string) => ({ id }),
     'Update Active Form Events': (calendarEvents: CalendarEvent[]) => ({
       calendarEvents,
