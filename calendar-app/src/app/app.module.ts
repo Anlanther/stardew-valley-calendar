@@ -15,9 +15,11 @@ import { DayFormModule } from './components/day-form/day-form.module';
 import { DialogsModule } from './components/dialogs/dialogs.module';
 import { AppEffects } from './state/app.effect';
 import { AppFeature } from './state/app.state';
+import { WelcomeComponent } from './views/welcome/welcome.component';
+import { MainComponent } from './views/main/main.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, WelcomeComponent, MainComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
