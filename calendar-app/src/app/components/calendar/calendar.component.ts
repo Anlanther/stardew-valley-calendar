@@ -3,11 +3,11 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { AppStore } from '../models/app-store.model';
-import { CalendarState } from '../models/calendar-state.model';
-import { Season } from '../models/season.model';
-import { AppActions } from '../state/app.actions';
-import { AppFeature } from '../state/app.state';
+import { AppStore } from '../../models/app-store.model';
+import { CalendarState } from '../../models/calendar-state.model';
+import { Season } from '../../models/season.model';
+import { AppActions } from '../../state/app.actions';
+import { AppFeature } from '../../state/app.state';
 
 @Component({
   selector: 'app-calendar',

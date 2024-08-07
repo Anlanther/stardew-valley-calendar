@@ -10,9 +10,9 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CalendarModule } from './calendar/calendar.module';
-import { DayFormModule } from './day-form/day-form.module';
-import { DialogsModule } from './dialogs/dialogs.module';
+import { CalendarModule } from './components/calendar/calendar.module';
+import { DayFormModule } from './components/day-form/day-form.module';
+import { DialogsModule } from './components/dialogs/dialogs.module';
 import { AppEffects } from './state/app.effect';
 import { AppFeature } from './state/app.state';
 

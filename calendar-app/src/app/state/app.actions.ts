@@ -26,10 +26,10 @@ export const AppActions = createActionGroup({
     'Delete Event Success': (id: string) => ({ id }),
     'Delete Calendar': emptyProps(),
     'Delete Calendar Success': (id: string) => ({ id }),
-    'Update Calendar Event': (calendarEvent: CalendarEvent) => ({
+    'Update Event': (calendarEvent: CalendarEvent) => ({
       calendarEvent,
     }),
-    'Update Calendar Event Success': (calendarEvent: CalendarEvent) => ({
+    'Update Event Success': (calendarEvent: CalendarEvent) => ({
       calendarEvent,
     }),
     'Create Event': emptyProps(),
