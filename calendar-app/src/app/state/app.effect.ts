@@ -31,7 +31,7 @@ export class AppEffects {
 
   getAllCalendars$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.getCalendars, AppActions.createCalendar),
+      ofType(AppActions.getCalendars),
       switchMap(() =>
         this.calendarDataService
           .getAll()

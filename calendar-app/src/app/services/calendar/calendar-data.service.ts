@@ -19,14 +19,11 @@ export class CalendarDataService {
       publishedAt,
     };
 
-    return this.dataService.graphql(this.getCreateQuery(), variables).pipe(
-      map((response) => {
-        return response.createCalendar.data.map((calendar: Calendar_Data) => ({
-          ...calendar.attributes,
-          id: calendar.id,
-        }));
-      }),
-    );
+    return this.dataService
+      .graphql(this.getCreateQuery(), variables)
+      .pipe(
+        map((response) => this.convertToCalendar(response.createCalendar.data)),
+      );
   }
 
   get(id: string): Observable<Calendar> {
