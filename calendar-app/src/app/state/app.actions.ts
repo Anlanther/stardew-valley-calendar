@@ -2,6 +2,7 @@ import { createActionGroup, emptyProps } from '@ngrx/store';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { Calendar } from '../models/calendar.model';
 import { Season } from '../models/season.model';
+import { StatusMessage } from '../models/status-message.model';
 
 export const AppActions = createActionGroup({
   source: 'App',
@@ -37,5 +38,6 @@ export const AppActions = createActionGroup({
       calendarEvent,
     }),
     'Added Event to Calendar': (calendar: Calendar) => ({ calendar }),
+    'Update Status Message': (message: StatusMessage) => ({ message }),
   },
 });

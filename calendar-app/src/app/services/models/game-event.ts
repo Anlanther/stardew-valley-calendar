@@ -55,6 +55,10 @@ export enum Tag {
   Wizard = 'wizard',
 }
 
+export enum Type {
+  System = 'system',
+  User = 'user',
+}
 export interface GameEvent_Data {
   id: string;
   attributes: {
@@ -65,6 +69,7 @@ export interface GameEvent_Data {
     description: string;
     tag: Tag;
     gameDate: GameDateComponent;
+    type: Type;
   };
 }
 export interface GameEvent_Plain {
@@ -76,6 +81,7 @@ export interface GameEvent_Plain {
   description: string;
   tag: Tag;
   gameDate: GameDateComponent_Plain;
+  type: Type;
 }
 
 export interface GameEvent_NoRelations {
@@ -87,6 +93,7 @@ export interface GameEvent_NoRelations {
   description: string;
   tag: Tag;
   gameDate: GameDateComponent_NoRelations;
+  type: Type;
 }
 
 export interface GameEvent_AdminPanelLifeCycle {
@@ -98,4 +105,5 @@ export interface GameEvent_AdminPanelLifeCycle {
   description: string;
   tag: Tag;
   gameDate: GameDateComponent_Plain;
+  type: Type;
 }

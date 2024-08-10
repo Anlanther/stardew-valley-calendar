@@ -1,5 +1,6 @@
 import { GameDate, UnsavedGameDate } from './game-date.model';
 import { Tag } from './tag.model';
+import { Type } from './type.model';
 
 export interface CalendarEvent {
   id: string;
@@ -8,6 +9,7 @@ export interface CalendarEvent {
   description: string;
   gameDate: GameDate;
   publishedAt: string;
+  type: Type;
 }
 
 export type UnsavedCalendarEvent = Omit<

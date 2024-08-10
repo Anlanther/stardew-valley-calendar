@@ -74,6 +74,7 @@ export class CalendarDataService {
         description: event.attributes.description,
         tag: event.attributes.tag,
         publishedAt: event.attributes.publishedAt ?? '',
+        type: event.attributes.type,
         gameDate: {
           ...EventDateUtils.getGameDateUnion(event.attributes.gameDate),
         },
@@ -86,29 +87,7 @@ export class CalendarDataService {
     return `
     mutation updateCalendar($id: ID!, $gameEvents: [ID]) {
       updateCalendar(id: $id, data: { gameEvents: $gameEvents }) {
-        data {
-          id
-          attributes {
-            name
-            gameEvents {
-              data {
-                id
-                attributes {
-                  title
-                  description
-                  tag
-                  gameDate {
-                    id
-                    season
-                    day
-                    year
-                    isRecurring
-                  }
-                }
-              }
-            }
-          }
-        }
+        ${this.getBaseDataQuery()}
       }
     }`;
   }
@@ -117,29 +96,7 @@ export class CalendarDataService {
     return `
     query getCalendar($id: ID) {
       calendar(id: $id) {
-        data {
-          id
-          attributes {
-            name
-            gameEvents {
-              data {
-                id
-                attributes {
-                  title
-                  description
-                  tag
-                  gameDate {
-                    id
-                    season
-                    day
-                    year
-                    isRecurring
-                  }
-                }
-              }
-            }
-          }
-        }
+        ${this.getBaseDataQuery()}
       }
     }
 `;
@@ -164,7 +121,27 @@ export class CalendarDataService {
     return ` 
     mutation createCalendar($name: String, $publishedAt: DateTime) {
       createCalendar(data: { name: $name, publishedAt: $publishedAt }) {
+        ${this.getBaseDataQuery()}
+      }
+    }
+`;
+  }
+
+  private getDeleteQuery() {
+    return `
+    mutation deleteCalendar($id: ID!) {
+      deleteCalendar(id: $id) {
         data {
+          id
+        }
+      }
+    }
+    `;
+  }
+
+  private getBaseDataQuery() {
+    return `
+    data {
           id
           attributes {
             name
@@ -187,20 +164,6 @@ export class CalendarDataService {
             }
           }
         }
-      }
-    }
-`;
-  }
-
-  private getDeleteQuery() {
-    return `
-    mutation deleteCalendar($id: ID!) {
-      deleteCalendar(id: $id) {
-        data {
-          id
-        }
-      }
-    }
-`;
+    `;
   }
 }
