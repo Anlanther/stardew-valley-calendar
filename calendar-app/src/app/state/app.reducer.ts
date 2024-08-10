@@ -39,6 +39,12 @@ export const appReducer = createReducer<AppState>(
       statusMessage: StatusMessage.READY,
     }),
   ),
+  on(AppActions.createCalendarSuccess, (state, action) => ({
+    ...state,
+    activeCalendar: action.calendar,
+    availableCalendars: [...state.availableCalendars, action.calendar],
+    statusMessage: StatusMessage.READY,
+  })),
   on(AppActions.getCalendarsSuccess, (state, action) => ({
     ...state,
     availableCalendars: action.calendars,
@@ -58,6 +64,7 @@ export const appReducer = createReducer<AppState>(
   on(AppActions.updateSeason, (state, action) => ({
     ...state,
     selectedSeason: action.season,
+    navBarOpen: false,
   })),
   on(AppActions.addedEventToCalendar, (state, action) => ({
     ...state,
@@ -92,10 +99,14 @@ export const appReducer = createReducer<AppState>(
       ? state.activeFormEvents.filter((event) => event.id !== action.id)
       : null,
   })),
-  on(AppActions.deleteCalendarSuccess, (state) => ({
+  on(AppActions.deleteCalendarSuccess, (state, action) => ({
     ...state,
     activeCalendar: null,
     activeFormEvents: null,
+    availableCalendars: state.availableCalendars.filter(
+      (calendar) => calendar.id !== action.id,
+    ),
+    statusMessage: StatusMessage.NO_SELECTED_CALENDAR,
   })),
   on(AppActions.updateActiveDay, (state, action) => ({
     ...state,

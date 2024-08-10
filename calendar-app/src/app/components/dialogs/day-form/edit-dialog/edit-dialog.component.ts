@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CalendarEvent } from '../../../../models/calendar-event.model';
 import { GameDate } from '../../../../models/game-date.model';
-import { Season } from '../../../../models/season.model';
 import { Tag } from '../../../../models/tag.model';
 
 @Component({
@@ -36,13 +35,13 @@ export class EditEventDialogComponent {
       ? {
           day: this.data.calendarEvent.gameDate.day,
           isRecurring: true,
-          season: this.eventForm.get('season')?.value ?? Season.SPRING,
+          season: this.data.calendarEvent.gameDate.season,
           id: this.data.calendarEvent.gameDate.id,
         }
       : {
           day: this.data.calendarEvent.gameDate.day,
           isRecurring: false,
-          season: this.eventForm.get('season')?.value ?? Season.SPRING,
+          season: this.data.calendarEvent.gameDate.season,
           year: this.data.activeYear,
           id: this.data.calendarEvent.gameDate.id,
         };

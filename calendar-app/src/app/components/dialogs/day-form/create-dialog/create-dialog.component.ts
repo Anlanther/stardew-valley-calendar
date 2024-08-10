@@ -36,12 +36,12 @@ export class CreateEventDialogComponent {
       ? {
           day: this.data.day,
           isRecurring: true,
-          season: this.eventForm.get('season')?.value ?? Season.SPRING,
+          season: this.data.season,
         }
       : {
           day: this.data.day,
           isRecurring: false,
-          season: this.eventForm.get('season')?.value ?? Season.SPRING,
+          season: this.data.season,
           year: this.data.year,
         };
 
