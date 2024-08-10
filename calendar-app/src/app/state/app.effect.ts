@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
-import { exhaustMap, filter, map, switchMap, tap } from 'rxjs';
+import { catchError, exhaustMap, filter, map, switchMap, tap } from 'rxjs';
 import { CreateCalendarDialogComponent } from '../components/dialogs/calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from '../components/dialogs/calendar/edit-dialog/edit-dialog.component';
 import { CreateEventDialogComponent } from '../components/dialogs/day-form/create-dialog/create-dialog.component';
@@ -14,6 +14,7 @@ import {
   CalendarEvent,
   UnsavedCalendarEvent,
 } from '../models/calendar-event.model';
+import { StatusMessage } from '../models/status-message.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
 import { GameEventDataService } from '../services/game-event/game-event-data.service';
 import { Calendar_NoRelations } from '../services/models/calendar';
@@ -36,6 +37,10 @@ export class AppEffects {
           .getAll()
           .pipe(map((calendars) => AppActions.getCalendarsSuccess(calendars))),
       ),
+      catchError((error) => {
+        AppActions.updateStatusMessage(StatusMessage.NO_API_ACCESS);
+        throw Error(error);
+      }),
     ),
   );
 

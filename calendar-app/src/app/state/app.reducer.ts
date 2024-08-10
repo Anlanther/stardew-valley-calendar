@@ -3,6 +3,7 @@ import { CalendarState } from '../models/calendar-state.model';
 import { Calendar } from '../models/calendar.model';
 import { EventState } from '../models/event-state.model';
 import { Season } from '../models/season.model';
+import { StatusMessage } from '../models/status-message.model';
 import { AppActions } from './app.actions';
 
 export interface AppState {
@@ -12,6 +13,7 @@ export interface AppState {
   selectedDay: number;
   selectedSeason: Season;
   availableCalendars: Calendar[];
+  statusMessage: StatusMessage;
 }
 
 export const initialState: AppState = {
@@ -21,6 +23,7 @@ export const initialState: AppState = {
   selectedDay: 1,
   selectedSeason: Season.SPRING,
   availableCalendars: [],
+  statusMessage: StatusMessage.NO_API_ACCESS,
 };
 
 export const appReducer = createReducer<AppState>(
@@ -31,11 +34,16 @@ export const appReducer = createReducer<AppState>(
     (state, action) => ({
       ...state,
       activeCalendar: action.calendar,
+      statusMessage: StatusMessage.READY,
     }),
   ),
   on(AppActions.getCalendarsSuccess, (state, action) => ({
     ...state,
     availableCalendars: action.calendars,
+    statusMessage:
+      action.calendars.length === 0
+        ? StatusMessage.NO_CALENDARS_AVAILABLE
+        : StatusMessage.NO_SELECTED_CALENDAR,
   })),
   on(AppActions.updateActiveFormEvents, (state, action) => ({
     ...state,
@@ -73,10 +81,9 @@ export const appReducer = createReducer<AppState>(
     activeCalendar: state.activeCalendar
       ? {
           ...state.activeCalendar,
-          calendarEvents:
-            state.activeCalendar?.calendarEvents.filter(
-              (calendar) => calendar.id !== action.id,
-            ) ?? [],
+          calendarEvents: state.activeCalendar?.calendarEvents.filter(
+            (calendar) => calendar.id !== action.id,
+          ),
         }
       : null,
     activeFormEvents: state.activeFormEvents
@@ -91,5 +98,31 @@ export const appReducer = createReducer<AppState>(
   on(AppActions.updateActiveDay, (state, action) => ({
     ...state,
     selectedDay: action.day,
+  })),
+  on(AppActions.updateStatusMessage, (state, action) => ({
+    ...state,
+    statusMessage: action.message,
+  })),
+  on(AppActions.updateEventSuccess, (state, action) => ({
+    ...state,
+    activeCalendar: state.activeCalendar
+      ? {
+          ...state.activeCalendar,
+          calendarEvents: [
+            ...state.activeCalendar?.calendarEvents.filter(
+              (calendar) => calendar.id !== action.calendarEvent.id,
+            ),
+            action.calendarEvent,
+          ],
+        }
+      : null,
+    activeFormEvents: state.activeFormEvents
+      ? [
+          ...state.activeFormEvents.filter(
+            (event) => event.id !== action.calendarEvent.id,
+          ),
+          action.calendarEvent,
+        ]
+      : null,
   })),
 );

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import {
   CalendarEvent,
   UnsavedCalendarEvent,
@@ -50,7 +50,15 @@ export class GameEventDataService {
   }
 
   update(calendarEvent: CalendarEvent): Observable<CalendarEvent> {
-    const variables: DeepPartial<CalendarEvent> = {};
+    const variables = {
+      id: calendarEvent.id,
+      gameEvent: {
+        title: calendarEvent.title,
+        description: calendarEvent.description,
+        tag: calendarEvent.tag,
+        gameDate: calendarEvent.gameDate,
+      },
+    };
 
     return this.dataService
       .graphql(this.getUpdateQuery(), variables)
@@ -64,10 +72,9 @@ export class GameEventDataService {
   delete(id: string): Observable<string> {
     const variables: DeepPartial<CalendarEvent> = { id };
 
-    return this.dataService.graphql(this.getDeleteQuery(), variables).pipe(
-      tap((x) => console.log('test', x)),
-      map((response) => response.deleteGameEvent.data.id),
-    );
+    return this.dataService
+      .graphql(this.getDeleteQuery(), variables)
+      .pipe(map((response) => response.deleteGameEvent.data.id));
   }
 
   convertToCalendarEvent(data: GameEvent_Data): CalendarEvent {
@@ -81,6 +88,7 @@ export class GameEventDataService {
         ...EventDateUtils.getGameDateUnion(data.attributes.gameDate),
       },
       publishedAt: data.attributes.publishedAt ?? '',
+      type: data.attributes.type,
     };
 
     return calendarEvent;
@@ -140,6 +148,7 @@ export class GameEventDataService {
           title
           description
           tag
+          type
           gameDate {
             id
             season

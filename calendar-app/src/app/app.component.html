@@ -1,48 +1,28 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand">Stardew Valley Calendar</a>
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div
-    class="collapse navbar-collapse d-flex justify-content-between"
-    id="navbarSupportedContent"
-  >
-    <ul class="navbar-nav mr-auto">
-      <button class="btn btn-link" (click)="openEditDialog()">
-        @if (activeCalendar$ | async; as calendar) {
-          {{ calendar.name }}
-        } @else {
-          Edit Calendar
-        }
+@if (status$ | async; as status) {
+  @if (status === noApi) {
+    <app-welcome>
+      <p>
+        Please start up the Strapi server to begin. You may find instructions on
+        how to do so <a href="">here</a>.
+      </p>
+    </app-welcome>
+  } @else if (status === noCalendars) {
+    <app-welcome>
+      <p>Please create a calendar to start</p>
+    </app-welcome>
+  } @else if (status === noSelectedCalendar) {
+    <app-welcome>
+      <p>
+        Please select a calendar or create one if you have not already to start
+      </p>
+      <button class="btn btn-primary" (click)="openEditDialog()">
+        Open Calendar
       </button>
-    </ul>
-    <div class="d-flex">
       <button class="btn btn-primary" (click)="openCreateDialog()">
         Create New
       </button>
-      <button
-        class="btn btn-danger"
-        [disabled]="disableDelete()"
-        (click)="deleteCalendar()"
-      >
-        Delete
-      </button>
-    </div>
-  </div>
-</nav>
-
-<div class="container-xxl">
-  <div class="row app-row">
-    <div class="col-8 calendar-grid"><app-calendar></app-calendar></div>
-    <div class="col-4"><app-day-form></app-day-form></div>
-  </div>
-</div>
+    </app-welcome>
+  } @else if (status === ready) {
+    <app-main></app-main>
+  }
+}

@@ -78,6 +78,15 @@
       "repeatable": false,
       "component": "calendar.game-date",
       "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "system",
+        "user"
+      ],
+      "required": true,
+      "default": "user"
     }
   }
 }

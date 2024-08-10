@@ -15,16 +15,16 @@ import { DayFormModule } from './components/day-form/day-form.module';
 import { DialogsModule } from './components/dialogs/dialogs.module';
 import { AppEffects } from './state/app.effect';
 import { AppFeature } from './state/app.state';
-import { WelcomeComponent } from './views/welcome/welcome.component';
-import { MainComponent } from './views/main/main.component';
+import { ViewsModule } from './views/views.module';
 
 @NgModule({
-  declarations: [AppComponent, WelcomeComponent, MainComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CalendarModule,
     DayFormModule,
+    ViewsModule,
     DialogsModule,
     StoreModule.forRoot({ [AppFeature.name]: AppFeature.reducer }),
     EffectsModule.forRoot(AppEffects),

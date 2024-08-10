@@ -5,6 +5,7 @@ import { UnsavedCalendarEvent } from '../../../../models/calendar-event.model';
 import { UnsavedGameDate } from '../../../../models/game-date.model';
 import { Season } from '../../../../models/season.model';
 import { Tag } from '../../../../models/tag.model';
+import { Type } from '../../../../models/type.model';
 
 @Component({
   selector: 'app-create-event-dialog',
@@ -48,6 +49,7 @@ export class CreateEventDialogComponent {
       title: this.eventForm.get('title')?.value ?? '',
       tag: this.eventForm.get('tag')?.value as Tag,
       description: this.eventForm.get('description')?.value ?? '',
+      type: Type.User,
       gameDate,
     };
 

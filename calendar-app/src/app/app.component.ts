@@ -1,9 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
-
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AppStore } from './models/app-store.model';
-import { CalendarState } from './models/calendar-state.model';
+import { StatusMessage } from './models/status-message.model';
 import { AppActions } from './state/app.actions';
 import { AppFeature } from './state/app.state';
 
@@ -15,21 +14,24 @@ import { AppFeature } from './state/app.state';
 export class AppComponent {
   store = inject(Store<AppStore>);
 
-  activeCalendar$: Observable<CalendarState>;
-  disableDelete = signal<boolean>(false);
+  status$: Observable<StatusMessage>;
+
+  get noApi() {
+    return StatusMessage.NO_API_ACCESS;
+  }
+  get ready() {
+    return StatusMessage.READY;
+  }
+  get noCalendars() {
+    return StatusMessage.NO_CALENDARS_AVAILABLE;
+  }
+  get noSelectedCalendar() {
+    return StatusMessage.NO_SELECTED_CALENDAR;
+  }
 
   constructor() {
     this.store.dispatch(AppActions.getCalendars());
-
-    this.activeCalendar$ = this.store
-      .select(AppFeature.selectActiveCalendar)
-      .pipe(
-        tap((calendar) => {
-          return calendar
-            ? this.disableDelete.set(false)
-            : this.disableDelete.set(true);
-        }),
-      );
+    this.status$ = this.store.select(AppFeature.selectStatusMessage);
   }
 
   openCreateDialog() {
@@ -38,9 +40,5 @@ export class AppComponent {
 
   openEditDialog() {
     this.store.dispatch(AppActions.updateCalendar());
-  }
-
-  deleteCalendar() {
-    this.store.dispatch(AppActions.deleteCalendar());
   }
 }
