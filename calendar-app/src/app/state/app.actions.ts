@@ -39,5 +39,6 @@ export const AppActions = createActionGroup({
     }),
     'Added Event to Calendar': (calendar: Calendar) => ({ calendar }),
     'Update Status Message': (message: StatusMessage) => ({ message }),
+    'Toggle Nav Bar': (isOpen: boolean) => ({ isOpen }),
   },
 });

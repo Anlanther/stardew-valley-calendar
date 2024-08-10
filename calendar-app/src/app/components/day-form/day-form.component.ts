@@ -43,4 +43,8 @@ export class DayFormComponent {
   openCreateDialog() {
     this.store.dispatch(AppActions.createEvent());
   }
+
+  closeSideNav() {
+    this.store.dispatch(AppActions.toggleNavBar(false));
+  }
 }

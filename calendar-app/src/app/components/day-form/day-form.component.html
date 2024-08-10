@@ -1,6 +1,8 @@
 <div class="container">
   @if (activeCalendar$ | async; as activeCalendar) {
-    <h2>Day Form</h2>
+    <button mat-icon-button (click)="closeSideNav()">
+      <mat-icon>close</mat-icon>
+    </button>
     <h3>{{ selectedDate$ | async }}</h3>
     @if (activeEvents$ | async; as activeEvents) {
       <div class="form-body">

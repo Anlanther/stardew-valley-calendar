@@ -14,6 +14,7 @@ export interface AppState {
   selectedSeason: Season;
   availableCalendars: Calendar[];
   statusMessage: StatusMessage;
+  navBarOpen: boolean;
 }
 
 export const initialState: AppState = {
@@ -24,6 +25,7 @@ export const initialState: AppState = {
   selectedSeason: Season.SPRING,
   availableCalendars: [],
   statusMessage: StatusMessage.NO_API_ACCESS,
+  navBarOpen: false,
 };
 
 export const appReducer = createReducer<AppState>(
@@ -124,5 +126,9 @@ export const appReducer = createReducer<AppState>(
           action.calendarEvent,
         ]
       : null,
+  })),
+  on(AppActions.toggleNavBar, (state, action) => ({
+    ...state,
+    navBarOpen: action.isOpen,
   })),
 );

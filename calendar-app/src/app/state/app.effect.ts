@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
-import { catchError, exhaustMap, filter, map, switchMap, tap } from 'rxjs';
+import { catchError, exhaustMap, filter, map, switchMap } from 'rxjs';
 import { CreateCalendarDialogComponent } from '../components/dialogs/calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from '../components/dialogs/calendar/edit-dialog/edit-dialog.component';
 import { CreateEventDialogComponent } from '../components/dialogs/day-form/create-dialog/create-dialog.component';
@@ -149,7 +149,6 @@ export class AppEffects {
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      tap((x) => console.log('testing', x)),
       switchMap((dialogRes: { id: string }) =>
         this.calendarDataService
           .delete(dialogRes.id)

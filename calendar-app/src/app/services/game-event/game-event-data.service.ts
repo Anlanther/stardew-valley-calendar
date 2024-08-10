@@ -78,7 +78,6 @@ export class GameEventDataService {
   }
 
   convertToCalendarEvent(data: GameEvent_Data): CalendarEvent {
-    console.log('convert', data);
     const calendarEvent: CalendarEvent = {
       id: data.id,
       title: data.attributes.title,
