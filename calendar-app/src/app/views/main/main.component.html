@@ -23,8 +23,13 @@
 </nav>
 
 <div class="container-xxl">
-  <div class="row app-row">
-    <div class="col-8 calendar-grid"><app-calendar></app-calendar></div>
-    <div class="col-4"><app-day-form></app-day-form></div>
-  </div>
+  <mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side" position="end">
+      <app-day-form></app-day-form>
+    </mat-drawer>
+
+    <div class="example-sidenav-content">
+      <app-calendar></app-calendar>
+    </div>
+  </mat-drawer-container>
 </div>
