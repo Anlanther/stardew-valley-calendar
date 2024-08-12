@@ -1,9 +1,8 @@
 import { Component, inject, signal, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
-import { Observable, skip, Subscription, tap } from 'rxjs';
+import { Observable, skip, Subscription } from 'rxjs';
 import { AppStore } from '../../models/app-store.model';
-import { CalendarState } from '../../models/calendar-state.model';
 import { AppActions } from '../../state/app.actions';
 import { AppFeature } from '../../state/app.state';
 
@@ -15,22 +14,14 @@ import { AppFeature } from '../../state/app.state';
 export class MainComponent {
   store = inject(Store<AppStore>);
 
-  activeCalendar$: Observable<CalendarState>;
+  navTitle$: Observable<string>;
   disableDelete = signal<boolean>(false);
   subs = new Subscription();
 
   @ViewChild('drawer') sideNav!: MatSidenav;
 
   constructor() {
-    this.activeCalendar$ = this.store
-      .select(AppFeature.selectActiveCalendar)
-      .pipe(
-        tap((calendar) => {
-          return calendar
-            ? this.disableDelete.set(false)
-            : this.disableDelete.set(true);
-        }),
-      );
+    this.navTitle$ = this.store.select(AppFeature.selectNavTitle);
     this.subs.add(
       this.store
         .select(AppFeature.selectNavBarOpen)
@@ -53,5 +44,9 @@ export class MainComponent {
 
   toggleSideNav(isOpen: boolean) {
     isOpen ? this.sideNav.open() : this.sideNav.close();
+  }
+
+  openUpdateYearDialog() {
+    this.store.dispatch(AppActions.openUpdateActiveYearDialog());
   }
 }

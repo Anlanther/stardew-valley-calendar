@@ -10,6 +10,7 @@ import { CreateCalendarDialogComponent } from './calendar/create-dialog/create-d
 import { EditCalendarDialogComponent } from './calendar/edit-dialog/edit-dialog.component';
 import { CreateEventDialogComponent } from './day-form/create-dialog/create-dialog.component';
 import { EditEventDialogComponent } from './day-form/edit-dialog/edit-dialog.component';
+import { UpdateYearDialogComponent } from './day-form/update-year-dialog/update-year-dialog.component';
 import { DeleteDialogComponent } from './delete/delete-dialog.component';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { DeleteDialogComponent } from './delete/delete-dialog.component';
     EditEventDialogComponent,
     CreateEventDialogComponent,
     DeleteDialogComponent,
+    UpdateYearDialogComponent,
   ],
   imports: [
     CommonModule,

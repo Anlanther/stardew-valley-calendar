@@ -1,34 +1,39 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <ul class="navbar-nav mr-auto">
-    <button class="btn btn-link" (click)="openEditDialog()">
-      @if (activeCalendar$ | async; as calendar) {
-        {{ calendar.name }}
-      } @else {
-        Edit Calendar
-      }
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-center"
+>
+  <div>
+    @if (navTitle$ | async; as navTitle) {
+      <h1>{{ navTitle }}</h1>
+    }
+  </div>
+  <div>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
     </button>
-  </ul>
-  <div class="d-flex">
-    <button class="btn btn-primary" (click)="openCreateDialog()">
-      Create New
-    </button>
-    <button
-      class="btn btn-danger"
-      [disabled]="disableDelete()"
-      (click)="deleteCalendar()"
-    >
-      Delete
-    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="openEditDialog()">Select Calendar</button>
+      <button mat-menu-item (click)="openCreateDialog()">Create New</button>
+      <button mat-menu-item (click)="openUpdateYearDialog()">
+        Update Year
+      </button>
+      <button
+        mat-menu-item
+        [disabled]="disableDelete()"
+        (click)="deleteCalendar()"
+      >
+        Delete
+      </button>
+    </mat-menu>
   </div>
 </nav>
 
-<div class="container-xxl">
+<div class="body container-fluid">
   <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" mode="side" position="end">
       <app-day-form></app-day-form>
     </mat-drawer>
 
-    <div class="example-sidenav-content">
+    <div class="body__calendar">
       <app-calendar></app-calendar>
     </div>
   </mat-drawer-container>

@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -28,11 +27,6 @@ export class CalendarComponent {
     return Season.WINTER;
   }
 
-  yearFormControl = new FormControl(1, [
-    Validators.required,
-    Validators.min(1),
-  ]);
-
   store = inject(Store<AppStore>);
   subs = new Subscription();
 
@@ -44,11 +38,6 @@ export class CalendarComponent {
       select(AppFeature.selectActiveCalendar),
     );
     this.selectedYear$ = this.store.pipe(select(AppFeature.selectSelectedYear));
-  }
-
-  updateYear() {
-    const year = this.yearFormControl.value!;
-    this.store.dispatch(AppActions.updateYear(year));
   }
 
   onTabChange(event: MatTabChangeEvent) {

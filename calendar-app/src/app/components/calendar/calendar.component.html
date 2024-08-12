@@ -1,28 +1,5 @@
 <div class="container">
   @if (activeCalendar$ | async; as activeCalendar) {
-    <form>
-      <mat-form-field>
-        <mat-label>Year</mat-label>
-        <input
-          type="number"
-          matInput
-          [formControl]="yearFormControl"
-          placeholder="1"
-        />
-        @if (
-          yearFormControl.hasError("min") &&
-          !yearFormControl.hasError("required")
-        ) {
-          <mat-error>Please enter a valid year</mat-error>
-        }
-        @if (yearFormControl.hasError("required")) {
-          <mat-error>Year is <strong>required</strong></mat-error>
-        }
-      </mat-form-field>
-      @if (yearFormControl.valid) {
-        <button class="btn btn-primary" (click)="updateYear()">Confirm</button>
-      }
-    </form>
     @if (selectedYear$ | async; as selectedYear) {
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <mat-tab label="Spring">
