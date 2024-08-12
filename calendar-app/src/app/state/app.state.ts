@@ -20,6 +20,11 @@ export const AppFeature = createFeature({
       (calendar, year, season, day) =>
         `${calendar?.name}: ${day} ${season[0].toUpperCase() + season.substring(1)}, ${year}`,
     ),
+    selectNavTitle: createSelector(
+      baseSelectors.selectActiveCalendar,
+      baseSelectors.selectSelectedYear,
+      (calendar, year) => `${calendar?.name}, year ${year}`,
+    ),
     selectCalendarSeasonEvents: createSelector(
       baseSelectors.selectActiveCalendar,
       baseSelectors.selectSelectedYear,

@@ -8,6 +8,7 @@ import { CreateCalendarDialogComponent } from '../components/dialogs/calendar/cr
 import { EditCalendarDialogComponent } from '../components/dialogs/calendar/edit-dialog/edit-dialog.component';
 import { CreateEventDialogComponent } from '../components/dialogs/day-form/create-dialog/create-dialog.component';
 import { EditEventDialogComponent } from '../components/dialogs/day-form/edit-dialog/edit-dialog.component';
+import { UpdateYearDialogComponent } from '../components/dialogs/day-form/update-year-dialog/update-year-dialog.component';
 import { DeleteDialogComponent } from '../components/dialogs/delete/delete-dialog.component';
 import { AppStore } from '../models/app-store.model';
 import {
@@ -176,6 +177,25 @@ export class AppEffects {
         this.gameEventDataService
           .create(dialogRes.calendarEvent)
           .pipe(map((calendar) => AppActions.createEventSuccess(calendar))),
+      ),
+    ),
+  );
+
+  updateActiveYear$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.openUpdateActiveYearDialog),
+      concatLatestFrom(() =>
+        this.store.pipe(select(AppFeature.selectSelectedYear)),
+      ),
+      exhaustMap(([, activeYear]) => {
+        const dialogRef = this.dialog.open(UpdateYearDialogComponent, {
+          data: { activeYear },
+        });
+        return dialogRef.afterClosed();
+      }),
+      filter((dialogRes) => !!dialogRes),
+      map((dialogRes: { updatedYear: number }) =>
+        AppActions.updateYear(dialogRes.updatedYear),
       ),
     ),
   );
