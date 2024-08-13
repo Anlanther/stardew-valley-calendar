@@ -13,12 +13,10 @@ export const AppFeature = createFeature({
         available.filter((all) => (active ? all.id !== active.id : true)),
     ),
     selectSelectedDate: createSelector(
-      baseSelectors.selectActiveCalendar,
-      baseSelectors.selectSelectedYear,
       baseSelectors.selectSelectedSeason,
       baseSelectors.selectSelectedDay,
-      (calendar, year, season, day) =>
-        `${calendar?.name}: ${day} ${season[0].toUpperCase() + season.substring(1)}, ${year}`,
+      (season, day) =>
+        `${day} ${season[0].toUpperCase() + season.substring(1)}`,
     ),
     selectNavTitle: createSelector(
       baseSelectors.selectActiveCalendar,
