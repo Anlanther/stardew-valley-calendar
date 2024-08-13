@@ -194,8 +194,8 @@ export class AppEffects {
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      map((dialogRes: { updatedYear: number }) =>
-        AppActions.updateYear(dialogRes.updatedYear),
+      map((dialogRes: { activeYear: number }) =>
+        AppActions.updateYear(dialogRes.activeYear),
       ),
     ),
   );
