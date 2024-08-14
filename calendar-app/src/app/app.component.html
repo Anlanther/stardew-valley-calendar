@@ -9,6 +9,9 @@
   } @else if (status === noCalendars) {
     <app-welcome>
       <p>Please create a calendar to start</p>
+      <button class="btn btn-primary" (click)="openCreateDialog()">
+        Create New
+      </button>
     </app-welcome>
   } @else if (status === noSelectedCalendar) {
     <app-welcome>

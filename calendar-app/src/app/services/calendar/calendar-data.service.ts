@@ -20,7 +20,7 @@ export class CalendarDataService {
     };
 
     return this.dataService
-      .graphql(this.getCreateQuery(), variables)
+      .graphql(this.createQuery(), variables)
       .pipe(
         map((response) => this.convertToCalendar(response.createCalendar.data)),
       );
@@ -48,7 +48,7 @@ export class CalendarDataService {
 
   update(calendar: Partial<Calendar_NoRelations>): Observable<Calendar> {
     return this.dataService
-      .graphql(this.getUpdateQuery(), calendar)
+      .graphql(this.updateQuery(), calendar)
       .pipe(
         map((response) => this.convertToCalendar(response.updateCalendar.data)),
       );
@@ -56,7 +56,7 @@ export class CalendarDataService {
 
   delete(id: string): Observable<string> {
     return this.dataService
-      .graphql(this.getDeleteQuery(), { id })
+      .graphql(this.deleteQuery(), { id })
       .pipe(map((response) => response.deleteCalendar.data.id));
   }
 
@@ -80,11 +80,11 @@ export class CalendarDataService {
     return calendar;
   }
 
-  private getUpdateQuery() {
+  private updateQuery() {
     return `
     mutation updateCalendar($id: ID!, $gameEvents: [ID]) {
       updateCalendar(id: $id, data: { gameEvents: $gameEvents }) {
-        ${this.getBaseDataQuery()}
+        ${this.baseDataQuery()}
       }
     }`;
   }
@@ -93,7 +93,7 @@ export class CalendarDataService {
     return `
     query getCalendar($id: ID) {
       calendar(id: $id) {
-        ${this.getBaseDataQuery()}
+        ${this.baseDataQuery()}
       }
     }
 `;
@@ -114,17 +114,17 @@ export class CalendarDataService {
 `;
   }
 
-  private getCreateQuery() {
+  private createQuery() {
     return ` 
     mutation createCalendar($name: String, $publishedAt: DateTime) {
       createCalendar(data: { name: $name, publishedAt: $publishedAt }) {
-        ${this.getBaseDataQuery()}
+        ${this.baseDataQuery()}
       }
     }
 `;
   }
 
-  private getDeleteQuery() {
+  private deleteQuery() {
     return `
     mutation deleteCalendar($id: ID!) {
       deleteCalendar(id: $id) {
@@ -136,7 +136,7 @@ export class CalendarDataService {
     `;
   }
 
-  private getBaseDataQuery() {
+  private baseDataQuery() {
     return `
     data {
           id
