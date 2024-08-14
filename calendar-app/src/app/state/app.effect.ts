@@ -16,6 +16,7 @@ import {
   UnsavedCalendarEvent,
 } from '../models/calendar-event.model';
 import { StatusMessage } from '../models/status-message.model';
+import { Type } from '../models/type.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
 import { GameEventDataService } from '../services/game-event/game-event-data.service';
 import { Calendar_NoRelations } from '../services/models/calendar';
@@ -133,6 +134,17 @@ export class AppEffects {
     ),
   );
 
+  deleteCalendarEvents$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.deleteDeletedCalendarEvents),
+      switchMap(({ id, eventIds }) =>
+        this.gameEventDataService
+          .deleteMany(eventIds)
+          .pipe(map(() => AppActions.deleteCalendarSuccess(id))),
+      ),
+    ),
+  );
+
   deleteCalendar$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.deleteCalendar),
@@ -145,15 +157,21 @@ export class AppEffects {
             id: activeCalendar?.id,
             name: activeCalendar?.name,
             object: 'calendar',
+            gameEvents: activeCalendar?.calendarEvents,
           },
         });
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      switchMap((dialogRes: { id: string }) =>
-        this.calendarDataService
-          .delete(dialogRes.id)
-          .pipe(map((id) => AppActions.deleteCalendarSuccess(id))),
+      switchMap((dialogRes: { id: string; gameEvents: CalendarEvent[] }) =>
+        this.calendarDataService.delete(dialogRes.id).pipe(
+          map((id) => {
+            const userEvents = dialogRes.gameEvents
+              .filter((event) => event.type === Type.User)
+              .map((event) => event.id);
+            return AppActions.deleteDeletedCalendarEvents(id, userEvents);
+          }),
+        ),
       ),
     ),
   );

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, merge, switchMap } from 'rxjs';
 import {
   CalendarEvent,
   UnsavedCalendarEvent,
@@ -8,7 +8,7 @@ import { DeepPartial } from '../../models/deep-partial.model';
 import { DataService } from '../data.service';
 import { EventDateUtils } from '../event-date.utils';
 import { Calendar_Data } from '../models/calendar';
-import { GameEvent_Data, GameEvent_Plain } from '../models/game-event';
+import { GameEvent_Data, GameEvent_Plain, Type } from '../models/game-event';
 
 @Injectable({
   providedIn: 'root',
@@ -16,13 +16,20 @@ import { GameEvent_Data, GameEvent_Plain } from '../models/game-event';
 export class GameEventDataService {
   private dataService = inject(DataService);
 
-  createDefaults(): Observable<CalendarEvent> {
+  createDefaults(
+    includeBirthday: boolean,
+    includeFestivals: boolean,
+    includeCrops: boolean,
+  ): Observable<CalendarEvent> {
+    // const existingEvents =
+
     const publishedAt = new Date().toISOString();
     const variables: DeepPartial<CalendarEvent> = {
       publishedAt,
+      type: Type.System,
     };
 
-    return this.dataService.graphql(this.getCreateQuery(), variables).pipe(
+    return this.dataService.graphql(this.createQuery(), variables).pipe(
       map((response) => {
         return response.createCalendar.data.map((calendar: Calendar_Data) => ({
           ...calendar.attributes,
@@ -37,9 +44,10 @@ export class GameEventDataService {
     const variables: DeepPartial<GameEvent_Plain> = {
       ...calendarEvent,
       publishedAt,
+      type: Type.User,
     };
 
-    return this.dataService.graphql(this.getCreateQuery(), variables).pipe(
+    return this.dataService.graphql(this.createQuery(), variables).pipe(
       map((response) => {
         return {
           ...response.createGameEvent.data.attributes,
@@ -57,11 +65,12 @@ export class GameEventDataService {
         description: calendarEvent.description,
         tag: calendarEvent.tag,
         gameDate: calendarEvent.gameDate,
+        type: calendarEvent.type,
       },
     };
 
     return this.dataService
-      .graphql(this.getUpdateQuery(), variables)
+      .graphql(this.updateQuery(), variables)
       .pipe(
         map((response) =>
           this.convertToCalendarEvent(response.updateGameEvent.data),
@@ -69,12 +78,29 @@ export class GameEventDataService {
       );
   }
 
+  deleteMany(ids: string[]) {
+    const deletedIds = ids.map((id) => this.delete(id));
+    return merge(deletedIds).pipe(switchMap((id) => id));
+  }
+
   delete(id: string): Observable<string> {
     const variables: DeepPartial<CalendarEvent> = { id };
 
     return this.dataService
-      .graphql(this.getDeleteQuery(), variables)
+      .graphql(this.deleteQuery(), variables)
       .pipe(map((response) => response.deleteGameEvent.data.id));
+  }
+
+  getSystem() {
+    return this.dataService
+      .graphql(this.getSystemQuery())
+      .pipe(
+        map((response) =>
+          response.gameEvents.data.map((event: GameEvent_Data) =>
+            this.convertToCalendarEvent(event),
+          ),
+        ),
+      );
   }
 
   convertToCalendarEvent(data: GameEvent_Data): CalendarEvent {
@@ -93,17 +119,27 @@ export class GameEventDataService {
     return calendarEvent;
   }
 
-  private getUpdateQuery() {
+  private getSystemQuery() {
+    return `
+    query getGameEvent($type: String) {
+      gameEvents(filters: { type: { eq: $type } }) {
+        ${this.baseDataQuery()}
+      }
+    }
+    `;
+  }
+
+  private updateQuery() {
     return `
     mutation updateGameEvent($id: ID!, $gameEvent: GameEventInput!) {
       updateGameEvent(id: $id, data: $gameEvent) {
-        ${this.getObject()}
+        ${this.baseDataQuery()}
       }
     }
 `;
   }
 
-  private getCreateQuery() {
+  private createQuery() {
     return ` 
     mutation createGameEvent(
       $title: String
@@ -111,6 +147,7 @@ export class GameEventDataService {
       $description: String
       $gameDate: ComponentCalendarGameDateInput
       $publishedAt: DateTime
+      $type: ENUM_GAMEEVENT_TYPE
     ) {
       createGameEvent(
         data: {
@@ -119,15 +156,16 @@ export class GameEventDataService {
           gameDate: $gameDate
           description: $description
           tag: $tag
+          type: $type
         }
       ) {
-        ${this.getObject()}
+        ${this.baseDataQuery()}
       }
     }
 `;
   }
 
-  private getDeleteQuery() {
+  private deleteQuery() {
     return `
     mutation deleteGameEvent($id: ID!) {
       deleteGameEvent(id: $id) {
@@ -139,7 +177,7 @@ export class GameEventDataService {
 `;
   }
 
-  private getObject() {
+  private baseDataQuery() {
     return `
       data {
         id

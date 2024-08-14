@@ -24,6 +24,10 @@ export const AppActions = createActionGroup({
       id,
       name,
     }),
+    'Delete Deleted Calendar Events': (id: string, eventIds: string[]) => ({
+      id,
+      eventIds,
+    }),
     'Delete Event Success': (id: string) => ({ id }),
     'Delete Calendar': emptyProps(),
     'Delete Calendar Success': (id: string) => ({ id }),
