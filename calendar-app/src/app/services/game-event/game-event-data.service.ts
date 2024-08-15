@@ -1,5 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, map, merge, switchMap } from 'rxjs';
+import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
+import { BIRTHDAY_EVENTS } from '../../constants/birthday-events.constant';
+import { CROPS_DEADLINES } from '../../constants/crops-deadline.constant';
+import { FESTIVAL_EVENTS } from '../../constants/festival-events.constant';
 import {
   CalendarEvent,
   UnsavedCalendarEvent,
@@ -7,7 +10,6 @@ import {
 import { DeepPartial } from '../../models/deep-partial.model';
 import { DataService } from '../data.service';
 import { EventDateUtils } from '../event-date.utils';
-import { Calendar_Data } from '../models/calendar';
 import { GameEvent_Data, GameEvent_Plain, Type } from '../models/game-event';
 
 @Injectable({
@@ -16,35 +18,31 @@ import { GameEvent_Data, GameEvent_Plain, Type } from '../models/game-event';
 export class GameEventDataService {
   private dataService = inject(DataService);
 
-  createDefaults(
-    includeBirthday: boolean,
-    includeFestivals: boolean,
-    includeCrops: boolean,
-  ): Observable<CalendarEvent> {
-    // const existingEvents =
-
-    const publishedAt = new Date().toISOString();
-    const variables: DeepPartial<CalendarEvent> = {
-      publishedAt,
-      type: Type.System,
-    };
-
-    return this.dataService.graphql(this.createQuery(), variables).pipe(
-      map((response) => {
-        return response.createCalendar.data.map((calendar: Calendar_Data) => ({
-          ...calendar.attributes,
-          id: calendar.id,
-        }));
+  createDefaults(): Observable<CalendarEvent[]> {
+    return this.getSystem().pipe(
+      switchMap((systemEvents) => {
+        if (systemEvents.length === 0) {
+          const createdSystemEvents = forkJoin(
+            [...BIRTHDAY_EVENTS, ...FESTIVAL_EVENTS, ...CROPS_DEADLINES].map(
+              (event) => this.create(event, event.type),
+            ),
+          ).pipe(map((createdEvent) => createdEvent));
+          return createdSystemEvents;
+        }
+        return of(systemEvents);
       }),
     );
   }
 
-  create(calendarEvent: UnsavedCalendarEvent): Observable<CalendarEvent> {
+  create(
+    calendarEvent: UnsavedCalendarEvent,
+    type: Type = Type.User,
+  ): Observable<CalendarEvent> {
     const publishedAt = new Date().toISOString();
     const variables: DeepPartial<GameEvent_Plain> = {
       ...calendarEvent,
       publishedAt,
-      type: Type.User,
+      type,
     };
 
     return this.dataService.graphql(this.createQuery(), variables).pipe(
@@ -78,9 +76,10 @@ export class GameEventDataService {
       );
   }
 
-  deleteMany(ids: string[]) {
-    const deletedIds = ids.map((id) => this.delete(id));
-    return merge(deletedIds).pipe(switchMap((id) => id));
+  deleteMany(ids: string[]): Observable<string[]> {
+    return forkJoin(ids.map((id) => this.delete(id))).pipe(
+      map((deletedIds) => deletedIds),
+    );
   }
 
   delete(id: string): Observable<string> {
@@ -91,7 +90,7 @@ export class GameEventDataService {
       .pipe(map((response) => response.deleteGameEvent.data.id));
   }
 
-  getSystem() {
+  getSystem(): Observable<CalendarEvent[]> {
     return this.dataService
       .graphql(this.getSystemQuery())
       .pipe(
@@ -121,8 +120,8 @@ export class GameEventDataService {
 
   private getSystemQuery() {
     return `
-    query getGameEvent($type: String) {
-      gameEvents(filters: { type: { eq: $type } }) {
+    query getSystemGameEvents($type: String) {
+      gameEvents(filters: { type: { contains: $type } }) {
         ${this.baseDataQuery()}
       }
     }

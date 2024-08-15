@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { CalendarEvent } from '../../models/calendar-event.model';
 import { Calendar } from '../../models/calendar.model';
-import { DeepPartial } from '../../models/deep-partial.model';
 import { DataService } from '../data.service';
 import { EventDateUtils } from '../event-date.utils';
 import { Calendar_Data, Calendar_NoRelations } from '../models/calendar';
@@ -12,11 +12,28 @@ import { Calendar_Data, Calendar_NoRelations } from '../models/calendar';
 export class CalendarDataService {
   private dataService = inject(DataService);
 
-  create(name: string): Observable<Calendar> {
+  create(
+    name: string,
+    includeBirthdays: boolean,
+    includeFestivals: boolean,
+    includeCrops: boolean,
+    defaultEvents: CalendarEvent[],
+  ): Observable<Calendar> {
+    const regexArray = [];
+    if (includeBirthdays) regexArray.push('birthdays');
+    if (includeFestivals) regexArray.push('festivals');
+    if (includeCrops) regexArray.push('crops');
+    const regexString = regexArray.join('|');
+
+    const gameEventIds: string[] = defaultEvents
+      .filter((event) => new RegExp(regexString).test(event.type))
+      .map((event) => event.id);
+
     const publishedAt = new Date().toISOString();
-    const variables: DeepPartial<Calendar> = {
+    const variables = {
       name,
       publishedAt,
+      gameEvents: gameEventIds,
     };
 
     return this.dataService
@@ -116,8 +133,14 @@ export class CalendarDataService {
 
   private createQuery() {
     return ` 
-    mutation createCalendar($name: String, $publishedAt: DateTime) {
-      createCalendar(data: { name: $name, publishedAt: $publishedAt }) {
+    mutation createCalendar(
+      $name: String
+      $publishedAt: DateTime
+      $gameEvents: [ID]
+    ) {
+      createCalendar(
+        data: { name: $name, publishedAt: $publishedAt, gameEvents: $gameEvents }
+      ) {
         ${this.baseDataQuery()}
       }
     }
@@ -139,28 +162,28 @@ export class CalendarDataService {
   private baseDataQuery() {
     return `
     data {
-          id
-          attributes {
-            name
-            gameEvents {
-              data {
+      id
+      attributes {
+        name
+        gameEvents {
+          data {
+            id
+            attributes {
+              title
+              description
+              tag
+              gameDate {
                 id
-                attributes {
-                  title
-                  description
-                  tag
-                  gameDate {
-                    id
-                    season
-                    day
-                    year
-                    isRecurring
-                  }
-                }
+                season
+                day
+                year
+                isRecurring
               }
             }
           }
         }
+      }
+    }
     `;
   }
 }

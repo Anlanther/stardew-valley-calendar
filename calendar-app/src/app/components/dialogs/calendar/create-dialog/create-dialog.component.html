@@ -1,25 +1,33 @@
 <h2 mat-dialog-title>Create Calendar</h2>
 <mat-dialog-content>
-  <form class="example-form">
+  <form [formGroup]="calendarForm">
     <mat-form-field class="example-full-width">
       <mat-label>Name</mat-label>
       <input
         type="text"
         matInput
-        [formControl]="calendarNameFormControl"
+        formControlName="name"
         placeholder="My First Calendar"
       />
-      @if (calendarNameFormControl.hasError('required')) {
-      <mat-error>Name is <strong>required</strong></mat-error>
-      }
     </mat-form-field>
-  </form></mat-dialog-content
->
+    <section>
+      <mat-slide-toggle formControlName="includeBirthday">
+        Include Birthday
+      </mat-slide-toggle>
+      <mat-slide-toggle formControlName="includeFestivals">
+        Include Festivals
+      </mat-slide-toggle>
+      <mat-slide-toggle formControlName="includeCrops">
+        Include Crops
+      </mat-slide-toggle>
+    </section>
+  </form>
+</mat-dialog-content>
 <mat-dialog-actions>
   <button
     type="button"
     class="btn btn-primary"
-    [disabled]="!calendarNameFormControl.valid"
+    [disabled]="!calendarForm.valid"
     (click)="createCalendar()"
   >
     Create

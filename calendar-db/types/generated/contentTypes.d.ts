@@ -846,8 +846,6 @@ export interface ApiGameEventGameEvent extends Schema.CollectionType {
         'festival',
         'abigail',
         'alex',
-        'birdie',
-        'bouncer',
         'caroline',
         'clint',
         'demetrius',
@@ -856,10 +854,6 @@ export interface ApiGameEventGameEvent extends Schema.CollectionType {
         'emily',
         'evelyn',
         'george',
-        'gil',
-        'governor',
-        'grandpa',
-        'gunther',
         'gus',
         'haley',
         'harvey',
@@ -875,7 +869,6 @@ export interface ApiGameEventGameEvent extends Schema.CollectionType {
         'marnie',
         'maru',
         'morris',
-        'mr. qi',
         'pam',
         'penny',
         'pierre',
@@ -891,7 +884,9 @@ export interface ApiGameEventGameEvent extends Schema.CollectionType {
     > &
       Attribute.Required;
     gameDate: Attribute.Component<'calendar.game-date'> & Attribute.Required;
-    type: Attribute.Enumeration<['system', 'user']> &
+    type: Attribute.Enumeration<
+      ['system_birthdays', 'system_crops', 'system_festivals', 'user']
+    > &
       Attribute.Required &
       Attribute.DefaultTo<'user'>;
     createdAt: Attribute.DateTime;

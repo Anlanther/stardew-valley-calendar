@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -8,14 +8,32 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrl: './create-dialog.component.scss',
 })
 export class CreateCalendarDialogComponent {
-  calendarNameFormControl = new FormControl('', [Validators.required]);
+  private fb = inject(FormBuilder);
+
+  calendarForm!: FormGroup;
 
   dialogRef = inject(MatDialogRef<CreateCalendarDialogComponent>);
 
+  constructor() {
+    this.calendarForm = this.fb.group({
+      name: ['', [Validators.required]],
+      includeBirthday: [false],
+      includeFestivals: [false],
+      includeCrops: [false],
+    });
+  }
+
   createCalendar() {
-    const calendarName = this.calendarNameFormControl.value!;
+    const calendarName = this.calendarForm.get('name')!.value;
+    const includeBirthday = this.calendarForm.get('includeBirthday')!.value;
+    const includeFestivals = this.calendarForm.get('includeFestivals')!.value;
+    const includeCrops = this.calendarForm.get('includeCrops')!.value;
+
     this.dialogRef.close({
       name: calendarName,
+      includeBirthday,
+      includeFestivals,
+      includeCrops,
     });
   }
 

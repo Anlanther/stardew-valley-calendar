@@ -1,4 +1,6 @@
 export enum Type {
-  System = 'system',
+  SystemBirthdays = 'system_birthdays',
+  SystemCrops = 'system_crops',
+  SystemFestivals = 'system_festivals',
   User = 'user',
 }

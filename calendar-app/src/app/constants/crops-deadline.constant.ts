@@ -1,246 +1,284 @@
-import { CalendarEvent } from '../models/calendar-event.model';
-import { DeepPartial } from '../models/deep-partial.model';
+import { UnsavedCalendarEvent } from '../models/calendar-event.model';
 import { Season } from '../models/season.model';
 import { Tag } from '../models/tag.model';
+import { Type } from '../models/type.model';
 
-const SPRING_CROPS_DEADLINE: DeepPartial<CalendarEvent>[] = [
+const SPRING_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
   {
-    title: 'Blue LAST DAY: Jazz',
+    title: 'LAST DAY: Blue Jazz',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 21, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Cauliflower',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 16, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
-    title: 'Coffee LAST DAY: Bean',
+    title: 'LAST DAY: Coffee Bean',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 18, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Garlic',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 24, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
-    title: 'Green LAST DAY: Beans',
+    title: 'LAST DAY: Green Beans',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 18, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Kale',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 22, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Parsnip',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 24, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Potato',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 22, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Rhubarb',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 15, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Strawberry',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 20, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Tulip',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 22, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
 ];
-const SUMMER_CROPS_DEADLINE: DeepPartial<CalendarEvent>[] = [
+const SUMMER_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
   {
     title: 'LAST DAY: Blueberry',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 15, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Corn',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 14, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Hops',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 17, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Hot Pepper',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 23, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Melon',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 16, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Poppy',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 21, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Radish',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 22, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Red Cabbage',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 19, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Starfruit',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 15, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Summer Spangle',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 20, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Sunflower',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 20, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Tomato',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 17, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Wheat',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 24, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
 ];
-const FALL_CROPS_DEADLINE: DeepPartial<CalendarEvent>[] = [
+const FALL_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
   {
     title: 'LAST DAY: Amaranth',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 21, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Artichoke',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 20, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Beet',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 22, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Bok Choy',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 24, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Cranberries',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 21, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Eggplant',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 23, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Fairy Rose',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 16, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Grape',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 18, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Pumpkin',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 15, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Yam',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 18, season: Season.FALL },
+    type: Type.SystemCrops,
   },
 ];
-const SPECIAL_CROPS_DEADLINE: DeepPartial<CalendarEvent>[] = [
+const SPECIAL_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
   {
     title: 'LAST DAY: Sweet Gem Berry',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 4, season: Season.FALL },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Ancient Fruit',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 28, season: Season.WINTER },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Ancient Fruit',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 28, season: Season.SPRING },
+    type: Type.SystemCrops,
   },
   {
     title: 'LAST DAY: Ancient Fruit',
     description: '',
     tag: Tag.Crop,
     gameDate: { isRecurring: true, day: 28, season: Season.SUMMER },
+    type: Type.SystemCrops,
   },
 ];
 
-export const CROPS_DEADLINES: DeepPartial<CalendarEvent>[] = [
+export const CROPS_DEADLINES: UnsavedCalendarEvent[] = [
   ...SPRING_CROPS_DEADLINE,
   ...SUMMER_CROPS_DEADLINE,
   ...FALL_CROPS_DEADLINE,

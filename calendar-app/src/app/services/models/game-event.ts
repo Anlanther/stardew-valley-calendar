@@ -12,8 +12,6 @@ export enum Tag {
   Festival = 'festival',
   Abigail = 'abigail',
   Alex = 'alex',
-  Birdie = 'birdie',
-  Bouncer = 'bouncer',
   Caroline = 'caroline',
   Clint = 'clint',
   Demetrius = 'demetrius',
@@ -22,10 +20,6 @@ export enum Tag {
   Emily = 'emily',
   Evelyn = 'evelyn',
   George = 'george',
-  Gil = 'gil',
-  Governor = 'governor',
-  Grandpa = 'grandpa',
-  Gunther = 'gunther',
   Gus = 'gus',
   Haley = 'haley',
   Harvey = 'harvey',
@@ -41,7 +35,6 @@ export enum Tag {
   Marnie = 'marnie',
   Maru = 'maru',
   Morris = 'morris',
-  MrQi = 'mr. qi',
   Pam = 'pam',
   Penny = 'penny',
   Pierre = 'pierre',
@@ -56,7 +49,9 @@ export enum Tag {
 }
 
 export enum Type {
-  System = 'system',
+  SystemBirthdays = 'system_birthdays',
+  SystemCrops = 'system_crops',
+  SystemFestivals = 'system_festivals',
   User = 'user',
 }
 export interface GameEvent_Data {
