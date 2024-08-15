@@ -29,8 +29,6 @@
         "festival",
         "abigail",
         "alex",
-        "birdie",
-        "bouncer",
         "caroline",
         "clint",
         "demetrius",
@@ -39,10 +37,6 @@
         "emily",
         "evelyn",
         "george",
-        "gil",
-        "governor",
-        "grandpa",
-        "gunther",
         "gus",
         "haley",
         "harvey",
@@ -58,7 +52,6 @@
         "marnie",
         "maru",
         "morris",
-        "mr. qi",
         "pam",
         "penny",
         "pierre",
@@ -82,7 +75,9 @@
     "type": {
       "type": "enumeration",
       "enum": [
-        "system",
+        "system_birthdays",
+        "system_crops",
+        "system_festivals",
         "user"
       ],
       "required": true,

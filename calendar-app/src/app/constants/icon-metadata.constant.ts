@@ -29,21 +29,9 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
     },
   ],
   [
-    Tag.Birdie,
-    {
-      url: '',
-    },
-  ],
-  [
-    Tag.Bouncer,
-    {
-      url: '',
-    },
-  ],
-  [
     Tag.Caroline,
     {
-      url: '',
+      url: 'caroline-icon.png',
     },
   ],
   [
@@ -86,30 +74,6 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
     Tag.George,
     {
       url: 'george-icon.png',
-    },
-  ],
-  [
-    Tag.Gil,
-    {
-      url: '',
-    },
-  ],
-  [
-    Tag.Governor,
-    {
-      url: '',
-    },
-  ],
-  [
-    Tag.Grandpa,
-    {
-      url: '',
-    },
-  ],
-  [
-    Tag.Gunther,
-    {
-      url: '',
     },
   ],
   [
@@ -198,12 +162,6 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   ],
   [
     Tag.Morris,
-    {
-      url: '',
-    },
-  ],
-  [
-    Tag.MrQi,
     {
       url: '',
     },

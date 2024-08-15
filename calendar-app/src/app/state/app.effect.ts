@@ -46,7 +46,7 @@ export class AppEffects {
     ),
   );
 
-  createCalendar$ = createEffect(() =>
+  createDefaultCalendarEvents$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createCalendar),
       exhaustMap(() => {
@@ -54,10 +54,52 @@ export class AppEffects {
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      switchMap((dialogRes: { name: string }) =>
-        this.calendarDataService
-          .create(dialogRes.name)
-          .pipe(map((calendar) => AppActions.createCalendarSuccess(calendar))),
+      switchMap(
+        (dialogRes: {
+          name: string;
+          includeBirthday: boolean;
+          includeFestivals: boolean;
+          includeCrops: boolean;
+        }) =>
+          this.gameEventDataService
+            .createDefaults()
+            .pipe(
+              map((calendars) =>
+                AppActions.createDefaultCalendarEventsSuccess(
+                  dialogRes.name,
+                  calendars,
+                  dialogRes.includeBirthday,
+                  dialogRes.includeFestivals,
+                  dialogRes.includeCrops,
+                ),
+              ),
+            ),
+      ),
+    ),
+  );
+
+  createCalendar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.createDefaultCalendarEventsSuccess),
+      switchMap(
+        ({
+          calendarName,
+          systemEvents,
+          includeBirthday,
+          includeFestivals,
+          includeCrops,
+        }) =>
+          this.calendarDataService
+            .create(
+              calendarName,
+              includeBirthday,
+              includeFestivals,
+              includeCrops,
+              systemEvents,
+            )
+            .pipe(
+              map((calendar) => AppActions.createCalendarSuccess(calendar)),
+            ),
       ),
     ),
   );
