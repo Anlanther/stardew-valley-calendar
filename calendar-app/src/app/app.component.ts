@@ -30,7 +30,7 @@ export class AppComponent {
   }
 
   constructor() {
-    this.store.dispatch(AppActions.getCalendars());
+    this.store.dispatch(AppActions.initialise());
     this.status$ = this.store.select(AppFeature.selectStatusMessage);
   }
 
