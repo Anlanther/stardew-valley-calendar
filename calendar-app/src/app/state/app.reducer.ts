@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { CalendarEvent } from '../models/calendar-event.model';
 import { CalendarState } from '../models/calendar-state.model';
 import { Calendar } from '../models/calendar.model';
 import { EventState } from '../models/event-state.model';
@@ -13,6 +14,7 @@ export interface AppState {
   selectedDay: number;
   selectedSeason: Season;
   availableCalendars: Calendar[];
+  savedSystemEvents: CalendarEvent[];
   statusMessage: StatusMessage;
   navBarOpen: boolean;
 }
@@ -24,6 +26,7 @@ export const initialState: AppState = {
   selectedDay: 1,
   selectedSeason: Season.SPRING,
   availableCalendars: [],
+  savedSystemEvents: [],
   statusMessage: StatusMessage.NO_API_ACCESS,
   navBarOpen: false,
 };
@@ -141,5 +144,9 @@ export const appReducer = createReducer<AppState>(
   on(AppActions.toggleNavBar, (state, action) => ({
     ...state,
     navBarOpen: action.isOpen,
+  })),
+  on(AppActions.createDefaultCalendarEventsSuccess, (state, action) => ({
+    ...state,
+    savedSystemEvents: action.systemEvents,
   })),
 );

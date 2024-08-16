@@ -31,6 +31,16 @@ export class AppEffects {
   private calendarDataService = inject(CalendarDataService);
   private gameEventDataService = inject(GameEventDataService);
 
+  initialise$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.initialise),
+      switchMap(() => [
+        AppActions.getCalendars(),
+        AppActions.createDefaultCalendarEvents(),
+      ]),
+    ),
+  );
+
   getAllCalendars$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.getCalendars),
@@ -46,11 +56,16 @@ export class AppEffects {
     ),
   );
 
-  createDefaultCalendarEvents$ = createEffect(() =>
+  createCalendar$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createCalendar),
-      exhaustMap(() => {
-        const dialogRef = this.dialog.open(CreateCalendarDialogComponent);
+      concatLatestFrom(() =>
+        this.store.pipe(select(AppFeature.selectSavedSystemEvents)),
+      ),
+      exhaustMap(([, systemEvents]) => {
+        const dialogRef = this.dialog.open(CreateCalendarDialogComponent, {
+          data: systemEvents,
+        });
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
@@ -60,46 +75,34 @@ export class AppEffects {
           includeBirthday: boolean;
           includeFestivals: boolean;
           includeCrops: boolean;
+          systemEvents: CalendarEvent[];
         }) =>
-          this.gameEventDataService
-            .getOrCreateDefaults()
+          this.calendarDataService
+            .create(
+              dialogRes.name,
+              dialogRes.includeBirthday,
+              dialogRes.includeFestivals,
+              dialogRes.includeCrops,
+              dialogRes.systemEvents,
+            )
             .pipe(
-              map((calendars) =>
-                AppActions.createDefaultCalendarEventsSuccess(
-                  dialogRes.name,
-                  calendars,
-                  dialogRes.includeBirthday,
-                  dialogRes.includeFestivals,
-                  dialogRes.includeCrops,
-                ),
-              ),
+              map((calendar) => AppActions.createCalendarSuccess(calendar)),
             ),
       ),
     ),
   );
 
-  createCalendar$ = createEffect(() =>
+  getOrCreateSystemEvents$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.createDefaultCalendarEventsSuccess),
-      switchMap(
-        ({
-          calendarName,
-          systemEvents,
-          includeBirthday,
-          includeFestivals,
-          includeCrops,
-        }) =>
-          this.calendarDataService
-            .create(
-              calendarName,
-              includeBirthday,
-              includeFestivals,
-              includeCrops,
-              systemEvents,
-            )
-            .pipe(
-              map((calendar) => AppActions.createCalendarSuccess(calendar)),
+      ofType(AppActions.createDefaultCalendarEvents),
+      switchMap(() =>
+        this.gameEventDataService
+          .getOrCreateDefaults()
+          .pipe(
+            map((calendar) =>
+              AppActions.createDefaultCalendarEventsSuccess(calendar),
             ),
+          ),
       ),
     ),
   );

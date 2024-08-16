@@ -28,18 +28,11 @@ export const AppActions = createActionGroup({
       id,
       eventIds,
     }),
+    'Create Default Calendar Events': emptyProps(),
     'Create Default Calendar Events Success': (
-      calendarName: string,
       systemEvents: CalendarEvent[],
-      includeBirthday: boolean,
-      includeFestivals: boolean,
-      includeCrops: boolean,
     ) => ({
-      calendarName,
       systemEvents,
-      includeBirthday,
-      includeFestivals,
-      includeCrops,
     }),
     'Delete Event Success': (id: string) => ({ id }),
     'Delete Calendar': emptyProps(),
@@ -58,5 +51,6 @@ export const AppActions = createActionGroup({
     'Update Status Message': (message: StatusMessage) => ({ message }),
     'Toggle Nav Bar': (isOpen: boolean) => ({ isOpen }),
     'Open Update Active Year Dialog': emptyProps(),
+    Initialise: emptyProps(),
   },
 });
