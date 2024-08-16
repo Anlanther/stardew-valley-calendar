@@ -79,7 +79,7 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Gus,
     {
-      url: '',
+      url: 'gus-icon.png',
     },
   ],
   [
@@ -97,19 +97,19 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Jas,
     {
-      url: '',
+      url: 'jas-icon.png',
     },
   ],
   [
     Tag.Jodi,
     {
-      url: '',
+      url: 'jodi-icon.png',
     },
   ],
   [
     Tag.Kent,
     {
-      url: '',
+      url: 'kent-icon.png',
     },
   ],
   [
@@ -133,7 +133,7 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Lewis,
     {
-      url: '',
+      url: 'lewis-icon.png',
     },
   ],
   [
@@ -145,7 +145,7 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Marlon,
     {
-      url: '',
+      url: 'marlon-icon.png',
     },
   ],
   [
@@ -163,7 +163,7 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Morris,
     {
-      url: '',
+      url: 'morris-icon.png',
     },
   ],
   [
@@ -187,7 +187,7 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Robin,
     {
-      url: 'robbin-icon.png',
+      url: 'robin-icon.png',
     },
   ],
   [
@@ -199,7 +199,7 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Sandy,
     {
-      url: '',
+      url: 'sandy-icon.png',
     },
   ],
   [
@@ -211,7 +211,7 @@ export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
     Tag.Shane,
     {
-      url: '',
+      url: 'shane-icon.png',
     },
   ],
   [

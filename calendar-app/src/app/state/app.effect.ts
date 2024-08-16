@@ -62,7 +62,7 @@ export class AppEffects {
           includeCrops: boolean;
         }) =>
           this.gameEventDataService
-            .createDefaults()
+            .getOrCreateDefaults()
             .pipe(
               map((calendars) =>
                 AppActions.createDefaultCalendarEventsSuccess(
