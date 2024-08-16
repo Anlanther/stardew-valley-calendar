@@ -119,9 +119,13 @@ export class GameEventDataService {
   }
 
   private getSystemQuery() {
+    const getAll = -1;
     return `
-    query getSystemGameEvents($type: String) {
-      gameEvents(filters: { type: { contains: $type } }) {
+    query getGameSystemEvents($type: String) {
+      gameEvents(
+        filters: { type: { contains: $type } }
+        pagination: { limit: ${getAll} }
+      ) {
         ${this.baseDataQuery()}
       }
     }

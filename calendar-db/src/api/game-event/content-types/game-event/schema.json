@@ -24,7 +24,7 @@
       "type": "enumeration",
       "enum": [
         "crop",
-        "birthday",
+        "gift",
         "building",
         "festival",
         "abigail",

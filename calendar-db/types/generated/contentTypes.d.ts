@@ -841,7 +841,7 @@ export interface ApiGameEventGameEvent extends Schema.CollectionType {
     tag: Attribute.Enumeration<
       [
         'crop',
-        'birthday',
+        'gift',
         'building',
         'festival',
         'abigail',

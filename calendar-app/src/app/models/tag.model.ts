@@ -1,6 +1,6 @@
 export enum Tag {
   Crop = 'crop',
-  Birthday = 'birthday',
+  Gift = 'gift',
   Building = 'building',
   Festival = 'festival',
   Abigail = 'abigail',

@@ -160,12 +160,13 @@ export class CalendarDataService {
   }
 
   private baseDataQuery() {
+    const getAll = -1;
     return `
     data {
       id
       attributes {
         name
-        gameEvents {
+        gameEvents(pagination: { limit: ${getAll} }) {
           data {
             id
             attributes {
