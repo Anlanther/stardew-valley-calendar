@@ -18,7 +18,7 @@ import { GameEvent_Data, GameEvent_Plain, Type } from '../models/game-event';
 export class GameEventDataService {
   private dataService = inject(DataService);
 
-  createDefaults(): Observable<CalendarEvent[]> {
+  getOrCreateDefaults(): Observable<CalendarEvent[]> {
     return this.getSystem().pipe(
       switchMap((systemEvents) => {
         if (systemEvents.length === 0) {
