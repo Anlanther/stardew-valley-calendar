@@ -3,17 +3,17 @@ import { Tag } from '../models/tag.model';
 
 export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
   [
-    Tag.Birthday,
+    Tag.Gift,
     {
-      url: 'birthday-icon.png',
+      url: 'gift-icon.png',
     },
   ],
   [Tag.Crop, { url: 'parsnip-icon.png' }],
-  [Tag.Building, { url: '' }],
+  [Tag.Building, { url: 'barn-icon.png' }],
   [
     Tag.Festival,
     {
-      url: '',
+      url: 'calendar-flag-icon.png',
     },
   ],
   [

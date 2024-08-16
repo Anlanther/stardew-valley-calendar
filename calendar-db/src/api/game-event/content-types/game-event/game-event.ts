@@ -6,7 +6,7 @@ import { GameDateComponent_NoRelations } from '../../../../components/calendar/i
 
 export enum Tag {
   Crop = 'crop',
-  Birthday = 'birthday',
+  Gift = 'gift',
   Building = 'building',
   Festival = 'festival',
   Abigail = 'abigail',
