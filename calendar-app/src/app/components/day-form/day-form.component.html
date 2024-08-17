@@ -6,55 +6,46 @@
     <h3>{{ selectedDate$ | async }}</h3>
     @if (activeEvents$ | async; as activeEvents) {
       <div class="form-body">
-        <cdk-accordion class="form-accordion">
+        <mat-accordion class="accordion" multi>
           @for (
             activeEvent of activeEvents;
             track activeEvent;
             let index = $index
           ) {
-            <cdk-accordion-item
-              #accordionItem="cdkAccordionItem"
-              class="form-accordion-item"
-              role="button"
-              tabindex="0"
-              [attr.id]="'accordion-header-' + index"
-              [attr.aria-expanded]="accordionItem.expanded"
-              [attr.aria-controls]="'accordion-body-' + index"
-            >
-              <div
-                class="form-accordion-item-header"
-                (click)="accordionItem.toggle()"
-              >
-                {{ activeEvent.title }}
-              </div>
-              <div
-                class="form-accordion-item-body"
-                role="region"
-                [style.display]="accordionItem.expanded ? '' : 'none'"
-                [attr.id]="'accordion-body-' + index"
-                [attr.aria-labelledby]="'accordion-header-' + index"
-              >
-                {{ activeEvent.description }}
-                <div class="event-actions">
-                  <button
-                    class="btn btn-outline-primary"
-                    (click)="openEditDialog(activeEvent)"
-                  >
-                    Edit Event
+            <mat-expansion-panel>
+              <mat-expansion-panel-header class="accordion__header">
+                <mat-panel-title
+                  ><img
+                    [src]="getEventIcon(activeEvent.tag)"
+                    alt="icon"
+                    class="event-icon"
+                /></mat-panel-title>
+                <mat-panel-description>
+                  {{ activeEvent.title }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              @if (!activeEvent.type.includes("system")) {
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="openEditDialog(activeEvent)">
+                    Edit
                   </button>
                   <button
-                    class="btn btn-outline-danger"
+                    mat-menu-item
                     (click)="
                       openDeleteDialog(activeEvent.id, activeEvent.title)
                     "
                   >
-                    Delete Event
+                    Delete
                   </button>
-                </div>
-              </div>
-            </cdk-accordion-item>
+                </mat-menu>
+              }
+              {{ activeEvent.description }}
+            </mat-expansion-panel>
           }
-        </cdk-accordion>
+        </mat-accordion>
       </div>
 
       <button class="btn btn-primary" (click)="openCreateDialog()">

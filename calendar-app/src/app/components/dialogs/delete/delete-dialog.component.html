@@ -1,11 +1,11 @@
-<h2 mat-dialog-title>Create Event</h2>
+<h2 mat-dialog-title>Delete</h2>
 <mat-dialog-content class="container"
   >Are you sure you want to delete {{ data.object }}
   {{ data.name }}?</mat-dialog-content
 >
 <mat-dialog-actions>
-  <button type="button" class="btn btn-warn" (click)="deleteObject()">
+  <button type="button" class="btn btn-danger" (click)="deleteObject()">
     Delete
   </button>
-  <button type="button" class="btn btn-primary">Cancel</button>
+  <button type="button" class="btn btn-light">Cancel</button>
 </mat-dialog-actions>

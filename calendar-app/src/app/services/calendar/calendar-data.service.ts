@@ -19,15 +19,18 @@ export class CalendarDataService {
     includeCrops: boolean,
     defaultEvents: CalendarEvent[],
   ): Observable<Calendar> {
-    const regexArray = [];
+    const regexArray: string[] = [];
     if (includeBirthdays) regexArray.push('birthdays');
     if (includeFestivals) regexArray.push('festivals');
     if (includeCrops) regexArray.push('crops');
     const regexString = regexArray.join('|');
 
-    const gameEventIds: string[] = defaultEvents
-      .filter((event) => new RegExp(regexString).test(event.type))
-      .map((event) => event.id);
+    const gameEventIds: string[] =
+      regexArray.length > 0
+        ? defaultEvents
+            .filter((event) => new RegExp(regexString).test(event.type))
+            .map((event) => event.id)
+        : [];
 
     const publishedAt = new Date().toISOString();
     const variables = {
@@ -173,6 +176,7 @@ export class CalendarDataService {
               title
               description
               tag
+              type
               gameDate {
                 id
                 season
