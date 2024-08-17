@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps } from '@ngrx/store';
-import { CalendarEvent } from '../models/calendar-event.model';
 import { Calendar } from '../models/calendar.model';
+import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { StatusMessage } from '../models/status-message.model';
 
@@ -15,8 +15,8 @@ export const AppActions = createActionGroup({
     'Update Active Calendar': (calendar: Calendar) => ({ calendar }),
     'Update Active Day': (day: number) => ({ day }),
     'Load Calendar': (id: string) => ({ id }),
-    'Update Active Form Events': (calendarEvents: CalendarEvent[]) => ({
-      calendarEvents,
+    'Update Active Form Events': (gameEvents: GameEvent[]) => ({
+      gameEvents,
     }),
     'Update Year': (year: number) => ({ year }),
     'Update Season': (season: Season) => ({ season }),
@@ -24,28 +24,26 @@ export const AppActions = createActionGroup({
       id,
       name,
     }),
-    'Delete Deleted Calendar Events': (id: string, eventIds: string[]) => ({
+    'Delete Deleted Game Events': (id: string, eventIds: string[]) => ({
       id,
       eventIds,
     }),
-    'Create Default Calendar Events': emptyProps(),
-    'Create Default Calendar Events Success': (
-      systemEvents: CalendarEvent[],
-    ) => ({
+    'Create Default Game Events': emptyProps(),
+    'Create Default Game Events Success': (systemEvents: GameEvent[]) => ({
       systemEvents,
     }),
     'Delete Event Success': (id: string) => ({ id }),
     'Delete Calendar': emptyProps(),
     'Delete Calendar Success': (id: string) => ({ id }),
-    'Update Event': (calendarEvent: CalendarEvent) => ({
-      calendarEvent,
+    'Update Event': (gameEvent: GameEvent) => ({
+      gameEvent,
     }),
-    'Update Event Success': (calendarEvent: CalendarEvent) => ({
-      calendarEvent,
+    'Update Event Success': (gameEvent: GameEvent) => ({
+      gameEvent,
     }),
     'Create Event': emptyProps(),
-    'Create Event Success': (calendarEvent: CalendarEvent) => ({
-      calendarEvent,
+    'Create Event Success': (gameEvent: GameEvent) => ({
+      gameEvent,
     }),
     'Added Event to Calendar': (calendar: Calendar) => ({ calendar }),
     'Update Status Message': (message: StatusMessage) => ({ message }),

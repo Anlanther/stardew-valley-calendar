@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CalendarEvent } from '../../../../models/calendar-event.model';
+import { GameEvent } from '../../../../models/game-event.model';
 
 @Component({
   selector: 'app-create-calendar-dialog',
@@ -14,7 +14,7 @@ export class CreateCalendarDialogComponent {
   calendarForm!: FormGroup;
 
   dialogRef = inject(MatDialogRef<CreateCalendarDialogComponent>);
-  data: { systemEvents: CalendarEvent[] } = inject(MAT_DIALOG_DATA);
+  data: { systemEvents: GameEvent[] } = inject(MAT_DIALOG_DATA);
 
   constructor() {
     this.calendarForm = this.fb.group({

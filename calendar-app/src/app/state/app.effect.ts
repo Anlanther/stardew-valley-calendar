@@ -11,10 +11,7 @@ import { EditEventDialogComponent } from '../components/dialogs/day-form/edit-di
 import { UpdateYearDialogComponent } from '../components/dialogs/day-form/update-year-dialog/update-year-dialog.component';
 import { DeleteDialogComponent } from '../components/dialogs/delete/delete-dialog.component';
 import { AppStore } from '../models/app-store.model';
-import {
-  CalendarEvent,
-  UnsavedCalendarEvent,
-} from '../models/calendar-event.model';
+import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
 import { StatusMessage } from '../models/status-message.model';
 import { Type } from '../models/type.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
@@ -36,7 +33,7 @@ export class AppEffects {
       ofType(AppActions.initialise),
       switchMap(() => [
         AppActions.getCalendars(),
-        AppActions.createDefaultCalendarEvents(),
+        AppActions.createDefaultGameEvents(),
       ]),
     ),
   );
@@ -76,7 +73,7 @@ export class AppEffects {
           includeBirthday: boolean;
           includeFestivals: boolean;
           includeCrops: boolean;
-          systemEvents: CalendarEvent[];
+          systemEvents: GameEvent[];
         }) =>
           this.calendarDataService
             .create(
@@ -95,13 +92,13 @@ export class AppEffects {
 
   getOrCreateSystemEvents$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.createDefaultCalendarEvents),
+      ofType(AppActions.createDefaultGameEvents),
       switchMap(() =>
         this.gameEventDataService
           .getOrCreateDefaults()
           .pipe(
             map((calendar) =>
-              AppActions.createDefaultCalendarEventsSuccess(calendar),
+              AppActions.createDefaultGameEventsSuccess(calendar),
             ),
           ),
       ),
@@ -141,22 +138,22 @@ export class AppEffects {
     ),
   );
 
-  updateCalendarEvent$ = createEffect(() =>
+  updategameEvent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.updateEvent),
       concatLatestFrom(() =>
         this.store.pipe(select(AppFeature.selectSelectedYear)),
       ),
-      exhaustMap(([{ calendarEvent }, activeYear]) => {
+      exhaustMap(([{ gameEvent }, activeYear]) => {
         const dialogRef = this.dialog.open(EditEventDialogComponent, {
-          data: { calendarEvent, activeYear },
+          data: { gameEvent, activeYear },
         });
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      switchMap((dialogRes: { calendarEvent: CalendarEvent }) =>
+      switchMap((dialogRes: { gameEvent: GameEvent }) =>
         this.gameEventDataService
-          .update(dialogRes.calendarEvent)
+          .update(dialogRes.gameEvent)
           .pipe(map((calendar) => AppActions.updateEventSuccess(calendar))),
       ),
     ),
@@ -180,9 +177,9 @@ export class AppEffects {
     ),
   );
 
-  deleteCalendarEvents$ = createEffect(() =>
+  deletegameEvents$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.deleteDeletedCalendarEvents),
+      ofType(AppActions.deleteDeletedGameEvents),
       switchMap(({ id, eventIds }) =>
         this.gameEventDataService.deleteMany(eventIds).pipe(
           tap(() => console.log('hello?')),
@@ -204,26 +201,26 @@ export class AppEffects {
             id: activeCalendar?.id,
             name: activeCalendar?.name,
             object: 'calendar',
-            gameEvents: activeCalendar?.calendarEvents,
+            gameEvents: activeCalendar?.gameEvents,
           },
         });
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      switchMap((dialogRes: { id: string; gameEvents: CalendarEvent[] }) =>
+      switchMap((dialogRes: { id: string; gameEvents: GameEvent[] }) =>
         this.calendarDataService.delete(dialogRes.id).pipe(
           map((id) => {
             const userEvents = dialogRes.gameEvents
               .filter((event) => event.type === Type.User)
               .map((event) => event.id);
-            return AppActions.deleteDeletedCalendarEvents(id, userEvents);
+            return AppActions.deleteDeletedGameEvents(id, userEvents);
           }),
         ),
       ),
     ),
   );
 
-  createCalendarEvent$ = createEffect(() =>
+  creategameEvent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createEvent),
       concatLatestFrom(() => [
@@ -238,9 +235,9 @@ export class AppEffects {
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      switchMap((dialogRes: { calendarEvent: UnsavedCalendarEvent }) =>
+      switchMap((dialogRes: { gameEvent: UnsavedGameEvent }) =>
         this.gameEventDataService
-          .create(dialogRes.calendarEvent)
+          .create(dialogRes.gameEvent)
           .pipe(map((calendar) => AppActions.createEventSuccess(calendar))),
       ),
     ),
@@ -272,12 +269,12 @@ export class AppEffects {
         this.store.pipe(select(AppFeature.selectActiveCalendar)),
       ),
       switchMap(([action, activeCalendar]) => {
-        const existingEvents = activeCalendar?.calendarEvents
-          ? [...activeCalendar.calendarEvents.map((event) => event.id)]
+        const existingEvents = activeCalendar?.gameEvents
+          ? [...activeCalendar.gameEvents.map((event) => event.id)]
           : [];
         const updatedCalendar: Partial<Calendar_NoRelations> = {
           id: activeCalendar?.id,
-          gameEvents: [...existingEvents, action.calendarEvent.id],
+          gameEvents: [...existingEvents, action.gameEvent.id],
         };
         return this.calendarDataService
           .update(updatedCalendar)

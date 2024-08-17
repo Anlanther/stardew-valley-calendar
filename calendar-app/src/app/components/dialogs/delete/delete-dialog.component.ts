@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CalendarEvent } from '../../../models/calendar-event.model';
+import { GameEvent } from '../../../models/game-event.model';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -13,7 +13,7 @@ export class DeleteDialogComponent {
     id: string;
     name: string;
     object: 'calendar' | 'event';
-    gameEvents?: CalendarEvent[];
+    gameEvents?: GameEvent[];
   } = inject(MAT_DIALOG_DATA);
 
   deleteObject(): void {

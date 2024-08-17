@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UnsavedCalendarEvent } from '../../../../models/calendar-event.model';
 import { UnsavedGameDate } from '../../../../models/game-date.model';
+import { UnsavedGameEvent } from '../../../../models/game-event.model';
 import { Season } from '../../../../models/season.model';
 import { Tag } from '../../../../models/tag.model';
 import { Type } from '../../../../models/type.model';
@@ -45,7 +45,7 @@ export class CreateEventDialogComponent {
           year: this.data.year,
         };
 
-    const calendarEvent: UnsavedCalendarEvent = {
+    const gameEvent: UnsavedGameEvent = {
       title: this.eventForm.get('title')?.value ?? '',
       tag: this.eventForm.get('tag')?.value as Tag,
       description: this.eventForm.get('description')?.value ?? '',
@@ -53,6 +53,6 @@ export class CreateEventDialogComponent {
       gameDate,
     };
 
-    this.dialogRef.close({ calendarEvent });
+    this.dialogRef.close({ gameEvent });
   }
 }

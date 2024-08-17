@@ -3,12 +3,12 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { ICON_METADATA } from '../../../constants/icon-metadata.constant';
 import { AppStore } from '../../../models/app-store.model';
-import { CalendarEvent } from '../../../models/calendar-event.model';
+import { GameEvent } from '../../../models/game-event.model';
 import { EventDateUtils } from '../../../services/event-date.utils';
 import { AppActions } from '../../../state/app.actions';
 import { AppFeature } from '../../../state/app.state';
 
-interface CalendarEventDisplay extends CalendarEvent {
+interface GameEventDisplay extends GameEvent {
   url: string;
 }
 
@@ -23,9 +23,9 @@ export class EventComponent implements OnInit, OnDestroy {
   eventDateUtils = inject(EventDateUtils);
   store = inject(Store<AppStore>);
 
-  gameEvents: CalendarEventDisplay[] = [];
+  gameEvents: GameEventDisplay[] = [];
 
-  calendarSeasonEvents$: Observable<CalendarEvent[]>;
+  calendarSeasonEvents$: Observable<GameEvent[]>;
   subs = new Subscription();
 
   constructor() {
@@ -36,8 +36,8 @@ export class EventComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.calendarSeasonEvents$.subscribe((calendarEvents) => {
-        const filteredEvents = calendarEvents
+      this.calendarSeasonEvents$.subscribe((gameEvents) => {
+        const filteredEvents = gameEvents
           .filter((event) => event.gameDate.day === this.day)
           .map((e) => ({ ...e, url: ICON_METADATA.get(e.tag)!.url }));
 

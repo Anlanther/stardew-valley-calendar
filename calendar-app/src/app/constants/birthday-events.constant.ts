@@ -1,9 +1,9 @@
-import { UnsavedCalendarEvent } from '../models/calendar-event.model';
+import { UnsavedGameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { Tag } from '../models/tag.model';
 import { Type } from '../models/type.model';
 
-export const BIRTHDAY_EVENTS: UnsavedCalendarEvent[] = [
+export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Abigail's Birthday",
     description: '',
