@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
+import { Observable, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { BIRTHDAY_EVENTS } from '../../constants/birthday-events.constant';
 import { CROPS_DEADLINES } from '../../constants/crops-deadline.constant';
 import { FESTIVAL_EVENTS } from '../../constants/festival-events.constant';
@@ -77,7 +77,11 @@ export class GameEventDataService {
   }
 
   deleteMany(ids: string[]): Observable<string[]> {
+    if (ids.length === 0) {
+      return of([]);
+    }
     return forkJoin(ids.map((id) => this.delete(id))).pipe(
+      tap((x) => console.log('before', x)),
       map((deletedIds) => deletedIds),
     );
   }

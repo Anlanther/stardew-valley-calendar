@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CalendarModule } from '../components/calendar/calendar.module';
@@ -18,7 +18,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     MatSidenavModule,
     MatMenuModule,
     MatButtonModule,
-    MatIcon,
+    MatIconModule,
   ],
   exports: [MainComponent, WelcomeComponent],
 })
