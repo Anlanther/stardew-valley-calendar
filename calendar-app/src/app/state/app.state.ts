@@ -30,5 +30,10 @@ export const AppFeature = createFeature({
       (calendar, year, season) =>
         calendar ? EventDateUtils.getEventsForDate(season, year, calendar) : [],
     ),
+    selectIsDateSelected: createSelector(
+      baseSelectors.selectNavBarOpen,
+      baseSelectors.selectSelectedDay,
+      (navBarOpen, day) => ({ navBarOpen, day }),
+    ),
   }),
 });

@@ -1,11 +1,23 @@
-import { IconMetadata } from '../models/icon-metadata.model';
+import { TagMetadata } from '../models/tag-metadata.model';
 import { Tag } from '../models/tag.model';
 
-export const ICON_METADATA: Map<Tag, IconMetadata> = new Map([
+export const TAG_METADATA: Map<Tag, TagMetadata> = new Map([
   [
     Tag.Gift,
     {
       url: 'gift-icon.png',
+    },
+  ],
+  [
+    Tag.Mining,
+    {
+      url: 'mining-icon.png',
+    },
+  ],
+  [
+    Tag.Artisan,
+    {
+      url: 'keg-icon.png',
     },
   ],
   [Tag.Crop, { url: 'parsnip-icon.png' }],

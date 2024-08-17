@@ -1,7 +1,7 @@
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { ICON_METADATA } from '../../../constants/icon-metadata.constant';
+import { TAG_METADATA } from '../../../constants/tag-metadata.constant';
 import { AppStore } from '../../../models/app-store.model';
 import { GameEvent } from '../../../models/game-event.model';
 import { EventDateUtils } from '../../../services/event-date.utils';
@@ -24,6 +24,7 @@ export class EventComponent implements OnInit, OnDestroy {
   store = inject(Store<AppStore>);
 
   gameEvents: GameEventDisplay[] = [];
+  isSelected = false;
 
   calendarSeasonEvents$: Observable<GameEvent[]>;
   subs = new Subscription();
@@ -39,10 +40,19 @@ export class EventComponent implements OnInit, OnDestroy {
       this.calendarSeasonEvents$.subscribe((gameEvents) => {
         const filteredEvents = gameEvents
           .filter((event) => event.gameDate.day === this.day)
-          .map((e) => ({ ...e, url: ICON_METADATA.get(e.tag)!.url }));
+          .map((e) => ({ ...e, url: TAG_METADATA.get(e.tag)!.url }));
 
         this.gameEvents = [...filteredEvents];
       }),
+    );
+    this.subs.add(
+      this.store
+        .pipe(select(AppFeature.selectIsDateSelected))
+        .subscribe((selectedOptions) => {
+          const test =
+            selectedOptions.navBarOpen && selectedOptions.day === this.day;
+          this.isSelected = test;
+        }),
     );
   }
 

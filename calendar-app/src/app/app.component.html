@@ -8,16 +8,14 @@
     </app-welcome>
   } @else if (status === noCalendars) {
     <app-welcome>
-      <p>Please create a calendar to start</p>
+      <p>Please create a calendar to start.</p>
       <button class="btn btn-primary" (click)="openCreateDialog()">
         Create New
       </button>
     </app-welcome>
   } @else if (status === noSelectedCalendar) {
     <app-welcome>
-      <p>
-        Please select a calendar or create one if you have not already to start
-      </p>
+      <p>Please select a calendar or create one to start.</p>
       <section class="welcome__actions d-flex">
         <button class="btn btn-primary" (click)="openEditDialog()">
           Open Calendar

@@ -11,3 +11,12 @@
   height: 20px;
   width: 20px;
 }
+
+.event:hover {
+  cursor: pointer;
+  background-color: rgba(185, 185, 185, 0.5);
+}
+
+.event--selected {
+  background-color: rgba(185, 185, 185, 0.5);
+}
