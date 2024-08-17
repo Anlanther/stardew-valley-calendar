@@ -1,3 +1,3 @@
-import { CalendarEvent } from './calendar-event.model';
+import { GameEvent } from './game-event.model';
 
-export type EventState = CalendarEvent[] | null;
+export type EventState = GameEvent[] | null;

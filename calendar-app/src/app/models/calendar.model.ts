@@ -1,8 +1,8 @@
-import { CalendarEvent } from './calendar-event.model';
+import { GameEvent } from './game-event.model';
 
 export interface Calendar {
   id: string;
   name: string;
-  calendarEvents: CalendarEvent[];
+  gameEvents: GameEvent[];
   publishedAt: string;
 }

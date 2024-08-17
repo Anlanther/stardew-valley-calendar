@@ -1,9 +1,9 @@
-import { UnsavedCalendarEvent } from '../models/calendar-event.model';
+import { UnsavedGameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { Tag } from '../models/tag.model';
 import { Type } from '../models/type.model';
 
-const SPRING_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
+const SPRING_CROPS_DEADLINE: UnsavedGameEvent[] = [
   {
     title: 'LAST DAY: Blue Jazz',
     description: '',
@@ -82,7 +82,7 @@ const SPRING_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
     type: Type.SystemCrops,
   },
 ];
-const SUMMER_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
+const SUMMER_CROPS_DEADLINE: UnsavedGameEvent[] = [
   {
     title: 'LAST DAY: Blueberry',
     description: '',
@@ -175,7 +175,7 @@ const SUMMER_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
     type: Type.SystemCrops,
   },
 ];
-const FALL_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
+const FALL_CROPS_DEADLINE: UnsavedGameEvent[] = [
   {
     title: 'LAST DAY: Amaranth',
     description: '',
@@ -247,7 +247,7 @@ const FALL_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
     type: Type.SystemCrops,
   },
 ];
-const SPECIAL_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
+const SPECIAL_CROPS_DEADLINE: UnsavedGameEvent[] = [
   {
     title: 'LAST DAY: Sweet Gem Berry',
     description: '',
@@ -278,7 +278,7 @@ const SPECIAL_CROPS_DEADLINE: UnsavedCalendarEvent[] = [
   },
 ];
 
-export const CROPS_DEADLINES: UnsavedCalendarEvent[] = [
+export const CROPS_DEADLINES: UnsavedGameEvent[] = [
   ...SPRING_CROPS_DEADLINE,
   ...SUMMER_CROPS_DEADLINE,
   ...FALL_CROPS_DEADLINE,

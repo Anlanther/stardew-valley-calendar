@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { CalendarEvent } from '../models/calendar-event.model';
 import { CalendarState } from '../models/calendar-state.model';
 import { Calendar } from '../models/calendar.model';
 import { EventState } from '../models/event-state.model';
+import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { StatusMessage } from '../models/status-message.model';
 import { AppActions } from './app.actions';
@@ -14,7 +14,7 @@ export interface AppState {
   selectedDay: number;
   selectedSeason: Season;
   availableCalendars: Calendar[];
-  savedSystemEvents: CalendarEvent[];
+  savedSystemEvents: GameEvent[];
   statusMessage: StatusMessage;
   navBarOpen: boolean;
 }
@@ -58,7 +58,7 @@ export const appReducer = createReducer<AppState>(
   })),
   on(AppActions.updateActiveFormEvents, (state, action) => ({
     ...state,
-    activeFormEvents: [...action.calendarEvents],
+    activeFormEvents: [...action.gameEvents],
   })),
   on(AppActions.updateYear, (state, action) => ({
     ...state,
@@ -78,14 +78,11 @@ export const appReducer = createReducer<AppState>(
     activeCalendar: state.activeCalendar
       ? {
           ...state.activeCalendar,
-          calendarEvents: [
-            ...state.activeCalendar.calendarEvents,
-            action.calendarEvent,
-          ],
+          gameEvents: [...state.activeCalendar.gameEvents, action.gameEvent],
         }
       : null,
     activeFormEvents: state.activeFormEvents
-      ? [...state.activeFormEvents, action.calendarEvent]
+      ? [...state.activeFormEvents, action.gameEvent]
       : null,
   })),
   on(AppActions.deleteEventSuccess, (state, action) => ({
@@ -93,7 +90,7 @@ export const appReducer = createReducer<AppState>(
     activeCalendar: state.activeCalendar
       ? {
           ...state.activeCalendar,
-          calendarEvents: state.activeCalendar?.calendarEvents.filter(
+          gameEvents: state.activeCalendar?.gameEvents.filter(
             (calendar) => calendar.id !== action.id,
           ),
         }
@@ -124,20 +121,20 @@ export const appReducer = createReducer<AppState>(
     activeCalendar: state.activeCalendar
       ? {
           ...state.activeCalendar,
-          calendarEvents: [
-            ...state.activeCalendar?.calendarEvents.filter(
-              (calendar) => calendar.id !== action.calendarEvent.id,
+          gameEvents: [
+            ...state.activeCalendar?.gameEvents.filter(
+              (calendar) => calendar.id !== action.gameEvent.id,
             ),
-            action.calendarEvent,
+            action.gameEvent,
           ],
         }
       : null,
     activeFormEvents: state.activeFormEvents
       ? [
           ...state.activeFormEvents.filter(
-            (event) => event.id !== action.calendarEvent.id,
+            (event) => event.id !== action.gameEvent.id,
           ),
-          action.calendarEvent,
+          action.gameEvent,
         ]
       : null,
   })),
@@ -145,7 +142,7 @@ export const appReducer = createReducer<AppState>(
     ...state,
     navBarOpen: action.isOpen,
   })),
-  on(AppActions.createDefaultCalendarEventsSuccess, (state, action) => ({
+  on(AppActions.createDefaultGameEventsSuccess, (state, action) => ({
     ...state,
     savedSystemEvents: action.systemEvents,
   })),

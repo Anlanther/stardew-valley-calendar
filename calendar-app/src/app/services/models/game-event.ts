@@ -8,6 +8,8 @@ import {
 export enum Tag {
   Crop = 'crop',
   Gift = 'gift',
+  Artisan = 'artisan',
+  Mining = 'mining',
   Building = 'building',
   Festival = 'festival',
   Abigail = 'abigail',

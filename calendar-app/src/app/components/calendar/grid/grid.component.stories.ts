@@ -33,7 +33,7 @@ export const Default: Story = {
     activeCalendar: {
       id: '1',
       name: 'Active Calendar',
-      calendarEvents: [
+      gameEvents: [
         {
           id: '1',
           description: '',

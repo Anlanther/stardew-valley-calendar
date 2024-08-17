@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { CalendarEvent } from '../../models/calendar-event.model';
 import { Calendar } from '../../models/calendar.model';
+import { GameEvent } from '../../models/game-event.model';
 import { DataService } from '../data.service';
 import { EventDateUtils } from '../event-date.utils';
 import { Calendar_Data, Calendar_NoRelations } from '../models/calendar';
@@ -17,7 +17,7 @@ export class CalendarDataService {
     includeBirthdays: boolean,
     includeFestivals: boolean,
     includeCrops: boolean,
-    defaultEvents: CalendarEvent[],
+    defaultEvents: GameEvent[],
   ): Observable<Calendar> {
     const regexArray: string[] = [];
     if (includeBirthdays) regexArray.push('birthdays');
@@ -85,7 +85,7 @@ export class CalendarDataService {
       id: data.id,
       name: data.attributes.name,
       publishedAt: data.attributes.publishedAt?.toString() ?? '',
-      calendarEvents: data.attributes.gameEvents.data.map((event) => ({
+      gameEvents: data.attributes.gameEvents.data.map((event) => ({
         id: event.id,
         title: event.attributes.title,
         description: event.attributes.description,

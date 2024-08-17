@@ -1,9 +1,9 @@
-import { UnsavedCalendarEvent } from '../models/calendar-event.model';
+import { UnsavedGameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { Tag } from '../models/tag.model';
 import { Type } from '../models/type.model';
 
-export const FESTIVAL_EVENTS: UnsavedCalendarEvent[] = [
+export const FESTIVAL_EVENTS: UnsavedGameEvent[] = [
   {
     title: 'Egg Festival',
     description:

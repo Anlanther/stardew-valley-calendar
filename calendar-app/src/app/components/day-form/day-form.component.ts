@@ -3,9 +3,9 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ICON_METADATA } from '../../constants/icon-metadata.constant';
 import { AppStore } from '../../models/app-store.model';
-import { CalendarEvent } from '../../models/calendar-event.model';
 import { CalendarState } from '../../models/calendar-state.model';
 import { EventState } from '../../models/event-state.model';
+import { GameEvent } from '../../models/game-event.model';
 import { Tag } from '../../models/tag.model';
 import { AppActions } from '../../state/app.actions';
 import { AppFeature } from '../../state/app.state';
@@ -39,7 +39,7 @@ export class DayFormComponent {
     return url;
   }
 
-  openEditDialog(event: CalendarEvent) {
+  openEditDialog(event: GameEvent) {
     this.store.dispatch(AppActions.updateEvent(event));
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CalendarEvent } from '../models/calendar-event.model';
 import { Calendar } from '../models/calendar.model';
 import { GameDate } from '../models/game-date.model';
+import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { GameDateComponent } from './models/GameDateComponent';
 
@@ -13,8 +13,8 @@ export class EventDateUtils {
     season: Season,
     year: number,
     calendar: Calendar,
-  ): CalendarEvent[] {
-    return calendar.calendarEvents.filter((event) => {
+  ): GameEvent[] {
+    return calendar.gameEvents.filter((event) => {
       let normalCondition = false;
       const isCorrectSeason = event.gameDate.season === season;
       const isCorrectYear = event.gameDate.isRecurring

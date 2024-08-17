@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CalendarEvent } from '../../../../models/calendar-event.model';
 import { GameDate } from '../../../../models/game-date.model';
+import { GameEvent } from '../../../../models/game-event.model';
 import { Tag } from '../../../../models/tag.model';
 
 @Component({
@@ -13,18 +13,17 @@ import { Tag } from '../../../../models/tag.model';
 export class EditEventDialogComponent {
   private fb = inject(FormBuilder);
   dialogRef = inject(MatDialogRef<EditEventDialogComponent>);
-  data: { calendarEvent: CalendarEvent; activeYear: number } =
-    inject(MAT_DIALOG_DATA);
+  data: { gameEvent: GameEvent; activeYear: number } = inject(MAT_DIALOG_DATA);
 
   eventForm!: FormGroup;
   tags = Object.values(Tag);
 
   constructor() {
     this.eventForm = this.fb.group({
-      title: [this.data.calendarEvent.title, [Validators.required]],
-      description: [this.data.calendarEvent.description],
-      tag: [this.data.calendarEvent.tag, [Validators.required]],
-      isRecurring: [this.data.calendarEvent.gameDate.isRecurring],
+      title: [this.data.gameEvent.title, [Validators.required]],
+      description: [this.data.gameEvent.description],
+      tag: [this.data.gameEvent.tag, [Validators.required]],
+      isRecurring: [this.data.gameEvent.gameDate.isRecurring],
     });
   }
 
@@ -33,29 +32,29 @@ export class EditEventDialogComponent {
 
     const gameDate: GameDate = isRecurring
       ? {
-          day: this.data.calendarEvent.gameDate.day,
+          day: this.data.gameEvent.gameDate.day,
           isRecurring: true,
-          season: this.data.calendarEvent.gameDate.season,
-          id: this.data.calendarEvent.gameDate.id,
+          season: this.data.gameEvent.gameDate.season,
+          id: this.data.gameEvent.gameDate.id,
         }
       : {
-          day: this.data.calendarEvent.gameDate.day,
+          day: this.data.gameEvent.gameDate.day,
           isRecurring: false,
-          season: this.data.calendarEvent.gameDate.season,
+          season: this.data.gameEvent.gameDate.season,
           year: this.data.activeYear,
-          id: this.data.calendarEvent.gameDate.id,
+          id: this.data.gameEvent.gameDate.id,
         };
 
-    const calendarEvent: CalendarEvent = {
+    const gameEvent: GameEvent = {
       title: this.eventForm.get('title')?.value ?? '',
       tag: this.eventForm.get('tag')?.value as Tag,
       description: this.eventForm.get('description')?.value ?? '',
       gameDate,
-      id: this.data.calendarEvent.id,
-      type: this.data.calendarEvent.type,
-      publishedAt: this.data.calendarEvent.publishedAt,
+      id: this.data.gameEvent.id,
+      type: this.data.gameEvent.type,
+      publishedAt: this.data.gameEvent.publishedAt,
     };
 
-    this.dialogRef.close({ calendarEvent });
+    this.dialogRef.close({ gameEvent });
   }
 }
