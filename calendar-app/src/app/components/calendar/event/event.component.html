@@ -1,19 +1,17 @@
-<div (click)="setActiveEvent()">
-  <div class="date">
-    {{ day }}
-  </div>
-  <div class="events">
-    <div>
-      <div>
-        @for (gameEvent of gameEvents; track gameEvent) {
-          <img
-            [src]="gameEvent.url"
-            alt="icon"
-            class="event-icon"
-            [title]="gameEvent.title"
-          />
-        }
-      </div>
-    </div>
-  </div>
+<div
+  (click)="setActiveEvent()"
+  [ngClass]="{ 'event--selected': isSelected }"
+  class="event w-100 h-100"
+>
+  <section class="date">{{ day }}</section>
+  <section class="events">
+    @for (gameEvent of gameEvents; track gameEvent) {
+      <img
+        [src]="gameEvent.url"
+        alt="icon"
+        class="event-icon"
+        [title]="gameEvent.title"
+      />
+    }
+  </section>
 </div>

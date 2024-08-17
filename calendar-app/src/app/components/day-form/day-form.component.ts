@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ICON_METADATA } from '../../constants/icon-metadata.constant';
+import { TAG_METADATA } from '../../constants/tag-metadata.constant';
 import { AppStore } from '../../models/app-store.model';
 import { CalendarState } from '../../models/calendar-state.model';
 import { EventState } from '../../models/event-state.model';
@@ -35,7 +35,7 @@ export class DayFormComponent {
   }
 
   getEventIcon(gameEventTag: Tag) {
-    const url = ICON_METADATA.get(gameEventTag)!.url;
+    const url = TAG_METADATA.get(gameEventTag)!.url;
     return url;
   }
 

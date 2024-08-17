@@ -10,30 +10,22 @@
   </div>
   <div class="row">
     @for (day of firstWeek; track day) {
-      <div class="col day">
-        <app-event [day]="day"></app-event>
-      </div>
+      <app-event class="col day no-padding" [day]="day"></app-event>
     }
   </div>
   <div class="row">
     @for (day of secondWeek; track day) {
-      <div class="col day">
-        <app-event [day]="day"></app-event>
-      </div>
+      <app-event class="col day no-padding" [day]="day"></app-event>
     }
   </div>
   <div class="row">
     @for (day of thirdWeek; track day) {
-      <div class="col day">
-        <app-event [day]="day"></app-event>
-      </div>
+      <app-event class="col day no-padding" [day]="day"></app-event>
     }
   </div>
   <div class="row">
     @for (day of forthWeek; track day) {
-      <div class="col day">
-        <app-event [day]="day"></app-event>
-      </div>
+      <app-event class="col day no-padding" [day]="day"></app-event>
     }
   </div>
 </div>
