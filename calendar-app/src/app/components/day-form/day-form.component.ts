@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { TAG_METADATA } from '../../constants/tag-metadata.constant';
 import { AppStore } from '../../models/app-store.model';
 import { CalendarState } from '../../models/calendar-state.model';
 import { EventState } from '../../models/event-state.model';
 import { GameEvent } from '../../models/game-event.model';
 import { Tag } from '../../models/tag.model';
+import { OrdinalSuffixPipe } from '../../pipes/ordinal-suffix.pipe';
 import { AppActions } from '../../state/app.actions';
 import { AppFeature } from '../../state/app.state';
 
@@ -17,6 +18,7 @@ import { AppFeature } from '../../state/app.state';
 })
 export class DayFormComponent {
   store = inject(Store<AppStore>);
+  ordinalSuffix = inject(OrdinalSuffixPipe);
 
   activeCalendar$: Observable<CalendarState>;
   activeEvents$: Observable<EventState>;
@@ -29,7 +31,10 @@ export class DayFormComponent {
     this.activeEvents$ = this.store.pipe(
       select(AppFeature.selectActiveFormEvents),
     );
-    this.selectedDate$ = this.store.pipe(select(AppFeature.selectSelectedDate));
+    this.selectedDate$ = this.store.pipe(
+      select(AppFeature.selectSelectedDate),
+      map((date) => this.ordinalSuffix.transform(date)),
+    );
   }
 
   getEventIcon(gameEventTag: Tag) {

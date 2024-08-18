@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { OrdinalSuffixPipe } from '../../pipes/ordinal-suffix.pipe';
 import { DayFormComponent } from './day-form.component';
 
 @NgModule({
@@ -20,5 +21,6 @@ import { DayFormComponent } from './day-form.component';
     CdkAccordionModule,
     MatExpansionModule,
   ],
+  providers: [OrdinalSuffixPipe],
 })
 export class DayFormModule {}
