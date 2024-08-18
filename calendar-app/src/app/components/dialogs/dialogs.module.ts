@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CreateCalendarDialogComponent } from './calendar/create-dialog/create-dialog.component';
@@ -31,6 +32,7 @@ import { DeleteDialogComponent } from './delete/delete-dialog.component';
     ReactiveFormsModule,
     MatSelectModule,
     MatSlideToggleModule,
+    MatMenuModule,
   ],
   exports: [
     CreateCalendarDialogComponent,

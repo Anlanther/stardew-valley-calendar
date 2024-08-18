@@ -18,6 +18,7 @@ export enum Tag {
   Emily = 'emily',
   Evelyn = 'evelyn',
   Festival = 'festival',
+  Fishing = 'fishing',
   George = 'george',
   Gift = 'gift',
   Gus = 'gus',
