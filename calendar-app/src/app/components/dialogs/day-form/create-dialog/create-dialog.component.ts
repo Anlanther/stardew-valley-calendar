@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -16,21 +17,28 @@ import { Type } from '../../../../models/type.model';
 })
 export class CreateEventDialogComponent {
   private fb = inject(FormBuilder);
+  private titleCase = inject(TitleCasePipe);
   dialogRef = inject(MatDialogRef<CreateEventDialogComponent>);
   data: { day: number; season: Season; year: number } = inject(MAT_DIALOG_DATA);
 
   eventForm!: FormGroup;
 
   get activitiesTags() {
-    return this.filterTag(TagCategory.ACTIVITY);
+    return this.filterTag(TagCategory.ACTIVITY).map((tag) =>
+      this.titleCase.transform(tag),
+    );
   }
 
   get cropsTags() {
-    return this.filterTag(TagCategory.CROP);
+    return this.filterTag(TagCategory.CROP).map((tag) =>
+      this.titleCase.transform(tag),
+    );
   }
 
   get charactersTags() {
-    return this.filterTag(TagCategory.CHARACTER);
+    return this.filterTag(TagCategory.CHARACTER).map((tag) =>
+      this.titleCase.transform(tag),
+    );
   }
 
   constructor() {
@@ -69,8 +77,8 @@ export class CreateEventDialogComponent {
     this.dialogRef.close({ gameEvent });
   }
 
-  updateSelectedTag(value: Tag) {
-    this.eventForm.get('tag')?.patchValue(value);
+  updateSelectedTag(value: string) {
+    this.eventForm.get('tag')?.patchValue(value.toLowerCase());
   }
 
   private filterTag(category: TagCategory) {

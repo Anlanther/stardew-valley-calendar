@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -42,5 +42,6 @@ import { DeleteDialogComponent } from './delete/delete-dialog.component';
     EditEventDialogComponent,
     CreateEventDialogComponent,
   ],
+  providers: [TitleCasePipe],
 })
 export class DialogsModule {}
