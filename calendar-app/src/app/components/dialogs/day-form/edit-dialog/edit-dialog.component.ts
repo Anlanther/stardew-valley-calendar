@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TAG_METADATA } from '../../../../constants/tag-metadata.constant';
 import { GameDate } from '../../../../models/game-date.model';
 import { GameEvent } from '../../../../models/game-event.model';
+import { TagCategory } from '../../../../models/tag-category.model';
 import { Tag } from '../../../../models/tag.model';
 
 @Component({
@@ -16,7 +18,18 @@ export class EditEventDialogComponent {
   data: { gameEvent: GameEvent; activeYear: number } = inject(MAT_DIALOG_DATA);
 
   eventForm!: FormGroup;
-  tags = Object.values(Tag);
+
+  get activitiesTags() {
+    return this.filterTag(TagCategory.ACTIVITY);
+  }
+
+  get cropsTags() {
+    return this.filterTag(TagCategory.CROP);
+  }
+
+  get charactersTags() {
+    return this.filterTag(TagCategory.CHARACTER);
+  }
 
   constructor() {
     this.eventForm = this.fb.group({
@@ -56,5 +69,18 @@ export class EditEventDialogComponent {
     };
 
     this.dialogRef.close({ gameEvent });
+  }
+
+  updateSelectedTag(value: Tag) {
+    this.eventForm.get('tag')?.patchValue(value);
+  }
+
+  private filterTag(category: TagCategory) {
+    const tags: Tag[] = [];
+    TAG_METADATA.forEach(
+      (_, key) =>
+        TAG_METADATA.get(key)!.category === category && tags.push(key),
+    );
+    return tags;
   }
 }

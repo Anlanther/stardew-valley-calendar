@@ -15,16 +15,45 @@
             <mat-error>Title is <strong>required</strong></mat-error>
           }
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>Tag</mat-label>
-          <mat-select formControlName="tag">
-            @for (tag of tags; track tag) {
-              <mat-option value="{{ tag }}">
-                {{ tag }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+
+        <button class="btn btn-secondary" [matMenuTriggerFor]="tagCategories">
+          {{ eventForm.get("tag")!.value }}
+        </button>
+        <mat-menu #tagCategories="matMenu">
+          <button mat-menu-item [matMenuTriggerFor]="activity">
+            Activities
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="character">
+            Characters
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="crop">Crops</button>
+        </mat-menu>
+        <br />
+
+        <mat-menu #activity="matMenu">
+          @for (activity of activitiesTags; track activity) {
+            <button mat-menu-item (click)="updateSelectedTag(activity)">
+              {{ activity }}
+            </button>
+          }
+        </mat-menu>
+
+        <mat-menu #character="matMenu">
+          @for (character of charactersTags; track character) {
+            <button mat-menu-item (click)="updateSelectedTag(character)">
+              {{ character }}
+            </button>
+          }
+        </mat-menu>
+
+        <mat-menu #crop="matMenu">
+          @for (crop of cropsTags; track crop) {
+            <button mat-menu-item (click)="updateSelectedTag(crop)">
+              {{ crop }}
+            </button>
+          }
+        </mat-menu>
+
         <mat-form-field>
           <mat-label>Description</mat-label>
           <textarea

@@ -3,15 +3,17 @@
   [ngClass]="{ 'event--selected': isSelected }"
   class="event w-100 h-100"
 >
-  <section class="date">{{ day }}</section>
-  <section class="events">
-    @for (gameEvent of gameEvents; track gameEvent) {
-      <img
-        [src]="gameEvent.url"
-        alt="icon"
-        class="event-icon"
-        [title]="gameEvent.title"
-      />
-    }
-  </section>
+  <div class="event__content">
+    <section class="date">{{ day }}</section>
+    <section class="events">
+      @for (gameEvent of gameEvents; track gameEvent) {
+        <img
+          [src]="gameEvent.url"
+          alt="icon"
+          class="event-icon"
+          [title]="gameEvent.title"
+        />
+      }
+    </section>
+  </div>
 </div>

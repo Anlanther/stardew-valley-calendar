@@ -33,7 +33,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
     type: Type.SystemBirthdays,
   },
   {
-    title: "Demetrius's Birthday",
+    title: "Demetrius' Birthday",
     description: '',
     tag: Tag.Demetrius,
     gameDate: { isRecurring: true, day: 19, season: Season.SUMMER },
@@ -75,7 +75,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
     type: Type.SystemBirthdays,
   },
   {
-    title: "Gus's Birthday",
+    title: "Gus' Birthday",
     description: '',
     tag: Tag.Gus,
     gameDate: { isRecurring: true, day: 8, season: Season.SUMMER },
@@ -96,7 +96,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
     type: Type.SystemBirthdays,
   },
   {
-    title: "Jas's Birthday",
+    title: "Jas' Birthday",
     description: '',
     tag: Tag.Jas,
     gameDate: { isRecurring: true, day: 4, season: Season.SUMMER },
@@ -117,7 +117,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
     type: Type.SystemBirthdays,
   },
   {
-    title: "Krobus's Birthday",
+    title: "Krobus' Birthday",
     description: '',
     tag: Tag.Krobus,
     gameDate: { isRecurring: true, day: 1, season: Season.WINTER },
@@ -138,14 +138,14 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
     type: Type.SystemBirthdays,
   },
   {
-    title: "Lewis's Birthday",
+    title: "Lewis' Birthday",
     description: '',
     tag: Tag.Lewis,
     gameDate: { isRecurring: true, day: 7, season: Season.SPRING },
     type: Type.SystemBirthdays,
   },
   {
-    title: "Linus's Birthday",
+    title: "Linus' Birthday",
     description: '',
     tag: Tag.Linus,
     gameDate: { isRecurring: true, day: 3, season: Season.WINTER },
@@ -173,7 +173,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
     type: Type.SystemBirthdays,
   },
   {
-    title: "Morris's Birthday",
+    title: "Morris' Birthday",
     description: '',
     tag: Tag.Morris,
     gameDate: { isRecurring: true, day: 2, season: Season.SPRING },
