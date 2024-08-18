@@ -1,22 +1,20 @@
-<div class="container">
-  @if (activeCalendar$ | async; as activeCalendar) {
-    @if (selectedYear$ | async; as selectedYear) {
-      <mat-tab-group (selectedTabChange)="onTabChange($event)">
-        <mat-tab label="Spring">
+@if (activeCalendar$ | async; as activeCalendar) {
+  @if (selectedYear$ | async; as selectedYear) {
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+      <mat-tab label="Spring">
+        <ng-template matTabContent><app-grid></app-grid></ng-template>
+      </mat-tab>
+      <mat-tab label="Summer">
+        <ng-template matTabContent><app-grid></app-grid></ng-template>
+        <mat-tab label="Fall">
           <ng-template matTabContent><app-grid></app-grid></ng-template>
         </mat-tab>
-        <mat-tab label="Summer">
-          <ng-template matTabContent><app-grid></app-grid></ng-template>
-          <mat-tab label="Fall">
-            <ng-template matTabContent><app-grid></app-grid></ng-template>
-          </mat-tab>
-        </mat-tab>
-        <mat-tab label="Winter">
-          <ng-template matTabContent><app-grid></app-grid></ng-template>
-        </mat-tab>
-      </mat-tab-group>
-    }
-  } @else {
-    Please create a new or choose an existing calendar
+      </mat-tab>
+      <mat-tab label="Winter">
+        <ng-template matTabContent><app-grid></app-grid></ng-template>
+      </mat-tab>
+    </mat-tab-group>
   }
-</div>
+} @else {
+  Please create a new or choose an existing calendar
+}

@@ -10,22 +10,38 @@
   </div>
   <div class="row">
     @for (day of firstWeek; track day) {
-      <app-event class="col day no-padding" [day]="day"></app-event>
+      <app-event
+        class="col day no-padding"
+        [ngClass]="{ 'day--selected': isSelected(day) }"
+        [day]="day"
+      ></app-event>
     }
   </div>
   <div class="row">
     @for (day of secondWeek; track day) {
-      <app-event class="col day no-padding" [day]="day"></app-event>
+      <app-event
+        class="col day no-padding"
+        [ngClass]="{ 'day--selected': isSelected(day) }"
+        [day]="day"
+      ></app-event>
     }
   </div>
   <div class="row">
     @for (day of thirdWeek; track day) {
-      <app-event class="col day no-padding" [day]="day"></app-event>
+      <app-event
+        class="col day no-padding"
+        [ngClass]="{ 'day--selected': isSelected(day) }"
+        [day]="day"
+      ></app-event>
     }
   </div>
   <div class="row">
     @for (day of forthWeek; track day) {
-      <app-event class="col day no-padding" [day]="day"></app-event>
+      <app-event
+        class="col day no-padding"
+        [ngClass]="{ 'day--selected': isSelected(day) }"
+        [day]="day"
+      ></app-event>
     }
   </div>
 </div>

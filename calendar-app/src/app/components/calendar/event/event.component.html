@@ -1,8 +1,4 @@
-<div
-  (click)="setActiveEvent()"
-  [ngClass]="{ 'event--selected': isSelected }"
-  class="event w-100 h-100"
->
+<div (click)="setActiveEvent()" class="event w-100 h-100">
   <div class="event__content">
     <section class="date">{{ day }}</section>
     <section class="events">
