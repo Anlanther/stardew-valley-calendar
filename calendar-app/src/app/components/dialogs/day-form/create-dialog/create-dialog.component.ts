@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TAG_METADATA } from '../../../../constants/tag-metadata.constant';
 import { UnsavedGameDate } from '../../../../models/game-date.model';
 import { UnsavedGameEvent } from '../../../../models/game-event.model';
 import { Season } from '../../../../models/season.model';
+import { TagCategory } from '../../../../models/tag-category.model';
 import { Tag } from '../../../../models/tag.model';
 import { Type } from '../../../../models/type.model';
 
@@ -18,13 +20,24 @@ export class CreateEventDialogComponent {
   data: { day: number; season: Season; year: number } = inject(MAT_DIALOG_DATA);
 
   eventForm!: FormGroup;
-  tags = Object.values(Tag);
+
+  get activitiesTags() {
+    return this.filterTag(TagCategory.ACTIVITY);
+  }
+
+  get cropsTags() {
+    return this.filterTag(TagCategory.CROP);
+  }
+
+  get charactersTags() {
+    return this.filterTag(TagCategory.CHARACTER);
+  }
 
   constructor() {
     this.eventForm = this.fb.group({
       title: ['', [Validators.required]],
       description: [''],
-      tag: ['', [Validators.required]],
+      tag: [null, [Validators.required]],
       isRecurring: [false],
     });
   }
@@ -54,5 +67,18 @@ export class CreateEventDialogComponent {
     };
 
     this.dialogRef.close({ gameEvent });
+  }
+
+  updateSelectedTag(value: Tag) {
+    this.eventForm.get('tag')?.patchValue(value);
+  }
+
+  private filterTag(category: TagCategory) {
+    const tags: Tag[] = [];
+    TAG_METADATA.forEach(
+      (_, key) =>
+        TAG_METADATA.get(key)!.category === category && tags.push(key),
+    );
+    return tags;
   }
 }
