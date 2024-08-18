@@ -49,9 +49,9 @@ export class EventComponent implements OnInit, OnDestroy {
       this.store
         .pipe(select(AppFeature.selectIsDateSelected))
         .subscribe((selectedOptions) => {
-          const test =
+          const isSelected =
             selectedOptions.navBarOpen && selectedOptions.day === this.day;
-          this.isSelected = test;
+          this.isSelected = isSelected;
         }),
     );
   }

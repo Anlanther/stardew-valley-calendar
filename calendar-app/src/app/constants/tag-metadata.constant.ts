@@ -4,7 +4,7 @@ import { Tag } from '../models/tag.model';
 
 export const TAG_METADATA: Map<Tag, TagMetadata> = new Map([
   [Tag.Gift, { category: TagCategory.ACTIVITY, url: 'gift-icon.png' }],
-  [Tag.Fishing, { category: TagCategory.ACTIVITY, url: 'gift-icon.png' }],
+  [Tag.Fishing, { category: TagCategory.ACTIVITY, url: 'fishing-icon.png' }],
   [Tag.Mining, { category: TagCategory.ACTIVITY, url: 'mining-icon.png' }],
   [Tag.Artisan, { category: TagCategory.ACTIVITY, url: 'artisan-icon.png' }],
   [Tag.Crop, { category: TagCategory.CROP, url: 'parsnip-icon.png' }],
