@@ -138,7 +138,7 @@ export class AppEffects {
     ),
   );
 
-  updategameEvent$ = createEffect(() =>
+  updateGameEvent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.updateEvent),
       concatLatestFrom(() =>
@@ -147,6 +147,7 @@ export class AppEffects {
       exhaustMap(([{ gameEvent }, activeYear]) => {
         const dialogRef = this.dialog.open(EditEventDialogComponent, {
           data: { gameEvent, activeYear },
+          minHeight: '420px',
         });
         return dialogRef.afterClosed();
       }),
@@ -177,7 +178,7 @@ export class AppEffects {
     ),
   );
 
-  deletegameEvents$ = createEffect(() =>
+  deleteGameEvents$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.deleteDeletedGameEvents),
       switchMap(({ id, eventIds }) =>
@@ -220,7 +221,7 @@ export class AppEffects {
     ),
   );
 
-  creategameEvent$ = createEffect(() =>
+  createGameEvent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createEvent),
       concatLatestFrom(() => [
@@ -231,6 +232,7 @@ export class AppEffects {
       exhaustMap(([, day, season, year]) => {
         const dialogRef = this.dialog.open(CreateEventDialogComponent, {
           data: { day, season, year },
+          minHeight: '420px',
         });
         return dialogRef.afterClosed();
       }),

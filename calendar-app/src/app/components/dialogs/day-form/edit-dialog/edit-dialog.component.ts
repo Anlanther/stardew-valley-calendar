@@ -71,7 +71,7 @@ export class EditEventDialogComponent {
     this.dialogRef.close({ gameEvent });
   }
 
-  updateSelectedTag(value: Tag) {
+  updateSelectedTag(value: string) {
     this.eventForm.get('tag')?.patchValue(value);
   }
 

@@ -22,8 +22,6 @@ export class DayFormComponent {
   activeEvents$: Observable<EventState>;
   selectedDate$: Observable<string>;
 
-  expandedIndex = 0;
-
   constructor() {
     this.activeCalendar$ = this.store.pipe(
       select(AppFeature.selectActiveCalendar),
