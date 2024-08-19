@@ -74,10 +74,12 @@ export class AppEffects {
           includeFestivals: boolean;
           includeCrops: boolean;
           systemEvents: GameEvent[];
+          description: string;
         }) =>
           this.calendarDataService
             .create(
               dialogRes.name,
+              dialogRes.description,
               dialogRes.includeBirthday,
               dialogRes.includeFestivals,
               dialogRes.includeCrops,

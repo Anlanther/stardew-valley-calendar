@@ -21,6 +21,16 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::game-event.game-event"
+    },
+    "systemConfig": {
+      "type": "component",
+      "repeatable": false,
+      "component": "calendar.system-config",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
     }
   }
 }

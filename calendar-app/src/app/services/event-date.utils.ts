@@ -14,7 +14,7 @@ export class EventDateUtils {
     year: number,
     calendar: Calendar,
   ): GameEvent[] {
-    return calendar.gameEvents.filter((event) => {
+    return calendar.filteredGameEvents.filter((event) => {
       let normalCondition = false;
       const isCorrectSeason = event.gameDate.season === season;
       const isCorrectYear = event.gameDate.isRecurring

@@ -14,29 +14,19 @@ export class CalendarDataService {
 
   create(
     name: string,
+    description: string,
     includeBirthdays: boolean,
     includeFestivals: boolean,
     includeCrops: boolean,
     defaultEvents: GameEvent[],
   ): Observable<Calendar> {
-    const regexArray: string[] = [];
-    if (includeBirthdays) regexArray.push('birthdays');
-    if (includeFestivals) regexArray.push('festivals');
-    if (includeCrops) regexArray.push('crops');
-    const regexString = regexArray.join('|');
-
-    const gameEventIds: string[] =
-      regexArray.length > 0
-        ? defaultEvents
-            .filter((event) => new RegExp(regexString).test(event.type))
-            .map((event) => event.id)
-        : [];
-
     const publishedAt = new Date().toISOString();
     const variables = {
       name,
+      description,
       publishedAt,
-      gameEvents: gameEventIds,
+      systemConfig: { includeBirthdays, includeFestivals, includeCrops },
+      gameEvents: defaultEvents.map((e) => e.id),
     };
 
     return this.dataService
@@ -68,7 +58,7 @@ export class CalendarDataService {
 
   update(calendar: Partial<Calendar_NoRelations>): Observable<Calendar> {
     return this.dataService
-      .graphql(this.updateQuery(), calendar)
+      .graphql(this.updateQuery(), { data: calendar })
       .pipe(
         map((response) => this.convertToCalendar(response.updateCalendar.data)),
       );
@@ -81,11 +71,8 @@ export class CalendarDataService {
   }
 
   convertToCalendar(data: Calendar_Data): Calendar {
-    const calendar: Calendar = {
-      id: data.id,
-      name: data.attributes.name,
-      publishedAt: data.attributes.publishedAt?.toString() ?? '',
-      gameEvents: data.attributes.gameEvents.data.map((event) => ({
+    const gameEvents: GameEvent[] = data.attributes.gameEvents.data.map(
+      (event) => ({
         id: event.id,
         title: event.attributes.title,
         description: event.attributes.description,
@@ -95,15 +82,35 @@ export class CalendarDataService {
         gameDate: {
           ...EventDateUtils.getGameDateUnion(event.attributes.gameDate),
         },
-      })),
+      }),
+    );
+
+    const regexArray: string[] = [];
+    if (data.attributes.systemConfig.includeBirthdays)
+      regexArray.push('birthdays');
+    if (data.attributes.systemConfig.includeFestivals)
+      regexArray.push('festivals');
+    if (data.attributes.systemConfig.includeCrops) regexArray.push('crops');
+    const regexString = regexArray.join('|');
+
+    const calendar: Calendar = {
+      id: data.id,
+      name: data.attributes.name,
+      publishedAt: data.attributes.publishedAt?.toString() ?? '',
+      description: data.attributes.description,
+      systemConfig: data.attributes.systemConfig,
+      gameEvents,
+      filteredGameEvents: gameEvents.filter((event) =>
+        new RegExp(regexString).test(event.type),
+      ),
     };
     return calendar;
   }
 
   private updateQuery() {
     return `
-    mutation updateCalendar($id: ID!, $gameEvents: [ID]) {
-      updateCalendar(id: $id, data: { gameEvents: $gameEvents }) {
+    mutation updateCalendar($id: ID!, $data: CalendarInput!) {
+      updateCalendar(id: $id, data: $data) {
         ${this.baseDataQuery()}
       }
     }`;
@@ -140,9 +147,17 @@ export class CalendarDataService {
       $name: String
       $publishedAt: DateTime
       $gameEvents: [ID]
+      $systemConfig: ComponentCalendarSystemConfigInput
+      $description: String
     ) {
       createCalendar(
-        data: { name: $name, publishedAt: $publishedAt, gameEvents: $gameEvents }
+        data: {
+          name: $name
+          publishedAt: $publishedAt
+          gameEvents: $gameEvents
+          systemConfig: $systemConfig
+          description: $description
+        }
       ) {
         ${this.baseDataQuery()}
       }
@@ -169,6 +184,12 @@ export class CalendarDataService {
       id
       attributes {
         name
+        systemConfig {
+          includeCrops
+          includeBirthdays
+          includeFestivals
+        }
+        description
         gameEvents(pagination: { limit: ${getAll} }) {
           data {
             id
