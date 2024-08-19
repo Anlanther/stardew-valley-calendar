@@ -32,7 +32,7 @@ export class DayFormComponent {
       select(AppFeature.selectActiveFormEvents),
     );
     this.selectedDate$ = this.store.pipe(
-      select(AppFeature.selectSelectedDate),
+      select(AppFeature.selectSelectedDateString),
       map((date) => this.ordinalSuffix.transform(date)),
     );
   }

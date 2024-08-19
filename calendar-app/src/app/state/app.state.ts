@@ -12,28 +12,29 @@ export const AppFeature = createFeature({
       (available, active) =>
         available.filter((all) => (active ? all.id !== active.id : true)),
     ),
-    selectSelectedDate: createSelector(
-      baseSelectors.selectSelectedSeason,
-      baseSelectors.selectSelectedDay,
-      (season, day) =>
-        `${day} ${season[0].toUpperCase() + season.substring(1)}`,
+    selectSelectedDateString: createSelector(
+      baseSelectors.selectSelectedDate,
+      (date) =>
+        `${date.day} ${date.season[0].toUpperCase() + date.season.substring(1)}`,
     ),
+
     selectNavTitle: createSelector(
       baseSelectors.selectActiveCalendar,
-      baseSelectors.selectSelectedYear,
-      (calendar, year) => `${calendar?.name}, year ${year}`,
+      baseSelectors.selectSelectedDate,
+      (calendar, date) => `${calendar?.name}, year ${date.year}`,
     ),
     selectCalendarSeasonEvents: createSelector(
       baseSelectors.selectActiveCalendar,
-      baseSelectors.selectSelectedYear,
-      baseSelectors.selectSelectedSeason,
-      (calendar, year, season) =>
-        calendar ? EventDateUtils.getEventsForDate(season, year, calendar) : [],
+      baseSelectors.selectSelectedDate,
+      (calendar, date) =>
+        calendar
+          ? EventDateUtils.getEventsForDate(date.season, date.year, calendar)
+          : [],
     ),
     selectIsDateSelected: createSelector(
       baseSelectors.selectNavBarOpen,
-      baseSelectors.selectSelectedDay,
-      (navBarOpen, day) => ({ navBarOpen, day }),
+      baseSelectors.selectSelectedDate,
+      (navBarOpen, date) => ({ navBarOpen, day: date.day }),
     ),
   }),
 });
