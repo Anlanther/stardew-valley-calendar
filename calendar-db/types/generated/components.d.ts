@@ -84,11 +84,30 @@ export interface CalendarGameEvent extends Schema.Component {
   };
 }
 
+export interface CalendarSystemConfig extends Schema.Component {
+  collectionName: 'components_calendar_system_configs';
+  info: {
+    displayName: 'System Config';
+  };
+  attributes: {
+    includeBirthdays: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<false>;
+    includeCrops: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<false>;
+    includeFestivals: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<false>;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
       'calendar.game-date': CalendarGameDate;
       'calendar.game-event': CalendarGameEvent;
+      'calendar.system-config': CalendarSystemConfig;
     }
   }
 }

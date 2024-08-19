@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_calendar_system_configs",
+  "info": {
+    "displayName": "System Config"
+  },
+  "options": {},
+  "attributes": {
+    "includeBirthdays": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "includeCrops": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "includeFestivals": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    }
+  }
+}
