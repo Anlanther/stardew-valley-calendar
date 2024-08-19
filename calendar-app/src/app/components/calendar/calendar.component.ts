@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { AppStore } from '../../models/app-store.model';
 import { CalendarState } from '../../models/calendar-state.model';
 import { Season } from '../../models/season.model';
@@ -37,7 +37,10 @@ export class CalendarComponent {
     this.activeCalendar$ = this.store.pipe(
       select(AppFeature.selectActiveCalendar),
     );
-    this.selectedYear$ = this.store.pipe(select(AppFeature.selectSelectedYear));
+    this.selectedYear$ = this.store.pipe(
+      select(AppFeature.selectSelectedDate),
+      map((date) => date.year),
+    );
   }
 
   onTabChange(event: MatTabChangeEvent) {

@@ -142,11 +142,11 @@ export class AppEffects {
     this.actions$.pipe(
       ofType(AppActions.updateEvent),
       concatLatestFrom(() =>
-        this.store.pipe(select(AppFeature.selectSelectedYear)),
+        this.store.pipe(select(AppFeature.selectSelectedDate)),
       ),
-      exhaustMap(([{ gameEvent }, activeYear]) => {
+      exhaustMap(([{ gameEvent }, selectedDate]) => {
         const dialogRef = this.dialog.open(EditEventDialogComponent, {
-          data: { gameEvent, activeYear },
+          data: { gameEvent, activeYear: selectedDate.year },
           minHeight: '420px',
         });
         return dialogRef.afterClosed();
@@ -224,14 +224,12 @@ export class AppEffects {
   createGameEvent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createEvent),
-      concatLatestFrom(() => [
-        this.store.pipe(select(AppFeature.selectSelectedDay)),
-        this.store.pipe(select(AppFeature.selectSelectedSeason)),
-        this.store.pipe(select(AppFeature.selectSelectedYear)),
-      ]),
-      exhaustMap(([, day, season, year]) => {
+      concatLatestFrom(() =>
+        this.store.pipe(select(AppFeature.selectSelectedDate)),
+      ),
+      exhaustMap(([, date]) => {
         const dialogRef = this.dialog.open(CreateEventDialogComponent, {
-          data: { day, season, year },
+          data: { day: date.day, season: date.season, year: date.year },
           minHeight: '420px',
         });
         return dialogRef.afterClosed();
@@ -249,11 +247,11 @@ export class AppEffects {
     this.actions$.pipe(
       ofType(AppActions.openUpdateActiveYearDialog),
       concatLatestFrom(() =>
-        this.store.pipe(select(AppFeature.selectSelectedYear)),
+        this.store.pipe(select(AppFeature.selectSelectedDate)),
       ),
-      exhaustMap(([, activeYear]) => {
+      exhaustMap(([, activeDate]) => {
         const dialogRef = this.dialog.open(UpdateYearDialogComponent, {
-          data: { activeYear },
+          data: { activeYear: activeDate.year },
         });
         return dialogRef.afterClosed();
       }),

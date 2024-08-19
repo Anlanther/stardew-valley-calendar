@@ -4,15 +4,14 @@ import { Calendar } from '../models/calendar.model';
 import { EventState } from '../models/event-state.model';
 import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
+import { SelectedDate } from '../models/selected-date.model';
 import { StatusMessage } from '../models/status-message.model';
 import { AppActions } from './app.actions';
 
 export interface AppState {
   activeCalendar: CalendarState;
   activeFormEvents: EventState;
-  selectedYear: number;
-  selectedDay: number;
-  selectedSeason: Season;
+  selectedDate: SelectedDate;
   availableCalendars: Calendar[];
   savedSystemEvents: GameEvent[];
   statusMessage: StatusMessage;
@@ -22,9 +21,7 @@ export interface AppState {
 export const initialState: AppState = {
   activeCalendar: null,
   activeFormEvents: null,
-  selectedYear: 1,
-  selectedDay: 1,
-  selectedSeason: Season.SPRING,
+  selectedDate: { day: 1, year: 1, season: Season.SPRING },
   availableCalendars: [],
   savedSystemEvents: [],
   statusMessage: StatusMessage.NO_API_ACCESS,
@@ -63,12 +60,12 @@ export const appReducer = createReducer<AppState>(
   })),
   on(AppActions.updateYear, (state, action) => ({
     ...state,
-    selectedYear: action.year,
+    selectedDate: { ...state.selectedDate, year: action.year },
     navBarOpen: false,
   })),
   on(AppActions.updateSeason, (state, action) => ({
     ...state,
-    selectedSeason: action.season,
+    selectedDate: { ...state.selectedDate, season: action.season },
     navBarOpen: false,
   })),
   on(AppActions.addedEventToCalendar, (state, action) => ({
@@ -118,7 +115,7 @@ export const appReducer = createReducer<AppState>(
   }),
   on(AppActions.updateActiveDay, (state, action) => ({
     ...state,
-    selectedDay: action.day,
+    selectedDate: { ...state.selectedDate, day: action.day },
   })),
   on(AppActions.updateStatusMessage, (state, action) => ({
     ...state,
