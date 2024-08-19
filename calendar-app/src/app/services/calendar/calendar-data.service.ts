@@ -3,8 +3,8 @@ import { Observable, map } from 'rxjs';
 import { Calendar } from '../../models/calendar.model';
 import { GameEvent } from '../../models/game-event.model';
 import { DataService } from '../data.service';
-import { EventDateUtils } from '../event-date.utils';
-import { Calendar_Data, Calendar_NoRelations } from '../models/calendar';
+import { EventUtils } from '../event.utils';
+import { Calendar_Data } from '../models/calendar';
 
 @Injectable({
   providedIn: 'root',
@@ -56,9 +56,27 @@ export class CalendarDataService {
     );
   }
 
-  update(calendar: Partial<Calendar_NoRelations>): Observable<Calendar> {
+  updateDetails(calendar: Partial<Calendar>): Observable<Calendar> {
+    const variables = {
+      id: calendar.id,
+      name: calendar.name,
+      description: calendar.description,
+      systemConfig: calendar.systemConfig,
+    };
     return this.dataService
-      .graphql(this.updateQuery(), { data: calendar })
+      .graphql(this.updateDetailsQuery(), variables)
+      .pipe(
+        map((response) => this.convertToCalendar(response.updateCalendar.data)),
+      );
+  }
+
+  updateEvents(calendar: Partial<Calendar>): Observable<Calendar> {
+    const variables = {
+      id: calendar.id,
+      gameEvents: calendar.gameEvents?.map((event) => event.id),
+    };
+    return this.dataService
+      .graphql(this.updateEventsQuery(), variables)
       .pipe(
         map((response) => this.convertToCalendar(response.updateCalendar.data)),
       );
@@ -80,18 +98,16 @@ export class CalendarDataService {
         publishedAt: event.attributes.publishedAt ?? '',
         type: event.attributes.type,
         gameDate: {
-          ...EventDateUtils.getGameDateUnion(event.attributes.gameDate),
+          ...EventUtils.getGameDateUnion(event.attributes.gameDate),
         },
       }),
     );
 
-    const regexArray: string[] = [];
-    if (data.attributes.systemConfig.includeBirthdays)
-      regexArray.push('birthdays');
-    if (data.attributes.systemConfig.includeFestivals)
-      regexArray.push('festivals');
-    if (data.attributes.systemConfig.includeCrops) regexArray.push('crops');
-    const regexString = regexArray.join('|');
+    const regexString = EventUtils.getEventRegex(
+      data.attributes.systemConfig.includeBirthdays,
+      data.attributes.systemConfig.includeCrops,
+      data.attributes.systemConfig.includeFestivals,
+    );
 
     const calendar: Calendar = {
       id: data.id,
@@ -100,17 +116,40 @@ export class CalendarDataService {
       description: data.attributes.description,
       systemConfig: data.attributes.systemConfig,
       gameEvents,
-      filteredGameEvents: gameEvents.filter((event) =>
-        new RegExp(regexString).test(event.type),
+      filteredGameEvents: gameEvents.filter(
+        (event) =>
+          new RegExp(regexString).test(event.type) ||
+          event.type.includes('user'),
       ),
     };
     return calendar;
   }
 
-  private updateQuery() {
+  private updateDetailsQuery() {
     return `
-    mutation updateCalendar($id: ID!, $data: CalendarInput!) {
-      updateCalendar(id: $id, data: $data) {
+      mutation updateCalendarDetails(
+        $id: ID!
+        $name: String
+        $description: String
+        $systemConfig: ComponentCalendarSystemConfigInput
+      ) {
+        updateCalendar(
+          id: $id
+          data: {
+            name: $name
+            description: $description
+            systemConfig: $systemConfig
+          }
+        ) {
+        ${this.baseDataQuery()}
+      }
+    }`;
+  }
+
+  private updateEventsQuery() {
+    return `
+    mutation updateCalendarEvents($id: ID!, $gameEvents: [ID]) {
+      updateCalendar(id: $id, data: { gameEvents: $gameEvents }) {
         ${this.baseDataQuery()}
       }
     }`;

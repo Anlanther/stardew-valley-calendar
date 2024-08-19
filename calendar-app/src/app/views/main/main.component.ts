@@ -34,8 +34,8 @@ export class MainComponent {
     this.store.dispatch(AppActions.createCalendar());
   }
 
-  openEditDialog() {
-    this.store.dispatch(AppActions.updateCalendar());
+  openSelectDialog() {
+    this.store.dispatch(AppActions.selectCalendar());
   }
 
   deleteCalendar() {
@@ -46,7 +46,7 @@ export class MainComponent {
     isOpen ? this.sideNav.open() : this.sideNav.close();
   }
 
-  openUpdateYearDialog() {
-    this.store.dispatch(AppActions.openUpdateActiveYearDialog());
+  openEditCalendarDialog() {
+    this.store.dispatch(AppActions.updateCalendar());
   }
 }

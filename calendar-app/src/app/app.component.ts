@@ -38,7 +38,7 @@ export class AppComponent {
     this.store.dispatch(AppActions.createCalendar());
   }
 
-  openEditDialog() {
-    this.store.dispatch(AppActions.updateCalendar());
+  openSelectDialog() {
+    this.store.dispatch(AppActions.selectCalendar());
   }
 }

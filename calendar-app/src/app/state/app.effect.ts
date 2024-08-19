@@ -6,17 +6,17 @@ import { Store, select } from '@ngrx/store';
 import { catchError, exhaustMap, filter, map, switchMap, tap } from 'rxjs';
 import { CreateCalendarDialogComponent } from '../components/dialogs/calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from '../components/dialogs/calendar/edit-dialog/edit-dialog.component';
+import { SelectCalendarDialogComponent } from '../components/dialogs/calendar/select-dialog/select-dialog.component';
 import { CreateEventDialogComponent } from '../components/dialogs/day-form/create-dialog/create-dialog.component';
 import { EditEventDialogComponent } from '../components/dialogs/day-form/edit-dialog/edit-dialog.component';
-import { UpdateYearDialogComponent } from '../components/dialogs/day-form/update-year-dialog/update-year-dialog.component';
 import { DeleteDialogComponent } from '../components/dialogs/delete/delete-dialog.component';
 import { AppStore } from '../models/app-store.model';
+import { Calendar } from '../models/calendar.model';
 import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
 import { StatusMessage } from '../models/status-message.model';
 import { Type } from '../models/type.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
 import { GameEventDataService } from '../services/game-event/game-event-data.service';
-import { Calendar_NoRelations } from '../services/models/calendar';
 import { AppActions } from './app.actions';
 import { AppFeature } from './app.state';
 
@@ -70,7 +70,7 @@ export class AppEffects {
       switchMap(
         (dialogRes: {
           name: string;
-          includeBirthday: boolean;
+          includeBirthdays: boolean;
           includeFestivals: boolean;
           includeCrops: boolean;
           systemEvents: GameEvent[];
@@ -80,7 +80,7 @@ export class AppEffects {
             .create(
               dialogRes.name,
               dialogRes.description,
-              dialogRes.includeBirthday,
+              dialogRes.includeBirthdays,
               dialogRes.includeFestivals,
               dialogRes.includeCrops,
               dialogRes.systemEvents,
@@ -107,15 +107,15 @@ export class AppEffects {
     ),
   );
 
-  editCalendar$ = createEffect(() =>
+  selectCalendar$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.updateCalendar),
+      ofType(AppActions.selectCalendar),
       concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectAvailableCalendars)),
         this.store.pipe(select(AppFeature.selectActiveCalendar)),
       ]),
       exhaustMap(([, availableCalendars, activeCalendar]) => {
-        const dialogRef = this.dialog.open(EditCalendarDialogComponent, {
+        const dialogRef = this.dialog.open(SelectCalendarDialogComponent, {
           data: { availableCalendars, activeCalendar },
         });
         return dialogRef.afterClosed();
@@ -184,10 +184,9 @@ export class AppEffects {
     this.actions$.pipe(
       ofType(AppActions.deleteDeletedGameEvents),
       switchMap(({ id, eventIds }) =>
-        this.gameEventDataService.deleteMany(eventIds).pipe(
-          tap(() => console.log('hello?')),
-          map(() => AppActions.deleteCalendarSuccess(id)),
-        ),
+        this.gameEventDataService
+          .deleteMany(eventIds)
+          .pipe(map(() => AppActions.deleteCalendarSuccess(id))),
       ),
     ),
   );
@@ -247,20 +246,30 @@ export class AppEffects {
 
   updateActiveYear$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.openUpdateActiveYearDialog),
-      concatLatestFrom(() =>
+      ofType(AppActions.updateCalendar),
+      concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectSelectedDate)),
-      ),
-      exhaustMap(([, activeDate]) => {
-        const dialogRef = this.dialog.open(UpdateYearDialogComponent, {
-          data: { activeYear: activeDate.year },
+        this.store.pipe(select(AppFeature.selectActiveCalendar)),
+      ]),
+      exhaustMap(([, activeDate, activeCalendar]) => {
+        const dialogRef = this.dialog.open(EditCalendarDialogComponent, {
+          data: {
+            activeCalendar,
+            year: activeDate.year,
+          },
         });
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      map((dialogRes: { activeYear: number }) =>
-        AppActions.updateYear(dialogRes.activeYear),
-      ),
+      switchMap((dialogRef: { calendar: Calendar; year: number }) => {
+        return this.calendarDataService
+          .updateDetails(dialogRef.calendar)
+          .pipe(
+            map((calendar) =>
+              AppActions.updateCalendarSuccess(calendar, dialogRef.year),
+            ),
+          );
+      }),
     ),
   );
 
@@ -271,15 +280,12 @@ export class AppEffects {
         this.store.pipe(select(AppFeature.selectActiveCalendar)),
       ),
       switchMap(([action, activeCalendar]) => {
-        const existingEvents = activeCalendar?.gameEvents
-          ? [...activeCalendar.gameEvents.map((event) => event.id)]
-          : [];
-        const updatedCalendar: Partial<Calendar_NoRelations> = {
+        const updatedCalendar: Partial<Calendar> = {
           id: activeCalendar?.id,
-          gameEvents: [...existingEvents, action.gameEvent.id],
+          gameEvents: [...(activeCalendar?.gameEvents ?? []), action.gameEvent],
         };
         return this.calendarDataService
-          .update(updatedCalendar)
+          .updateEvents(updatedCalendar)
           .pipe(map((calendar) => AppActions.addedEventToCalendar(calendar)));
       }),
     ),

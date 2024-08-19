@@ -8,7 +8,7 @@ import { GameDateComponent } from './models/GameDateComponent';
 @Injectable({
   providedIn: 'root',
 })
-export class EventDateUtils {
+export class EventUtils {
   static getEventsForDate(
     season: Season,
     year: number,
@@ -46,5 +46,19 @@ export class EventDateUtils {
         };
 
     return gameDateUnion;
+  }
+
+  static getEventRegex(
+    includeBirthdays: boolean,
+    includeCrops: boolean,
+    includeFestivals: boolean,
+  ) {
+    const regexArray: string[] = [];
+    if (includeBirthdays) regexArray.push('birthdays');
+    if (includeFestivals) regexArray.push('festivals');
+    if (includeCrops) regexArray.push('crops');
+    const regexString = regexArray.join('|');
+
+    return regexString;
   }
 }
