@@ -20,7 +20,7 @@ export class CreateCalendarDialogComponent {
     this.calendarForm = this.fb.group({
       name: ['', [Validators.required]],
       description: [''],
-      includeBirthday: [false],
+      includeBirthdays: [false],
       includeFestivals: [false],
       includeCrops: [false],
     });
@@ -28,14 +28,14 @@ export class CreateCalendarDialogComponent {
 
   createCalendar() {
     const calendarName = this.calendarForm.get('name')!.value;
-    const includeBirthday = this.calendarForm.get('includeBirthday')!.value;
+    const includeBirthdays = this.calendarForm.get('includeBirthdays')!.value;
     const includeFestivals = this.calendarForm.get('includeFestivals')!.value;
     const includeCrops = this.calendarForm.get('includeCrops')!.value;
     const description = this.calendarForm.get('description')!.value;
 
     this.dialogRef.close({
       name: calendarName,
-      includeBirthday,
+      includeBirthdays,
       includeFestivals,
       includeCrops,
       systemEvents: this.data.systemEvents,

@@ -10,19 +10,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CreateCalendarDialogComponent } from './calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from './calendar/edit-dialog/edit-dialog.component';
+import { SelectCalendarDialogComponent } from './calendar/select-dialog/select-dialog.component';
 import { CreateEventDialogComponent } from './day-form/create-dialog/create-dialog.component';
 import { EditEventDialogComponent } from './day-form/edit-dialog/edit-dialog.component';
-import { UpdateYearDialogComponent } from './day-form/update-year-dialog/update-year-dialog.component';
 import { DeleteDialogComponent } from './delete/delete-dialog.component';
 
 @NgModule({
   declarations: [
     CreateCalendarDialogComponent,
-    EditCalendarDialogComponent,
+    SelectCalendarDialogComponent,
     EditEventDialogComponent,
     CreateEventDialogComponent,
     DeleteDialogComponent,
-    UpdateYearDialogComponent,
+    EditCalendarDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -38,7 +38,7 @@ import { DeleteDialogComponent } from './delete/delete-dialog.component';
   ],
   exports: [
     CreateCalendarDialogComponent,
-    EditCalendarDialogComponent,
+    SelectCalendarDialogComponent,
     EditEventDialogComponent,
     CreateEventDialogComponent,
   ],

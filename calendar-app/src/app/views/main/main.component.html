@@ -12,13 +12,13 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openEditDialog()">
+        <button mat-menu-item (click)="openEditCalendarDialog()">
+          Edit Calendar
+        </button>
+        <button mat-menu-item (click)="openSelectDialog()">
           Select Calendar
         </button>
         <button mat-menu-item (click)="openCreateDialog()">Create New</button>
-        <button mat-menu-item (click)="openUpdateYearDialog()">
-          Update Year
-        </button>
         <button
           mat-menu-item
           [disabled]="disableDelete()"

@@ -1,31 +1,54 @@
 import { Component, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CalendarState } from '../../../../models/calendar-state.model';
 import { Calendar } from '../../../../models/calendar.model';
 
 @Component({
-  selector: 'app-edit-calendar-dialog',
+  selector: 'app-edit-dialog',
   templateUrl: './edit-dialog.component.html',
   styleUrl: './edit-dialog.component.scss',
 })
 export class EditCalendarDialogComponent {
-  dialogRef = inject(MatDialogRef<EditCalendarDialogComponent>);
-  data: { availableCalendars: Calendar[]; activeCalendar: CalendarState } =
-    inject(MAT_DIALOG_DATA);
+  private fb = inject(FormBuilder);
 
-  availableCalendarsFormControl = new FormControl<null | string>(null);
+  calendarForm!: FormGroup;
+
+  dialogRef = inject(MatDialogRef<EditCalendarDialogComponent>);
+  data: { activeCalendar: Calendar; year: number } = inject(MAT_DIALOG_DATA);
 
   constructor() {
-    if (this.data.activeCalendar) {
-      this.availableCalendarsFormControl.setValue(this.data.activeCalendar.id);
-    }
+    this.calendarForm = this.fb.group({
+      name: [this.data.activeCalendar.name, [Validators.required]],
+      description: [this.data.activeCalendar.description],
+      year: [this.data.year, [Validators.required]],
+      includeBirthdays: [
+        this.data.activeCalendar.systemConfig.includeBirthdays,
+      ],
+      includeFestivals: [
+        this.data.activeCalendar.systemConfig.includeFestivals,
+      ],
+      includeCrops: [this.data.activeCalendar.systemConfig.includeCrops],
+    });
   }
 
-  confirm() {
-    const selectedCalendarId = this.availableCalendarsFormControl.value!;
+  createCalendar() {
+    const name = this.calendarForm.get('name')!.value;
+    const includeBirthdays = this.calendarForm.get('includeBirthdays')!.value;
+    const includeFestivals = this.calendarForm.get('includeFestivals')!.value;
+    const includeCrops = this.calendarForm.get('includeCrops')!.value;
+    const description = this.calendarForm.get('description')!.value;
+    const year = this.calendarForm.get('year')!.value;
+
+    const calendar: Partial<Calendar> = {
+      id: this.data.activeCalendar.id,
+      name,
+      description,
+      systemConfig: { includeBirthdays, includeFestivals, includeCrops },
+    };
+
     this.dialogRef.close({
-      id: selectedCalendarId,
+      calendar,
+      year,
     });
   }
 

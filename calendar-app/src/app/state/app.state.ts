@@ -1,5 +1,5 @@
 import { createFeature, createSelector } from '@ngrx/store';
-import { EventDateUtils } from '../services/event-date.utils';
+import { EventUtils } from '../services/event.utils';
 import { appReducer } from './app.reducer';
 
 export const AppFeature = createFeature({
@@ -28,7 +28,7 @@ export const AppFeature = createFeature({
       baseSelectors.selectSelectedDate,
       (calendar, date) =>
         calendar
-          ? EventDateUtils.getEventsForDate(date.season, date.year, calendar)
+          ? EventUtils.getEventsForDate(date.season, date.year, calendar)
           : [],
     ),
     selectIsDateSelected: createSelector(

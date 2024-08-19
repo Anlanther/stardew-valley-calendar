@@ -6,6 +6,7 @@ import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { SelectedDate } from '../models/selected-date.model';
 import { StatusMessage } from '../models/status-message.model';
+import { EventUtils } from '../services/event.utils';
 import { AppActions } from './app.actions';
 
 export interface AppState {
@@ -57,11 +58,6 @@ export const appReducer = createReducer<AppState>(
   on(AppActions.updateActiveFormEvents, (state, action) => ({
     ...state,
     activeFormEvents: [...action.gameEvents],
-  })),
-  on(AppActions.updateYear, (state, action) => ({
-    ...state,
-    selectedDate: { ...state.selectedDate, year: action.year },
-    navBarOpen: false,
   })),
   on(AppActions.updateSeason, (state, action) => ({
     ...state,
@@ -151,4 +147,20 @@ export const appReducer = createReducer<AppState>(
     ...state,
     savedSystemEvents: action.systemEvents,
   })),
+  on(AppActions.updateCalendarSuccess, (state, action) => {
+    const regexString = EventUtils.getEventRegex(
+      action.calendar.systemConfig.includeBirthdays,
+      action.calendar.systemConfig.includeCrops,
+      action.calendar.systemConfig.includeFestivals,
+    );
+    const filteredGameEvents = action.calendar.gameEvents.filter(
+      (event) =>
+        new RegExp(regexString).test(event.type) || event.type.includes('user'),
+    );
+    return {
+      ...state,
+      activeCalendar: { ...action.calendar, filteredGameEvents },
+      selectedDate: { ...state.selectedDate, year: action.year },
+    };
+  }),
 );

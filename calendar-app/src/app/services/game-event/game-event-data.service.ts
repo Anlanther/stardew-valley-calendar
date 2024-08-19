@@ -6,7 +6,7 @@ import { FESTIVAL_EVENTS } from '../../constants/festival-events.constant';
 import { DeepPartial } from '../../models/deep-partial.model';
 import { GameEvent, UnsavedGameEvent } from '../../models/game-event.model';
 import { DataService } from '../data.service';
-import { EventDateUtils } from '../event-date.utils';
+import { EventUtils } from '../event.utils';
 import { GameEvent_Data, GameEvent_Plain, Type } from '../models/game-event';
 
 @Injectable({
@@ -109,7 +109,7 @@ export class GameEventDataService {
       description: data.attributes.description,
       tag: data.attributes.tag,
       gameDate: {
-        ...EventDateUtils.getGameDateUnion(data.attributes.gameDate),
+        ...EventUtils.getGameDateUnion(data.attributes.gameDate),
       },
       publishedAt: data.attributes.publishedAt ?? '',
       type: data.attributes.type,

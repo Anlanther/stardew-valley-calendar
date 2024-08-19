@@ -8,7 +8,12 @@ export const AppActions = createActionGroup({
   source: 'App',
   events: {
     'Create Calendar': emptyProps(),
+    'Select Calendar': emptyProps(),
     'Update Calendar': emptyProps(),
+    'Update Calendar Success': (calendar: Calendar, year: number) => ({
+      calendar,
+      year,
+    }),
     'Create Calendar Success': (calendar: Calendar) => ({ calendar }),
     'Get Calendars': emptyProps(),
     'Get Calendars Success': (calendars: Calendar[]) => ({ calendars }),
@@ -18,7 +23,6 @@ export const AppActions = createActionGroup({
     'Update Active Form Events': (gameEvents: GameEvent[]) => ({
       gameEvents,
     }),
-    'Update Year': (year: number) => ({ year }),
     'Update Season': (season: Season) => ({ season }),
     'Delete Event': (id: string, name: string) => ({
       id,
@@ -48,7 +52,6 @@ export const AppActions = createActionGroup({
     'Added Event to Calendar': (calendar: Calendar) => ({ calendar }),
     'Update Status Message': (message: StatusMessage) => ({ message }),
     'Toggle Nav Bar': (isOpen: boolean) => ({ isOpen }),
-    'Open Update Active Year Dialog': emptyProps(),
     Initialise: emptyProps(),
   },
 });

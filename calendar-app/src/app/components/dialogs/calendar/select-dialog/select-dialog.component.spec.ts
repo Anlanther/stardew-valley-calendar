@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditCalendarDialogComponent } from './edit-dialog.component';
+import { SelectCalendarDialogComponent } from './select-dialog.component';
 
 describe('EditDialogComponent', () => {
-  let component: EditCalendarDialogComponent;
-  let fixture: ComponentFixture<EditCalendarDialogComponent>;
+  let component: SelectCalendarDialogComponent;
+  let fixture: ComponentFixture<SelectCalendarDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditCalendarDialogComponent],
+      imports: [SelectCalendarDialogComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EditCalendarDialogComponent);
+    fixture = TestBed.createComponent(SelectCalendarDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
