@@ -102,13 +102,12 @@ export class CalendarDataService {
         },
       }),
     );
-
-    const regexString = EventUtils.getEventRegex(
+    const filteredGameEvents = EventUtils.getFilteredSystemEvents(
       data.attributes.systemConfig.includeBirthdays,
       data.attributes.systemConfig.includeCrops,
       data.attributes.systemConfig.includeFestivals,
+      gameEvents,
     );
-
     const calendar: Calendar = {
       id: data.id,
       name: data.attributes.name,
@@ -116,11 +115,7 @@ export class CalendarDataService {
       description: data.attributes.description,
       systemConfig: data.attributes.systemConfig,
       gameEvents,
-      filteredGameEvents: gameEvents.filter(
-        (event) =>
-          new RegExp(regexString).test(event.type) ||
-          event.type.includes('user'),
-      ),
+      filteredGameEvents,
     };
     return calendar;
   }

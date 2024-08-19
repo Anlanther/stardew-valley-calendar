@@ -34,12 +34,22 @@ export const appReducer = createReducer<AppState>(
   on(
     AppActions.createCalendarSuccess,
     AppActions.updateActiveCalendar,
-    (state, action) => ({
-      ...state,
-      activeCalendar: action.calendar,
-      statusMessage: StatusMessage.READY,
-      navBarOpen: false,
-    }),
+    (state, action) => {
+      const filteredGameEvents = EventUtils.getFilteredSystemEvents(
+        action.calendar.systemConfig.includeBirthdays,
+        action.calendar.systemConfig.includeCrops,
+        action.calendar.systemConfig.includeFestivals,
+        action.calendar.gameEvents,
+      );
+
+      return {
+        ...state,
+        activeCalendar: action.calendar,
+        statusMessage: StatusMessage.READY,
+        filteredGameEvents,
+        navBarOpen: false,
+      };
+    },
   ),
   on(AppActions.createCalendarSuccess, (state, action) => ({
     ...state,
@@ -88,6 +98,9 @@ export const appReducer = createReducer<AppState>(
           gameEvents: state.activeCalendar?.gameEvents.filter(
             (calendar) => calendar.id !== action.id,
           ),
+          filteredGameEvents: state.activeCalendar.filteredGameEvents.filter(
+            (calendar) => calendar.id !== action.id,
+          ),
         }
       : null,
     activeFormEvents: state.activeFormEvents
@@ -128,6 +141,12 @@ export const appReducer = createReducer<AppState>(
             ),
             action.gameEvent,
           ],
+          filteredGameEvents: [
+            ...state.activeCalendar?.filteredGameEvents.filter(
+              (calendar) => calendar.id !== action.gameEvent.id,
+            ),
+            action.gameEvent,
+          ],
         }
       : null,
     activeFormEvents: state.activeFormEvents
@@ -148,14 +167,11 @@ export const appReducer = createReducer<AppState>(
     savedSystemEvents: action.systemEvents,
   })),
   on(AppActions.updateCalendarSuccess, (state, action) => {
-    const regexString = EventUtils.getEventRegex(
+    const filteredGameEvents = EventUtils.getFilteredSystemEvents(
       action.calendar.systemConfig.includeBirthdays,
       action.calendar.systemConfig.includeCrops,
       action.calendar.systemConfig.includeFestivals,
-    );
-    const filteredGameEvents = action.calendar.gameEvents.filter(
-      (event) =>
-        new RegExp(regexString).test(event.type) || event.type.includes('user'),
+      action.calendar.gameEvents,
     );
     return {
       ...state,
