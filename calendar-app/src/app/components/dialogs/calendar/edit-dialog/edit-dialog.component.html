@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Create Calendar</h2>
+<h2 mat-dialog-title>Edit Calendar</h2>
 <mat-dialog-content>
   <form [formGroup]="calendarForm">
     <mat-form-field class="w-100">
@@ -40,8 +40,8 @@
     type="button"
     class="btn btn-primary"
     [disabled]="!calendarForm.valid"
-    (click)="createCalendar()"
+    (click)="editCalendar()"
   >
-    Create
+    Edit
   </button>
 </mat-dialog-actions>

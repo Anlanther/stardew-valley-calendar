@@ -48,10 +48,11 @@ export class EventUtils {
     return gameDateUnion;
   }
 
-  static getEventRegex(
+  static getFilteredSystemEvents(
     includeBirthdays: boolean,
     includeCrops: boolean,
     includeFestivals: boolean,
+    gameEvents: GameEvent[],
   ) {
     const regexArray: string[] = [];
     if (includeBirthdays) regexArray.push('birthdays');
@@ -59,6 +60,13 @@ export class EventUtils {
     if (includeCrops) regexArray.push('crops');
     const regexString = regexArray.join('|');
 
-    return regexString;
+    const filteredGameEvents = gameEvents.filter((event) => {
+      return regexString === ''
+        ? false
+        : new RegExp(regexString).test(event.type) ||
+            event.type.includes('user');
+    });
+
+    return filteredGameEvents;
   }
 }

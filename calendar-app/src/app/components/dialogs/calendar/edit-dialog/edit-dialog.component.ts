@@ -31,7 +31,7 @@ export class EditCalendarDialogComponent {
     });
   }
 
-  createCalendar() {
+  editCalendar() {
     const name = this.calendarForm.get('name')!.value;
     const includeBirthdays = this.calendarForm.get('includeBirthdays')!.value;
     const includeFestivals = this.calendarForm.get('includeFestivals')!.value;

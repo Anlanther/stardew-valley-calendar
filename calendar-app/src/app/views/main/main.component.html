@@ -1,7 +1,5 @@
 <div class="body container-fluid h-100">
-  <nav
-    class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-center"
-  >
+  <nav class="navbar navbar-expand-lg bg-light d-flex justify-content-center">
     <div>
       @if (navTitle$ | async; as navTitle) {
         <h1>{{ navTitle }}</h1>
@@ -30,7 +28,7 @@
     </div>
   </nav>
 
-  <mat-drawer-container class="app__normal max-height" autosize>
+  <mat-drawer-container class="app max-height" autosize>
     <mat-drawer class="max-height" #drawer mode="side" position="end">
       <app-day-form class="max-height"></app-day-form>
     </mat-drawer>
