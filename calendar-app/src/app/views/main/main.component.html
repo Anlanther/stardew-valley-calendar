@@ -6,10 +6,10 @@
       }
     </div>
     <div>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
+      <button mat-icon-button [matMenuTriggerFor]="settingsMenu">
+        <mat-icon data-test="settings-menu">more_vert</mat-icon>
       </button>
-      <mat-menu #menu="matMenu">
+      <mat-menu #settingsMenu="matMenu">
         <button mat-menu-item (click)="openEditCalendarDialog()">
           Edit Calendar
         </button>

@@ -28,6 +28,7 @@ test.describe('Welcome Page', () => {
     await welcomePage.openPage();
     await welcomePage.verifySelectOrCreateCalendarMessage();
   });
+
   test('With no existing calendars available', async ({ welcomePage }) => {
     const emptyMockCalendar = { ...MOCK_CALENDARS };
     emptyMockCalendar.calendars.data = [];

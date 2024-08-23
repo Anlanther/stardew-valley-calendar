@@ -10,3 +10,4 @@ export interface Calendar {
   publishedAt: string;
   filteredGameEvents: GameEvent[];
 }
+export type UnsavedCalendar = Omit<Calendar, 'id' | 'publishedAt'>;
