@@ -1,13 +1,20 @@
 import { Locator, Page, expect, test } from '@playwright/test';
-import { URLS } from '../constants/urls.constant';
+import { UnsavedCalendar } from '../../src/app/models/calendar.model';
+import { URL } from '../models/url.model';
+import { CreateCalendarDialog } from './create-calendar-dialog';
+import { SelectCalendarDialog } from './select-calendar-dialog';
 
 export class WelcomePage {
   readonly page: Page;
-  readonly apiConnectionFailedMessage: Locator;
-  readonly noExistingCalendarsMessage: Locator;
-  readonly selectOrCreateCalendarMessage: Locator;
-  readonly createCalendarButton: Locator;
-  readonly selectCalendarButton: Locator;
+
+  private readonly apiConnectionFailedMessage: Locator;
+  private readonly noExistingCalendarsMessage: Locator;
+  private readonly selectOrCreateCalendarMessage: Locator;
+  private readonly createCalendarButton: Locator;
+  private readonly selectCalendarButton: Locator;
+
+  private readonly createCalendarDialog: CreateCalendarDialog;
+  private readonly selectCalendarDialog: SelectCalendarDialog;
 
   constructor(page: Page) {
     this.page = page;
@@ -24,13 +31,16 @@ export class WelcomePage {
       name: 'Create New',
     });
     this.selectCalendarButton = page.getByRole('button', {
-      name: 'Open Calendar',
+      name: 'Select Calendar',
     });
+
+    this.createCalendarDialog = new CreateCalendarDialog(page);
+    this.selectCalendarDialog = new SelectCalendarDialog(page);
   }
 
   async openPage() {
     await test.step('Open Welcome Page', async () => {
-      await this.page.goto(URLS.LOCAL_APP);
+      await this.page.goto(URL.LOCAL_APP);
     });
   }
 
@@ -52,6 +62,50 @@ export class WelcomePage {
       await expect(this.selectOrCreateCalendarMessage).toBeVisible();
       await expect(this.createCalendarButton).toBeVisible();
       await expect(this.selectCalendarButton).toBeVisible();
+    });
+  }
+
+  async clickCreateCalendar() {
+    await test.step('Click Create Calendar', async () => {
+      await expect(this.apiConnectionFailedMessage).not.toBeVisible();
+      await expect(this.createCalendarButton).toBeVisible();
+
+      await this.createCalendarButton.click();
+    });
+  }
+
+  async clickSelectCalendar() {
+    await test.step('Click Select Calendar', async () => {
+      await expect(this.apiConnectionFailedMessage).not.toBeVisible();
+      await expect(this.selectCalendarButton).toBeVisible();
+
+      await this.selectCalendarButton.click();
+    });
+  }
+
+  async openAndCreateCalendar(calendar: UnsavedCalendar) {
+    await test.step('Create Calendar', async () => {
+      await this.openPage();
+      await this.clickCreateCalendar();
+      await this.createCalendarDialog.fillForm(
+        calendar.name,
+        calendar.description,
+        calendar.systemConfig.includeBirthdays,
+        calendar.systemConfig.includeFestivals,
+        calendar.systemConfig.includeCrops,
+      );
+      await this.createCalendarDialog.clickCreateButton();
+      await this.page.waitForLoadState('domcontentloaded');
+    });
+  }
+
+  async openExistingCalendar(name: string) {
+    await test.step('Open Existing Calendar', async () => {
+      await this.openPage();
+      await this.selectCalendarButton.click();
+      await this.selectCalendarDialog.selectCalendar(name);
+      // await this.page.waitForLoadState('domcontentloaded');
+      await this.page.waitForTimeout(2000);
     });
   }
 }
