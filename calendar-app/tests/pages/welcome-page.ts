@@ -104,8 +104,6 @@ export class WelcomePage {
       await this.openPage();
       await this.selectCalendarButton.click();
       await this.selectCalendarDialog.selectCalendar(name);
-      // await this.page.waitForLoadState('domcontentloaded');
-      await this.page.waitForTimeout(2000);
     });
   }
 }

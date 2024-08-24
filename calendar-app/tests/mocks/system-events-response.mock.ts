@@ -6,7 +6,7 @@ import {
 } from '../../src/app/services/models/game-event';
 import { Season } from '../../src/app/services/models/GameDateComponent';
 
-export const MOCK_SYSTEM_EVENTS: {
+export const MOCK_SYSTEM_EVENTS_RESPONSE: {
   gameEvents: { data: DeepPartial<GameEvent_Data>[] };
 } = {
   gameEvents: {

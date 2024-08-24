@@ -22,7 +22,7 @@ export class SelectCalendarDialog {
   async selectCalendar(name: string) {
     await test.step('Select Calendar', async () => {
       await this.calendarSelector.click();
-      await this.page.getByRole('option', { name }).click();
+      await this.page.getByRole('option', { name, exact: true }).click();
       await this.selectButton.click();
     });
   }
