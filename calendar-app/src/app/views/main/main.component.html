@@ -1,13 +1,11 @@
 <div class="body container-fluid h-100">
   <nav class="navbar navbar-expand-lg bg-light d-flex justify-content-center">
-    <div>
-      @if (navTitle$ | async; as navTitle) {
-        <h1>{{ navTitle }}</h1>
-      }
-    </div>
-    <div>
+    @if (navTitle$ | async; as navTitle) {
+      <h1 class="navbar--heading">{{ navTitle }}</h1>
+    }
+    <div class="navbar--menu">
       <button mat-icon-button [matMenuTriggerFor]="settingsMenu">
-        <mat-icon data-test="settings-menu">more_vert</mat-icon>
+        <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #settingsMenu="matMenu">
         <button mat-menu-item (click)="openEditCalendarDialog()">

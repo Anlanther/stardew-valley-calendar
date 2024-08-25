@@ -29,7 +29,7 @@ export class SelectCalendarDialogComponent {
     });
   }
 
-  onNoClick(): void {
+  cancel(): void {
     this.dialogRef.close();
   }
 }

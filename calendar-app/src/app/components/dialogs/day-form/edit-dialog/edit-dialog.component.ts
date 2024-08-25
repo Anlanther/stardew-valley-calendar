@@ -75,6 +75,10 @@ export class EditEventDialogComponent {
     this.eventForm.get('tag')?.patchValue(value);
   }
 
+  cancel(): void {
+    this.dialogRef.close();
+  }
+
   private filterTag(category: TagCategory) {
     const tags: Tag[] = [];
     TAG_METADATA.forEach(

@@ -95,7 +95,6 @@ export class WelcomePage {
         calendar.systemConfig.includeCrops,
       );
       await this.createCalendarDialog.clickCreateButton();
-      await this.page.waitForLoadState('domcontentloaded');
     });
   }
 
@@ -104,6 +103,38 @@ export class WelcomePage {
       await this.openPage();
       await this.selectCalendarButton.click();
       await this.selectCalendarDialog.selectCalendar(name);
+    });
+  }
+
+  async selectOrCreateCalendar(calendar: UnsavedCalendar) {
+    await test.step('Open Existing Calendar', async () => {
+      await this.openPage();
+      await expect(this.apiConnectionFailedMessage).not.toBeVisible();
+      const createButtonIsVisible = await this.selectCalendarButton.isVisible();
+      if (!createButtonIsVisible) {
+        return await this.clickCreateCalendar();
+      }
+
+      await this.selectCalendarButton.click();
+      await this.selectCalendarDialog.clickOnSelector();
+      const calendarOptionExists = await this.page
+        .getByRole('option', { name: calendar.name })
+        .isVisible();
+      await this.selectCalendarDialog.escapeSelector();
+      if (!calendarOptionExists) {
+        await this.selectCalendarDialog.clickCancel();
+        await this.clickCreateCalendar();
+        await this.createCalendarDialog.fillForm(
+          calendar.name,
+          calendar.description,
+          calendar.systemConfig.includeBirthdays,
+          calendar.systemConfig.includeFestivals,
+          calendar.systemConfig.includeCrops,
+        );
+        return await this.createCalendarDialog.clickCreateButton();
+      }
+
+      await this.selectCalendarDialog.selectCalendar(calendar.name);
     });
   }
 }

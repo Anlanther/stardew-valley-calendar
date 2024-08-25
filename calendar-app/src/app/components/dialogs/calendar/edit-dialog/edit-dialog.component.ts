@@ -52,7 +52,7 @@ export class EditCalendarDialogComponent {
     });
   }
 
-  onNoClick(): void {
+  cancel(): void {
     this.dialogRef.close();
   }
 }

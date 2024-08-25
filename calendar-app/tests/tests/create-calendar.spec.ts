@@ -49,8 +49,7 @@ test.describe('Create Calendar', () => {
       welcomePage,
       calendarPage,
     }) => {
-      await welcomePage.openExistingCalendar(MOCK_CALENDAR_TO_CREATE.name);
-      // await welcomePage.openAndCreateCalendar(MOCK_CALENDAR_TO_CREATE);
+      await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_TO_CREATE);
       await calendarPage.verifyCorrectTitle(MOCK_CALENDAR_TO_CREATE.name);
     });
 
@@ -67,7 +66,7 @@ test.describe('Create Calendar', () => {
         },
       };
 
-      // await welcomePage.openAndCreateCalendar(mockWithBirthdays);
+      await welcomePage.selectOrCreateCalendar(mockWithBirthdays);
       await welcomePage.openExistingCalendar(mockWithBirthdays.name);
 
       for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
@@ -109,8 +108,7 @@ test.describe('Create Calendar', () => {
         },
       };
 
-      // await welcomePage.openAndCreateCalendar(mockWithCrops);
-      await welcomePage.openExistingCalendar(mockWithCrops.name);
+      await welcomePage.selectOrCreateCalendar(mockWithCrops);
 
       for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
         const mockBirthday = MOCK_BIRTHDAY_EVENTS[i];
@@ -154,8 +152,7 @@ test.describe('Create Calendar', () => {
         },
       };
 
-      await welcomePage.openAndCreateCalendar(mockWithFestivals);
-      // await welcomePage.openExistingCalendar(mockWithFestivals.name);
+      await welcomePage.selectOrCreateCalendar(mockWithFestivals);
 
       for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
         const mockBirthday = MOCK_BIRTHDAY_EVENTS[i];
@@ -186,17 +183,38 @@ test.describe('Create Calendar', () => {
       }
     });
 
-    // test.describe('Menu', () => {
-    //   test('Edit Calendar is correctly populated with created config', async({welcomePage}) => {
-    // })
+    test.describe('Menu', () => {
+      test('Edit Calendar is correctly populated with created config', async ({
+        welcomePage,
+        menuComponent,
+        editCalendarDialog,
+      }) => {
+        await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_TO_CREATE);
+        await menuComponent.selectEditCalendar();
+        await editCalendarDialog.verifyInput(MOCK_CALENDAR_TO_CREATE);
+      });
 
-    // test('Create New from menu opens create dialog', async({welcomePage}) => {
-    // })
+      test('Create New from menu opens create dialog', async ({
+        welcomePage,
+        menuComponent,
+      }) => {
+        await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_TO_CREATE);
+        await menuComponent.selectCreateCalendar();
+      });
 
-    // test('Select Calendar opens select dialog with current calendar being selected', async({welcomePage}) => {
-    // })
-
-    //   })
+      test('Select Calendar opens select dialog with current calendar being selected', async ({
+        welcomePage,
+        menuComponent,
+        selectCalendarDialog,
+      }) => {
+        await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_TO_CREATE);
+        await menuComponent.selectSelectCalendar();
+        await selectCalendarDialog.verifySelectedCalendar(
+          MOCK_CALENDAR_TO_CREATE.name,
+        );
+      });
+      //   })
+    });
 
     // test.afterEach(async ({ menuComponent }) => {
     //   await menuComponent.selectCalendar(MOCK_CALENDAR_TO_CREATE.name);

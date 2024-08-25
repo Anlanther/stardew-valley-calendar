@@ -1,6 +1,7 @@
 import { Locator, Page, expect, test } from '@playwright/test';
+import { UnsavedCalendar } from '../../src/app/models/calendar.model';
 
-export class CreateCalendarDialog {
+export class EditCalendarDialog {
   readonly page: Page;
 
   private readonly nameForm: Locator;
@@ -8,7 +9,7 @@ export class CreateCalendarDialog {
   private readonly includeBirthdaysToggle: Locator;
   private readonly includeFestivalsToggle: Locator;
   private readonly includeCropsToggle: Locator;
-  private readonly createButton: Locator;
+  private readonly editButton: Locator;
   private readonly cancelButton: Locator;
 
   constructor(page: Page) {
@@ -19,19 +20,13 @@ export class CreateCalendarDialog {
     this.includeBirthdaysToggle = page.getByLabel('Include Birthdays');
     this.includeFestivalsToggle = page.getByLabel('Include Festivals');
     this.includeCropsToggle = page.getByLabel('Include Crops');
-    this.createButton = page.getByRole('button', { name: 'Create' });
+    this.editButton = page.getByRole('button', { name: 'Edit' });
     this.cancelButton = page.getByRole('button', { name: 'Cancel' });
   }
 
-  async verifyCreateButtonIsDisabled() {
-    await test.step('Verify Create Button is Disabled', async () => {
-      await expect(this.createButton).toBeDisabled();
-    });
-  }
-
-  async verifyCreateButtonIsEnabled() {
-    await test.step('Verify Create Button is Enabled', async () => {
-      await expect(this.createButton).toBeEnabled();
+  async verifyEditButtonIsDisabled() {
+    await test.step('Verify Edit Button is Disabled', async () => {
+      await expect(this.editButton).toBeDisabled();
     });
   }
 
@@ -42,7 +37,7 @@ export class CreateCalendarDialog {
     includeFestivals: boolean,
     includeCrops: boolean,
   ) {
-    await test.step('Create Mock Calendar', async () => {
+    await test.step('Edit Mock Calendar', async () => {
       await this.nameForm.fill(name);
       await this.descriptionForm.fill(description);
       await this.includeBirthdaysToggle.setChecked(includeBirthdays);
@@ -53,7 +48,23 @@ export class CreateCalendarDialog {
 
   async clickCreateButton() {
     await test.step('Click Create Button', async () => {
-      await this.createButton.click();
+      await this.editButton.click();
+    });
+  }
+
+  async verifyInput(calendar: UnsavedCalendar) {
+    await test.step('Verify current calendar settings are set', async () => {
+      await expect(this.nameForm).toHaveValue(calendar.name);
+      await expect(this.descriptionForm).toHaveValue(calendar.description);
+      calendar.systemConfig.includeBirthdays
+        ? await expect(this.includeBirthdaysToggle).toBeChecked()
+        : await expect(this.includeBirthdaysToggle).not.toBeChecked();
+      calendar.systemConfig.includeCrops
+        ? await expect(this.includeCropsToggle).toBeChecked()
+        : await expect(this.includeCropsToggle).not.toBeChecked();
+      calendar.systemConfig.includeFestivals
+        ? await expect(this.includeFestivalsToggle).toBeChecked()
+        : await expect(this.includeFestivalsToggle).not.toBeChecked();
     });
   }
 }

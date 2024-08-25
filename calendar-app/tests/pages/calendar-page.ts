@@ -1,8 +1,6 @@
 import { Locator, Page, expect, test } from '@playwright/test';
 import { Season } from '../../src/app/models/season.model';
 import { Selectors } from '../models/selectors.model';
-import { CreateCalendarDialog } from './create-calendar-dialog';
-import { MenuComponent } from './menu-component';
 
 export class CalendarPage {
   readonly page: Page;
@@ -10,10 +8,6 @@ export class CalendarPage {
   private readonly calendarTitle: Locator;
   private readonly seasonTab: Locator;
   private readonly dayCell: Locator;
-  // private readonly gameEvents: Locator
-
-  private readonly createCalendarDialog: CreateCalendarDialog;
-  private readonly menuComponent: MenuComponent;
 
   constructor(page: Page) {
     this.page = page;
@@ -21,10 +15,6 @@ export class CalendarPage {
     this.calendarTitle = page.getByRole('heading');
     this.seasonTab = page.getByRole('tab');
     this.dayCell = page.locator(Selectors.EVENT_COMPONENT);
-    // this.gameEvents = page.locator('app-event').filter({ hasText: '18' }).locator('section').nth(1)
-
-    this.createCalendarDialog = new CreateCalendarDialog(page);
-    this.menuComponent = new MenuComponent(page);
   }
 
   async verifySeasonIsSelected(season: Season) {

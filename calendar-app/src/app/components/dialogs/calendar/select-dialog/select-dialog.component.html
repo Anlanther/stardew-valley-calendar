@@ -15,6 +15,7 @@
   </mat-form-field></mat-dialog-content
 >
 <mat-dialog-actions>
+  <button type="button" (click)="cancel()" class="btn btn-light">Cancel</button>
   <button
     class="btn btn-primary"
     [disabled]="!availableCalendarsFormControl.value"
