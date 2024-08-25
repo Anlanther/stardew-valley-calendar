@@ -92,7 +92,7 @@ export class GameEventDataService {
 
   getSystem(): Observable<GameEvent[]> {
     return this.dataService
-      .graphql(this.getSystemQuery())
+      .graphql(this.getSystemQuery(), { type: 'system' })
       .pipe(
         map((response) =>
           response.gameEvents.data.map((event: GameEvent_Data) =>
