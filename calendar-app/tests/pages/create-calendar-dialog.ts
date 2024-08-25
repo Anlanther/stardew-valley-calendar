@@ -1,4 +1,5 @@
 import { Locator, Page, expect, test } from '@playwright/test';
+import { UnsavedCalendar } from '../../src/app/models/calendar.model';
 
 export class CreateCalendarDialog {
   readonly page: Page;
@@ -54,6 +55,19 @@ export class CreateCalendarDialog {
   async clickCreateButton() {
     await test.step('Click Create Button', async () => {
       await this.createButton.click();
+    });
+  }
+
+  async createCalendar(calendar: UnsavedCalendar) {
+    await test.step('Create Calendar', async () => {
+      await this.fillForm(
+        calendar.name,
+        calendar.description,
+        calendar.systemConfig.includeBirthdays,
+        calendar.systemConfig.includeFestivals,
+        calendar.systemConfig.includeCrops,
+      );
+      await this.clickCreateButton();
     });
   }
 }

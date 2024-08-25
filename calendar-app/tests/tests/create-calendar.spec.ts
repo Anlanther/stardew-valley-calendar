@@ -6,9 +6,42 @@ import { MOCK_CROP_EVENTS } from '../mocks/crop-events.mock';
 import { MOCK_FESTIVAL_EVENTS } from '../mocks/festival-events.mock';
 
 test.describe('Create Calendar', () => {
+  const mockCalendarPlain: UnsavedCalendar = { ...MOCK_CALENDAR_TO_CREATE };
+  const mockCalendarNoName: UnsavedCalendar = {
+    ...MOCK_CALENDAR_TO_CREATE,
+    systemConfig: {
+      ...MOCK_CALENDAR_TO_CREATE.systemConfig,
+      includeBirthdays: true,
+    },
+    name: '',
+  };
+  const mockCalendarWithBirthdays: UnsavedCalendar = {
+    ...MOCK_CALENDAR_TO_CREATE,
+    name: `${MOCK_CALENDAR_TO_CREATE.name} with Birthdays`,
+    systemConfig: {
+      ...MOCK_CALENDAR_TO_CREATE.systemConfig,
+      includeBirthdays: true,
+    },
+  };
+  const mockCalendarWithCrops: UnsavedCalendar = {
+    ...MOCK_CALENDAR_TO_CREATE,
+    name: `${MOCK_CALENDAR_TO_CREATE.name} with Crops`,
+    systemConfig: {
+      ...MOCK_CALENDAR_TO_CREATE.systemConfig,
+      includeBirthdays: true,
+    },
+  };
+  const mockCalendarWithFestivals: UnsavedCalendar = {
+    ...MOCK_CALENDAR_TO_CREATE,
+    name: `${MOCK_CALENDAR_TO_CREATE.name} with Festivals`,
+    systemConfig: {
+      ...MOCK_CALENDAR_TO_CREATE.systemConfig,
+      includeBirthdays: true,
+    },
+  };
   test.describe('Welcome Page', () => {
     test.beforeEach(async ({ welcomePage }) => {
-      await welcomePage.openPage();
+      await welcomePage.openCalendarReadyPage();
     });
 
     test('Create button is disabled by default', async ({
@@ -23,22 +56,13 @@ test.describe('Create Calendar', () => {
       welcomePage,
       createCalendarDialog,
     }) => {
-      const withNoName: UnsavedCalendar = {
-        ...MOCK_CALENDAR_TO_CREATE,
-        systemConfig: {
-          ...MOCK_CALENDAR_TO_CREATE.systemConfig,
-          includeBirthdays: true,
-        },
-        name: '',
-      };
-
       await welcomePage.clickCreateCalendar();
       await createCalendarDialog.fillForm(
-        withNoName.name,
-        withNoName.description,
-        withNoName.systemConfig.includeBirthdays,
-        withNoName.systemConfig.includeFestivals,
-        withNoName.systemConfig.includeCrops,
+        mockCalendarNoName.name,
+        mockCalendarNoName.description,
+        mockCalendarNoName.systemConfig.includeBirthdays,
+        mockCalendarNoName.systemConfig.includeFestivals,
+        mockCalendarNoName.systemConfig.includeCrops,
       );
       await createCalendarDialog.verifyCreateButtonIsDisabled();
     });
@@ -49,25 +73,16 @@ test.describe('Create Calendar', () => {
       welcomePage,
       calendarPage,
     }) => {
-      await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_TO_CREATE);
-      await calendarPage.verifyCorrectTitle(MOCK_CALENDAR_TO_CREATE.name);
+      await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
+      await calendarPage.verifyCorrectTitle(mockCalendarPlain.name);
     });
 
     test('Only birthdays are included', async ({
       welcomePage,
       calendarPage,
     }) => {
-      const mockWithBirthdays: UnsavedCalendar = {
-        ...MOCK_CALENDAR_TO_CREATE,
-        name: `${MOCK_CALENDAR_TO_CREATE.name} with Birthdays`,
-        systemConfig: {
-          ...MOCK_CALENDAR_TO_CREATE.systemConfig,
-          includeBirthdays: true,
-        },
-      };
-
-      await welcomePage.selectOrCreateCalendar(mockWithBirthdays);
-      await welcomePage.openExistingCalendar(mockWithBirthdays.name);
+      await welcomePage.selectOrCreateCalendar(mockCalendarWithBirthdays);
+      await welcomePage.openExistingCalendar(mockCalendarWithBirthdays.name);
 
       for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
         const mockBirthday = MOCK_BIRTHDAY_EVENTS[i];
@@ -99,16 +114,7 @@ test.describe('Create Calendar', () => {
     });
 
     test('Only crops are included', async ({ welcomePage, calendarPage }) => {
-      const mockWithCrops: UnsavedCalendar = {
-        ...MOCK_CALENDAR_TO_CREATE,
-        name: `${MOCK_CALENDAR_TO_CREATE.name} with Crops`,
-        systemConfig: {
-          ...MOCK_CALENDAR_TO_CREATE.systemConfig,
-          includeBirthdays: true,
-        },
-      };
-
-      await welcomePage.selectOrCreateCalendar(mockWithCrops);
+      await welcomePage.selectOrCreateCalendar(mockCalendarWithCrops);
 
       for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
         const mockBirthday = MOCK_BIRTHDAY_EVENTS[i];
@@ -143,16 +149,7 @@ test.describe('Create Calendar', () => {
       welcomePage,
       calendarPage,
     }) => {
-      const mockWithFestivals: UnsavedCalendar = {
-        ...MOCK_CALENDAR_TO_CREATE,
-        name: `${MOCK_CALENDAR_TO_CREATE.name} with Festivals`,
-        systemConfig: {
-          ...MOCK_CALENDAR_TO_CREATE.systemConfig,
-          includeBirthdays: true,
-        },
-      };
-
-      await welcomePage.selectOrCreateCalendar(mockWithFestivals);
+      await welcomePage.selectOrCreateCalendar(mockCalendarWithFestivals);
 
       for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
         const mockBirthday = MOCK_BIRTHDAY_EVENTS[i];
@@ -189,16 +186,16 @@ test.describe('Create Calendar', () => {
         menuComponent,
         editCalendarDialog,
       }) => {
-        await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_TO_CREATE);
+        await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
         await menuComponent.selectEditCalendar();
-        await editCalendarDialog.verifyInput(MOCK_CALENDAR_TO_CREATE);
+        await editCalendarDialog.verifyInput(mockCalendarPlain);
       });
 
       test('Create New from menu opens create dialog', async ({
         welcomePage,
         menuComponent,
       }) => {
-        await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_TO_CREATE);
+        await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
         await menuComponent.selectCreateCalendar();
       });
 
@@ -207,18 +204,28 @@ test.describe('Create Calendar', () => {
         menuComponent,
         selectCalendarDialog,
       }) => {
-        await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_TO_CREATE);
+        await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
         await menuComponent.selectSelectCalendar();
         await selectCalendarDialog.verifySelectedCalendar(
-          MOCK_CALENDAR_TO_CREATE.name,
+          mockCalendarPlain.name,
         );
       });
-      //   })
     });
-
-    // test.afterEach(async ({ menuComponent }) => {
-    //   await menuComponent.selectCalendar(MOCK_CALENDAR_TO_CREATE.name);
-    //   await menuComponent.deleteCalendar();
-    // });
   });
+
+  // test.afterAll(async ({ welcomePage, menuComponent }) => {
+  //   const createdCalendars = [
+  //     mockCalendarPlain,
+  //     mockCalendarNoName,
+  //     mockCalendarWithBirthdays,
+  //     mockCalendarWithCrops,
+  //     mockCalendarWithFestivals,
+  //   ];
+
+  //   for (let i = 1; i < createdCalendars.length; i++) {
+  //     const calendar = createdCalendars[i];
+  //     await welcomePage.openExistingCalendar(calendar.name);
+  //     await menuComponent.deleteCalendar();
+  //   }
+  // });
 });

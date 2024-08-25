@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
-import { catchError, exhaustMap, filter, map, switchMap, tap } from 'rxjs';
+import { catchError, exhaustMap, filter, map, switchMap } from 'rxjs';
 import { CreateCalendarDialogComponent } from '../components/dialogs/calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from '../components/dialogs/calendar/edit-dialog/edit-dialog.component';
 import { SelectCalendarDialogComponent } from '../components/dialogs/calendar/select-dialog/select-dialog.component';
@@ -13,7 +13,6 @@ import { DeleteDialogComponent } from '../components/dialogs/delete/delete-dialo
 import { AppStore } from '../models/app-store.model';
 import { Calendar } from '../models/calendar.model';
 import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
-import { StatusMessage } from '../models/status-message.model';
 import { Type } from '../models/type.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
 import { GameEventDataService } from '../services/game-event/game-event-data.service';
@@ -35,6 +34,10 @@ export class AppEffects {
         AppActions.getCalendars(),
         AppActions.createDefaultGameEvents(),
       ]),
+      catchError((error) => {
+        AppActions.aPIFailed();
+        throw Error(error);
+      }),
     ),
   );
 
@@ -46,34 +49,23 @@ export class AppEffects {
           .getAll()
           .pipe(map((calendars) => AppActions.getCalendarsSuccess(calendars))),
       ),
-      catchError((error) => {
-        AppActions.updateStatusMessage(StatusMessage.NO_API_ACCESS);
-        throw Error(error);
-      }),
     ),
   );
 
   createCalendar$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createCalendar),
-      concatLatestFrom(() =>
-        this.store.pipe(select(AppFeature.selectSavedSystemEvents)),
-      ),
-      exhaustMap(([, systemEvents]) => {
-        const dialogRef = this.dialog.open(CreateCalendarDialogComponent, {
-          data: { systemEvents },
-        });
+      exhaustMap(() => {
+        const dialogRef = this.dialog.open(CreateCalendarDialogComponent, {});
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
-      tap((x) => console.log('system', x)),
       switchMap(
         (dialogRes: {
           name: string;
           includeBirthdays: boolean;
           includeFestivals: boolean;
           includeCrops: boolean;
-          systemEvents: GameEvent[];
           description: string;
         }) =>
           this.calendarDataService
@@ -83,7 +75,6 @@ export class AppEffects {
               dialogRes.includeBirthdays,
               dialogRes.includeFestivals,
               dialogRes.includeCrops,
-              dialogRes.systemEvents,
             )
             .pipe(
               map((calendar) => AppActions.createCalendarSuccess(calendar)),
