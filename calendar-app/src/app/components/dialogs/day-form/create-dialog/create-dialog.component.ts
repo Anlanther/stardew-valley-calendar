@@ -81,6 +81,10 @@ export class CreateEventDialogComponent {
     this.eventForm.get('tag')?.patchValue(value.toLowerCase());
   }
 
+  cancel(): void {
+    this.dialogRef.close();
+  }
+
   private filterTag(category: TagCategory) {
     const tags: Tag[] = [];
     TAG_METADATA.forEach(

@@ -68,7 +68,7 @@ export class GameEventDataService {
       .graphql(this.updateQuery(), variables)
       .pipe(
         map((response) =>
-          this.convertTogameEvent(response.updateGameEvent.data),
+          this.convertToGameEvent(response.updateGameEvent.data),
         ),
       );
   }
@@ -96,13 +96,13 @@ export class GameEventDataService {
       .pipe(
         map((response) =>
           response.gameEvents.data.map((event: GameEvent_Data) =>
-            this.convertTogameEvent(event),
+            this.convertToGameEvent(event),
           ),
         ),
       );
   }
 
-  convertTogameEvent(data: GameEvent_Data): GameEvent {
+  convertToGameEvent(data: GameEvent_Data): GameEvent {
     const gameEvent: GameEvent = {
       id: data.id,
       title: data.attributes.title,

@@ -1,51 +1,69 @@
 import { expect, Locator, Page, test } from '@playwright/test';
 import { DeleteDialog } from './delete-dialog';
-import { SelectCalendarDialog } from './select-calendar-dialog';
 
 export class MenuComponent {
   readonly page: Page;
 
   private readonly menuButton: Locator;
   private readonly deleteOption: Locator;
-  private readonly selectCalendarOption: Locator;
+  private readonly editOption: Locator;
+  private readonly selectOption: Locator;
+  private readonly createOption: Locator;
 
   private readonly deleteDialog: DeleteDialog;
-  private readonly selectDialog: SelectCalendarDialog;
 
   constructor(page: Page) {
     this.page = page;
 
-    this.menuButton = page.locator('[data-test="settings-menu"]');
+    this.menuButton = page.getByRole('button').filter({ hasText: 'more_vert' });
     this.deleteOption = page.getByRole('menuitem', { name: 'Delete' });
-    this.selectCalendarOption = page.getByRole('menuitem', {
+    this.editOption = page.getByRole('menuitem', { name: 'Edit Calendar' });
+    this.selectOption = page.getByRole('menuitem', {
       name: 'Select Calendar',
+    });
+    this.createOption = page.getByRole('menuitem', {
+      name: 'Create New',
     });
 
     this.deleteDialog = new DeleteDialog(page);
-    this.selectDialog = new SelectCalendarDialog(page);
   }
 
   async deleteCalendar() {
-    test.step('Delete Calendar', async () => {
+    await test.step('Delete Calendar', async () => {
       await this.menuButton.click();
       await this.deleteOption.click();
       await this.deleteDialog.confirmDelete();
     });
   }
 
-  async selectCalendar(name: string) {
-    test.step('Select Calendar', async () => {
+  async selectEditCalendar() {
+    await test.step('Edit Calendar', async () => {
       await this.menuButton.click();
-      await this.selectCalendarOption.click();
-      await this.selectDialog.selectCalendar(name);
+      await this.editOption.click();
+    });
+  }
+
+  async selectSelectCalendar() {
+    await test.step('Select Calendar', async () => {
+      await this.menuButton.click();
+      await this.selectOption.click();
+    });
+  }
+
+  async selectCreateCalendar() {
+    await test.step('Create Calendar', async () => {
+      await this.menuButton.click();
+      await this.createOption.click();
     });
   }
 
   async openMenu() {
-    test.step('Open Menu', async () => {
+    await test.step('Open Menu', async () => {
       await this.menuButton.click();
       await expect(this.deleteOption).toBeVisible();
-      await expect(this.selectCalendarOption).toBeVisible();
+      await expect(this.selectOption).toBeVisible();
+      await expect(this.editOption).toBeVisible();
+      await expect(this.createOption).toBeVisible();
     });
   }
 }

@@ -24,7 +24,7 @@
     </mat-form-field>
     <section>
       <mat-slide-toggle formControlName="includeBirthdays">
-        Include Birthday
+        Include Birthdays
       </mat-slide-toggle>
       <mat-slide-toggle formControlName="includeFestivals">
         Include Festivals
@@ -36,6 +36,7 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
+  <button type="button" (click)="cancel()" class="btn btn-light">Cancel</button>
   <button
     type="button"
     class="btn btn-primary"

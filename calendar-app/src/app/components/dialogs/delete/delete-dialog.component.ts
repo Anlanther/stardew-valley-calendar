@@ -23,4 +23,8 @@ export class DeleteDialogComponent {
       gameEvents: this.data.gameEvents,
     });
   }
+
+  cancel(): void {
+    this.dialogRef.close();
+  }
 }

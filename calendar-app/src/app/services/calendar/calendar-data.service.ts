@@ -18,7 +18,6 @@ export class CalendarDataService {
     includeBirthdays: boolean,
     includeFestivals: boolean,
     includeCrops: boolean,
-    defaultEvents: GameEvent[],
   ): Observable<Calendar> {
     const publishedAt = new Date().toISOString();
     const variables = {
@@ -26,7 +25,6 @@ export class CalendarDataService {
       description,
       publishedAt,
       systemConfig: { includeBirthdays, includeFestivals, includeCrops },
-      gameEvents: defaultEvents.map((e) => e.id),
     };
 
     return this.dataService
