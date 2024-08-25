@@ -9,6 +9,9 @@
         formControlName="name"
         placeholder="My First Calendar"
       />
+      @if (calendarForm.get("name")!.hasError("duplicateName")) {
+        <mat-error>Duplicate Name</mat-error>
+      }
     </mat-form-field>
     <mat-form-field class="w-100">
       <mat-label>Description</mat-label>

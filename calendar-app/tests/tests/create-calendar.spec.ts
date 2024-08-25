@@ -74,7 +74,7 @@ test.describe('Create Calendar', () => {
       calendarPage,
     }) => {
       await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
-      await calendarPage.verifyCorrectTitle(mockCalendarPlain.name);
+      await calendarPage.verifyCorrectTitle(mockCalendarPlain.name, 1);
     });
 
     test('Only birthdays are included', async ({

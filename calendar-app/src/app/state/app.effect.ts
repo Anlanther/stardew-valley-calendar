@@ -55,8 +55,17 @@ export class AppEffects {
   createCalendar$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createCalendar),
-      exhaustMap(() => {
-        const dialogRef = this.dialog.open(CreateCalendarDialogComponent, {});
+      concatLatestFrom(() =>
+        this.store.pipe(select(AppFeature.selectAvailableCalendars)),
+      ),
+      exhaustMap(([, existingCalendars]) => {
+        const dialogRef = this.dialog.open(CreateCalendarDialogComponent, {
+          data: {
+            existingCalendars: existingCalendars.map(
+              (calendar) => calendar.name,
+            ),
+          },
+        });
         return dialogRef.afterClosed();
       }),
       filter((dialogRes) => !!dialogRes),
@@ -241,12 +250,16 @@ export class AppEffects {
       concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectSelectedDate)),
         this.store.pipe(select(AppFeature.selectActiveCalendar)),
+        this.store.pipe(select(AppFeature.selectAvailableCalendars)),
       ]),
-      exhaustMap(([, activeDate, activeCalendar]) => {
+      exhaustMap(([, activeDate, activeCalendar, existingCalendars]) => {
         const dialogRef = this.dialog.open(EditCalendarDialogComponent, {
           data: {
             activeCalendar,
             year: activeDate.year,
+            existingCalendars: existingCalendars.map(
+              (calendar) => calendar.name,
+            ),
           },
         });
         return dialogRef.afterClosed();

@@ -24,9 +24,9 @@ export class CalendarPage {
     });
   }
 
-  async verifyCorrectTitle(name: string) {
+  async verifyCorrectTitle(name: string, year: number) {
     await test.step('Verify title holds calendar name and first year', async () => {
-      const yearReference = 'year 1';
+      const yearReference = `year ${year}`;
       await expect(this.calendarTitle).toContainText(name);
       await expect(this.calendarTitle).toContainText(yearReference);
     });

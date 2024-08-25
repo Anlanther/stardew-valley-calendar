@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { duplicateNameValidator } from '../../../../services/form-validators.utils';
 
 @Component({
   selector: 'app-create-calendar-dialog',
@@ -9,14 +10,20 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CreateCalendarDialogComponent {
   private fb = inject(FormBuilder);
+  dialogRef = inject(MatDialogRef<CreateCalendarDialogComponent>);
+  data: { existingCalendars: string[] } = inject(MAT_DIALOG_DATA);
 
   calendarForm!: FormGroup;
 
-  dialogRef = inject(MatDialogRef<CreateCalendarDialogComponent>);
-
   constructor() {
     this.calendarForm = this.fb.group({
-      name: ['', [Validators.required]],
+      name: [
+        '',
+        [
+          Validators.required,
+          duplicateNameValidator(this.data.existingCalendars),
+        ],
+      ],
       description: [''],
       includeBirthdays: [false],
       includeFestivals: [false],
