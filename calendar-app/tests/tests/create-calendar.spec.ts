@@ -72,14 +72,17 @@ test.describe('Create Calendar', () => {
     test('App heading to have calendar name and default to year 1 Spring', async ({
       welcomePage,
       calendarPage,
+      menuComponent,
     }) => {
       await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
       await calendarPage.verifyCorrectTitle(mockCalendarPlain.name, 1);
+      await menuComponent.deleteCalendar();
     });
 
     test('Only birthdays are included', async ({
       welcomePage,
       calendarPage,
+      menuComponent,
     }) => {
       await welcomePage.selectOrCreateCalendar(mockCalendarWithBirthdays);
 
@@ -110,9 +113,14 @@ test.describe('Create Calendar', () => {
           false,
         );
       }
+      await menuComponent.deleteCalendar();
     });
 
-    test('Only crops are included', async ({ welcomePage, calendarPage }) => {
+    test('Only crops are included', async ({
+      welcomePage,
+      calendarPage,
+      menuComponent,
+    }) => {
       await welcomePage.selectOrCreateCalendar(mockCalendarWithCrops);
 
       for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
@@ -142,11 +150,13 @@ test.describe('Create Calendar', () => {
           false,
         );
       }
+      await menuComponent.deleteCalendar();
     });
 
     test('Only festivals are included', async ({
       welcomePage,
       calendarPage,
+      menuComponent,
     }) => {
       await welcomePage.selectOrCreateCalendar(mockCalendarWithFestivals);
 
@@ -177,6 +187,7 @@ test.describe('Create Calendar', () => {
           true,
         );
       }
+      await menuComponent.deleteCalendar();
     });
 
     test.describe('Menu', () => {
@@ -188,6 +199,7 @@ test.describe('Create Calendar', () => {
         await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
         await menuComponent.selectEditCalendar();
         await editCalendarDialog.verifyInput(mockCalendarPlain);
+        await menuComponent.deleteCalendar();
       });
 
       test('Create New from menu opens create dialog', async ({
@@ -196,6 +208,7 @@ test.describe('Create Calendar', () => {
       }) => {
         await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
         await menuComponent.selectCreateCalendar();
+        await menuComponent.deleteCalendar();
       });
 
       test('Select Calendar opens select dialog with current calendar being selected', async ({
@@ -208,6 +221,7 @@ test.describe('Create Calendar', () => {
         await selectCalendarDialog.verifySelectedCalendar(
           mockCalendarPlain.name,
         );
+        await menuComponent.deleteCalendar();
       });
     });
   });
