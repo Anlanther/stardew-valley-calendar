@@ -28,7 +28,7 @@ test.describe('Create Calendar', () => {
     name: `${MOCK_CALENDAR_TO_CREATE.name} with Crops`,
     systemConfig: {
       ...MOCK_CALENDAR_TO_CREATE.systemConfig,
-      includeBirthdays: true,
+      includeCrops: true,
     },
   };
   const mockCalendarWithFestivals: UnsavedCalendar = {
@@ -36,7 +36,7 @@ test.describe('Create Calendar', () => {
     name: `${MOCK_CALENDAR_TO_CREATE.name} with Festivals`,
     systemConfig: {
       ...MOCK_CALENDAR_TO_CREATE.systemConfig,
-      includeBirthdays: true,
+      includeFestivals: true,
     },
   };
   test.describe('Welcome Page', () => {
@@ -82,7 +82,6 @@ test.describe('Create Calendar', () => {
       calendarPage,
     }) => {
       await welcomePage.selectOrCreateCalendar(mockCalendarWithBirthdays);
-      await welcomePage.openExistingCalendar(mockCalendarWithBirthdays.name);
 
       for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
         const mockBirthday = MOCK_BIRTHDAY_EVENTS[i];
@@ -212,20 +211,4 @@ test.describe('Create Calendar', () => {
       });
     });
   });
-
-  // test.afterAll(async ({ welcomePage, menuComponent }) => {
-  //   const createdCalendars = [
-  //     mockCalendarPlain,
-  //     mockCalendarNoName,
-  //     mockCalendarWithBirthdays,
-  //     mockCalendarWithCrops,
-  //     mockCalendarWithFestivals,
-  //   ];
-
-  //   for (let i = 1; i < createdCalendars.length; i++) {
-  //     const calendar = createdCalendars[i];
-  //     await welcomePage.openExistingCalendar(calendar.name);
-  //     await menuComponent.deleteCalendar();
-  //   }
-  // });
 });

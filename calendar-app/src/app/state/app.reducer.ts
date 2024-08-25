@@ -48,11 +48,33 @@ export const appReducer = createReducer<AppState>(
       };
     },
   ),
-  on(AppActions.createCalendarSuccess, (state, action) => ({
-    ...state,
-    activeCalendar: action.calendar,
-    availableCalendars: [...state.availableCalendars, action.calendar],
-  })),
+  on(AppActions.createCalendarSuccess, (state, action) => {
+    const filteredGameEvents = EventUtils.getFilteredSystemEvents(
+      action.calendar.systemConfig.includeBirthdays,
+      action.calendar.systemConfig.includeCrops,
+      action.calendar.systemConfig.includeFestivals,
+      [...state.savedSystemEvents, ...action.calendar.gameEvents],
+    );
+
+    return {
+      ...state,
+      activeCalendar: { ...action.calendar, filteredGameEvents },
+      availableCalendars: [...state.availableCalendars, action.calendar],
+    };
+  }),
+  on(AppActions.updateCalendarSuccess, (state, action) => {
+    const filteredGameEvents = EventUtils.getFilteredSystemEvents(
+      action.calendar.systemConfig.includeBirthdays,
+      action.calendar.systemConfig.includeCrops,
+      action.calendar.systemConfig.includeFestivals,
+      [...state.savedSystemEvents, ...action.calendar.gameEvents],
+    );
+
+    return {
+      ...state,
+      activeCalendar: { ...action.calendar, filteredGameEvents },
+    };
+  }),
   on(AppActions.getCalendarsSuccess, (state, action) => ({
     ...state,
     availableCalendars: action.calendars,
