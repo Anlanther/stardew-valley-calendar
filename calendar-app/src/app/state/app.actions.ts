@@ -48,7 +48,10 @@ export const AppActions = createActionGroup({
     'Create Event Success': (gameEvent: GameEvent) => ({
       gameEvent,
     }),
-    'Added Event to Calendar': (calendar: Calendar) => ({ calendar }),
+    'Added Event to Calendar': (calendar: Calendar, gameEvent: GameEvent) => ({
+      calendar,
+      gameEvent,
+    }),
     'API Failed': emptyProps(),
     'Toggle Nav Bar': (isOpen: boolean) => ({ isOpen }),
     Initialise: emptyProps(),

@@ -290,7 +290,11 @@ export class AppEffects {
         };
         return this.calendarDataService
           .updateEvents(updatedCalendar)
-          .pipe(map((calendar) => AppActions.addedEventToCalendar(calendar)));
+          .pipe(
+            map((calendar) =>
+              AppActions.addedEventToCalendar(calendar, action.gameEvent),
+            ),
+          );
       }),
     ),
   );
