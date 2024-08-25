@@ -1,4 +1,5 @@
 import { createFeature, createSelector } from '@ngrx/store';
+import { StatusMessage } from '../models/status-message.model';
 import { EventUtils } from '../services/event.utils';
 import { appReducer } from './app.reducer';
 
@@ -35,6 +36,24 @@ export const AppFeature = createFeature({
       baseSelectors.selectNavBarOpen,
       baseSelectors.selectSelectedDate,
       (navBarOpen, date) => ({ navBarOpen, day: date.day }),
+    ),
+    selectStatusMessage: createSelector(
+      baseSelectors.selectApiFailed,
+      baseSelectors.selectActiveCalendar,
+      baseSelectors.selectAvailableCalendars,
+      baseSelectors.selectSavedSystemEvents,
+      (apiFailed, hasSelectedCalendar, availableCalendars, systemEvents) => {
+        const appNotReady = apiFailed || systemEvents.length === 0;
+
+        if (appNotReady) {
+          return StatusMessage.NO_API_ACCESS;
+        } else if (availableCalendars.length === 0) {
+          return StatusMessage.NO_CALENDARS_AVAILABLE;
+        } else if (!hasSelectedCalendar) {
+          return StatusMessage.NO_SELECTED_CALENDAR;
+        }
+        return StatusMessage.READY;
+      },
     ),
   }),
 });

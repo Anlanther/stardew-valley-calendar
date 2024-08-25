@@ -5,7 +5,6 @@ import { EventState } from '../models/event-state.model';
 import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { SelectedDate } from '../models/selected-date.model';
-import { StatusMessage } from '../models/status-message.model';
 import { EventUtils } from '../services/event.utils';
 import { AppActions } from './app.actions';
 
@@ -15,7 +14,7 @@ export interface AppState {
   selectedDate: SelectedDate;
   availableCalendars: Calendar[];
   savedSystemEvents: GameEvent[];
-  statusMessage: StatusMessage;
+  apiFailed: boolean;
   navBarOpen: boolean;
 }
 
@@ -25,7 +24,7 @@ export const initialState: AppState = {
   selectedDate: { day: 1, year: 1, season: Season.SPRING },
   availableCalendars: [],
   savedSystemEvents: [],
-  statusMessage: StatusMessage.NO_API_ACCESS,
+  apiFailed: false,
   navBarOpen: false,
 };
 
@@ -39,14 +38,12 @@ export const appReducer = createReducer<AppState>(
         action.calendar.systemConfig.includeBirthdays,
         action.calendar.systemConfig.includeCrops,
         action.calendar.systemConfig.includeFestivals,
-        action.calendar.gameEvents,
+        [...state.savedSystemEvents, ...action.calendar.gameEvents],
       );
 
       return {
         ...state,
-        activeCalendar: action.calendar,
-        statusMessage: StatusMessage.READY,
-        filteredGameEvents,
+        activeCalendar: { ...action.calendar, filteredGameEvents },
         navBarOpen: false,
       };
     },
@@ -55,15 +52,10 @@ export const appReducer = createReducer<AppState>(
     ...state,
     activeCalendar: action.calendar,
     availableCalendars: [...state.availableCalendars, action.calendar],
-    statusMessage: StatusMessage.READY,
   })),
   on(AppActions.getCalendarsSuccess, (state, action) => ({
     ...state,
     availableCalendars: action.calendars,
-    statusMessage:
-      action.calendars.length === 0
-        ? StatusMessage.NO_CALENDARS_AVAILABLE
-        : StatusMessage.NO_SELECTED_CALENDAR,
   })),
   on(AppActions.updateActiveFormEvents, (state, action) => ({
     ...state,
@@ -116,19 +108,11 @@ export const appReducer = createReducer<AppState>(
       activeCalendar: null,
       activeFormEvents: null,
       availableCalendars: updatedAvailableCalendars,
-      statusMessage:
-        updatedAvailableCalendars.length === 0
-          ? StatusMessage.NO_CALENDARS_AVAILABLE
-          : StatusMessage.NO_SELECTED_CALENDAR,
     };
   }),
   on(AppActions.updateActiveDay, (state, action) => ({
     ...state,
     selectedDate: { ...state.selectedDate, day: action.day },
-  })),
-  on(AppActions.updateStatusMessage, (state, action) => ({
-    ...state,
-    statusMessage: action.message,
   })),
   on(AppActions.updateEventSuccess, (state, action) => ({
     ...state,
@@ -171,7 +155,7 @@ export const appReducer = createReducer<AppState>(
       action.calendar.systemConfig.includeBirthdays,
       action.calendar.systemConfig.includeCrops,
       action.calendar.systemConfig.includeFestivals,
-      action.calendar.gameEvents,
+      [...state.savedSystemEvents, ...action.calendar.gameEvents],
     );
     return {
       ...state,
@@ -179,4 +163,8 @@ export const appReducer = createReducer<AppState>(
       selectedDate: { ...state.selectedDate, year: action.year },
     };
   }),
+  on(AppActions.aPIFailed, (state, action) => ({
+    ...state,
+    apiFailed: true,
+  })),
 );

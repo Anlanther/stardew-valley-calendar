@@ -44,6 +44,14 @@ export class WelcomePage {
     });
   }
 
+  async openCalendarReadyPage() {
+    await test.step('Open Welcome Page with API Ready and Calendars Loaded', async () => {
+      await this.page.goto(URL.LOCAL_APP);
+      await this.page.waitForSelector('section.welcome__actions');
+      await expect(this.createCalendarButton).toBeVisible();
+    });
+  }
+
   async verifyApiConnectionFailedMessage() {
     await test.step('Verify API Connection Failed message', async () => {
       await expect(this.apiConnectionFailedMessage).toBeVisible();
@@ -51,14 +59,14 @@ export class WelcomePage {
   }
 
   async verifyNoExistingCalendarsMessage() {
-    await test.step('Verify API Connection Failed message', async () => {
+    await test.step('Verify Welcome Page with No Existing Calendar Message and Create Calendar Option', async () => {
       await expect(this.noExistingCalendarsMessage).toBeVisible();
       await expect(this.createCalendarButton).toBeVisible();
     });
   }
 
   async verifySelectOrCreateCalendarMessage() {
-    await test.step('Verify API Connection Failed message', async () => {
+    await test.step('Verify Welcome Page with Existing Calendars to Select or Create Calendar Option', async () => {
       await expect(this.selectOrCreateCalendarMessage).toBeVisible();
       await expect(this.createCalendarButton).toBeVisible();
       await expect(this.selectCalendarButton).toBeVisible();
@@ -85,7 +93,7 @@ export class WelcomePage {
 
   async openAndCreateCalendar(calendar: UnsavedCalendar) {
     await test.step('Create Calendar', async () => {
-      await this.openPage();
+      await this.openCalendarReadyPage();
       await this.clickCreateCalendar();
       await this.createCalendarDialog.fillForm(
         calendar.name,
@@ -100,7 +108,7 @@ export class WelcomePage {
 
   async openExistingCalendar(name: string) {
     await test.step('Open Existing Calendar', async () => {
-      await this.openPage();
+      await this.openCalendarReadyPage();
       await this.selectCalendarButton.click();
       await this.selectCalendarDialog.selectCalendar(name);
     });
@@ -108,30 +116,24 @@ export class WelcomePage {
 
   async selectOrCreateCalendar(calendar: UnsavedCalendar) {
     await test.step('Open Existing Calendar', async () => {
-      await this.openPage();
+      await this.openCalendarReadyPage();
       await expect(this.apiConnectionFailedMessage).not.toBeVisible();
       const createButtonIsVisible = await this.selectCalendarButton.isVisible();
       if (!createButtonIsVisible) {
-        return await this.clickCreateCalendar();
+        await this.clickCreateCalendar();
+        return await this.createCalendarDialog.createCalendar(calendar);
       }
 
       await this.selectCalendarButton.click();
       await this.selectCalendarDialog.clickOnSelector();
       const calendarOptionExists = await this.page
-        .getByRole('option', { name: calendar.name })
+        .getByRole('option', { name: calendar.name, exact: true })
         .isVisible();
       await this.selectCalendarDialog.escapeSelector();
       if (!calendarOptionExists) {
         await this.selectCalendarDialog.clickCancel();
         await this.clickCreateCalendar();
-        await this.createCalendarDialog.fillForm(
-          calendar.name,
-          calendar.description,
-          calendar.systemConfig.includeBirthdays,
-          calendar.systemConfig.includeFestivals,
-          calendar.systemConfig.includeCrops,
-        );
-        return await this.createCalendarDialog.clickCreateButton();
+        return await this.createCalendarDialog.createCalendar(calendar);
       }
 
       await this.selectCalendarDialog.selectCalendar(calendar.name);
