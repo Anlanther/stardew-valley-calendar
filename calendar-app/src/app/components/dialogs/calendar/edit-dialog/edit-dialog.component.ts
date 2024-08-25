@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Calendar } from '../../../../models/calendar.model';
+import { duplicateNameValidator } from '../../../../services/form-validators.utils';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -14,11 +15,25 @@ export class EditCalendarDialogComponent {
   calendarForm!: FormGroup;
 
   dialogRef = inject(MatDialogRef<EditCalendarDialogComponent>);
-  data: { activeCalendar: Calendar; year: number } = inject(MAT_DIALOG_DATA);
+  data: {
+    activeCalendar: Calendar;
+    year: number;
+    existingCalendars: string[];
+  } = inject(MAT_DIALOG_DATA);
 
   constructor() {
     this.calendarForm = this.fb.group({
-      name: [this.data.activeCalendar.name, [Validators.required]],
+      name: [
+        this.data.activeCalendar.name,
+        [
+          Validators.required,
+          duplicateNameValidator(
+            this.data.existingCalendars.filter(
+              (name) => name !== this.data.activeCalendar.name,
+            ),
+          ),
+        ],
+      ],
       description: [this.data.activeCalendar.description],
       year: [this.data.year, [Validators.required]],
       includeBirthdays: [

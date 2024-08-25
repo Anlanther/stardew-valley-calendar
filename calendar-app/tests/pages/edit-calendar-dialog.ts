@@ -9,6 +9,7 @@ export class EditCalendarDialog {
   private readonly includeBirthdaysToggle: Locator;
   private readonly includeFestivalsToggle: Locator;
   private readonly includeCropsToggle: Locator;
+  private readonly yearForm: Locator;
   private readonly editButton: Locator;
   private readonly cancelButton: Locator;
 
@@ -22,6 +23,7 @@ export class EditCalendarDialog {
     this.includeCropsToggle = page.getByLabel('Include Crops');
     this.editButton = page.getByRole('button', { name: 'Edit' });
     this.cancelButton = page.getByRole('button', { name: 'Cancel' });
+    this.yearForm = page.getByPlaceholder('1');
   }
 
   async verifyEditButtonIsDisabled() {
@@ -30,24 +32,44 @@ export class EditCalendarDialog {
     });
   }
 
-  async fillForm(
-    name: string,
-    description: string,
-    includeBirthdays: boolean,
-    includeFestivals: boolean,
-    includeCrops: boolean,
-  ) {
-    await test.step('Edit Mock Calendar', async () => {
+  async updateNameForm(name: string) {
+    await test.step('Edit Mock Calendar Name', async () => {
       await this.nameForm.fill(name);
+    });
+  }
+
+  async updateDescriptionForm(description: string) {
+    await test.step('Edit Mock Calendar Description', async () => {
       await this.descriptionForm.fill(description);
+    });
+  }
+
+  async updateIncludeBirthdaysCheckbox(includeBirthdays: boolean) {
+    await test.step('Edit Mock Calendar includeBirthdays', async () => {
       await this.includeBirthdaysToggle.setChecked(includeBirthdays);
-      await this.includeFestivalsToggle.setChecked(includeFestivals);
+    });
+  }
+
+  async updateYearForm(year: number) {
+    await test.step('Edit Mock Calendar yearForm', async () => {
+      await this.yearForm.fill(`${year}`);
+    });
+  }
+
+  async updateIncludeCropsCheckbox(includeCrops: boolean) {
+    await test.step('Edit Mock Calendar includeCrops', async () => {
       await this.includeCropsToggle.setChecked(includeCrops);
     });
   }
 
-  async clickCreateButton() {
-    await test.step('Click Create Button', async () => {
+  async updateIncludeFestivalsCheckbox(includeFestivals: boolean) {
+    await test.step('Edit Mock Calendar includeFestivals', async () => {
+      await this.includeFestivalsToggle.setChecked(includeFestivals);
+    });
+  }
+
+  async clickEditButton() {
+    await test.step('Click Edit Button', async () => {
       await this.editButton.click();
     });
   }
