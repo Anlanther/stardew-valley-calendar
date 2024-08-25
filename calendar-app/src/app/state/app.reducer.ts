@@ -90,14 +90,14 @@ export const appReducer = createReducer<AppState>(
   })),
   on(AppActions.addedEventToCalendar, (state, action) => ({
     ...state,
-    activeCalendar: action.calendar,
-  })),
-  on(AppActions.createEventSuccess, (state, action) => ({
-    ...state,
     activeCalendar: state.activeCalendar
       ? {
           ...state.activeCalendar,
           gameEvents: [...state.activeCalendar.gameEvents, action.gameEvent],
+          filteredGameEvents: [
+            ...state.activeCalendar.filteredGameEvents,
+            action.gameEvent,
+          ],
         }
       : null,
     activeFormEvents: state.activeFormEvents
