@@ -4,11 +4,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TAG_METADATA } from '../../../../constants/tag-metadata.constant';
 import { UnsavedGameDate } from '../../../../models/game-date.model';
-import { UnsavedGameEvent } from '../../../../models/game-event.model';
+import {
+  GameEvent,
+  UnsavedGameEvent,
+} from '../../../../models/game-event.model';
 import { Season } from '../../../../models/season.model';
 import { TagCategory } from '../../../../models/tag-category.model';
 import { Tag } from '../../../../models/tag.model';
 import { Type } from '../../../../models/type.model';
+import { uniqueTitleTagValidator } from '../../../../services/form-validators.utils';
 
 @Component({
   selector: 'app-create-event-dialog',
@@ -19,7 +23,12 @@ export class CreateEventDialogComponent {
   private fb = inject(FormBuilder);
   private titleCase = inject(TitleCasePipe);
   dialogRef = inject(MatDialogRef<CreateEventDialogComponent>);
-  data: { day: number; season: Season; year: number } = inject(MAT_DIALOG_DATA);
+  data: {
+    day: number;
+    season: Season;
+    year: number;
+    existingEvents: GameEvent[];
+  } = inject(MAT_DIALOG_DATA);
 
   eventForm!: FormGroup;
 
@@ -42,12 +51,15 @@ export class CreateEventDialogComponent {
   }
 
   constructor() {
-    this.eventForm = this.fb.group({
-      title: ['', [Validators.required]],
-      description: [''],
-      tag: [null, [Validators.required]],
-      isRecurring: [false],
-    });
+    this.eventForm = this.fb.group(
+      {
+        title: ['', [Validators.required]],
+        description: [''],
+        tag: [null, [Validators.required]],
+        isRecurring: [false],
+      },
+      { validators: uniqueTitleTagValidator(this.data.existingEvents) },
+    );
   }
 
   createEvent() {

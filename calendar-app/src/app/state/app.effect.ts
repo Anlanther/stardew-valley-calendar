@@ -7,9 +7,9 @@ import { catchError, exhaustMap, filter, map, switchMap } from 'rxjs';
 import { CreateCalendarDialogComponent } from '../components/dialogs/calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from '../components/dialogs/calendar/edit-dialog/edit-dialog.component';
 import { SelectCalendarDialogComponent } from '../components/dialogs/calendar/select-dialog/select-dialog.component';
-import { CreateEventDialogComponent } from '../components/dialogs/day-form/create-dialog/create-dialog.component';
-import { EditEventDialogComponent } from '../components/dialogs/day-form/edit-dialog/edit-dialog.component';
 import { DeleteDialogComponent } from '../components/dialogs/delete/delete-dialog.component';
+import { CreateEventDialogComponent } from '../components/dialogs/game-event/create-dialog/create-dialog.component';
+import { EditEventDialogComponent } from '../components/dialogs/game-event/edit-dialog/edit-dialog.component';
 import { AppStore } from '../models/app-store.model';
 import { Calendar } from '../models/calendar.model';
 import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
@@ -146,9 +146,9 @@ export class AppEffects {
       concatLatestFrom(() =>
         this.store.pipe(select(AppFeature.selectSelectedDate)),
       ),
-      exhaustMap(([{ gameEvent }, selectedDate]) => {
+      exhaustMap(([{ gameEvent, existingEvents }, selectedDate]) => {
         const dialogRef = this.dialog.open(EditEventDialogComponent, {
-          data: { gameEvent, activeYear: selectedDate.year },
+          data: { gameEvent, activeYear: selectedDate.year, existingEvents },
           minHeight: '420px',
         });
         return dialogRef.afterClosed();
@@ -228,9 +228,14 @@ export class AppEffects {
       concatLatestFrom(() =>
         this.store.pipe(select(AppFeature.selectSelectedDate)),
       ),
-      exhaustMap(([, date]) => {
+      exhaustMap(([{ existingEvents }, date]) => {
         const dialogRef = this.dialog.open(CreateEventDialogComponent, {
-          data: { day: date.day, season: date.season, year: date.year },
+          data: {
+            day: date.day,
+            season: date.season,
+            year: date.year,
+            existingEvents,
+          },
           minHeight: '420px',
         });
         return dialogRef.afterClosed();

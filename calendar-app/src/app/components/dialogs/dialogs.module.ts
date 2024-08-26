@@ -11,9 +11,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CreateCalendarDialogComponent } from './calendar/create-dialog/create-dialog.component';
 import { EditCalendarDialogComponent } from './calendar/edit-dialog/edit-dialog.component';
 import { SelectCalendarDialogComponent } from './calendar/select-dialog/select-dialog.component';
-import { CreateEventDialogComponent } from './day-form/create-dialog/create-dialog.component';
-import { EditEventDialogComponent } from './day-form/edit-dialog/edit-dialog.component';
 import { DeleteDialogComponent } from './delete/delete-dialog.component';
+import { CreateEventDialogComponent } from './game-event/create-dialog/create-dialog.component';
+import { EditEventDialogComponent } from './game-event/edit-dialog/edit-dialog.component';
 
 @NgModule({
   declarations: [

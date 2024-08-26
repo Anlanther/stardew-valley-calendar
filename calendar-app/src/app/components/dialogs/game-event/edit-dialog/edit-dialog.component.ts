@@ -6,6 +6,7 @@ import { GameDate } from '../../../../models/game-date.model';
 import { GameEvent } from '../../../../models/game-event.model';
 import { TagCategory } from '../../../../models/tag-category.model';
 import { Tag } from '../../../../models/tag.model';
+import { uniqueTitleTagValidator } from '../../../../services/form-validators.utils';
 
 @Component({
   selector: 'app-edit-event-dialog',
@@ -15,7 +16,11 @@ import { Tag } from '../../../../models/tag.model';
 export class EditEventDialogComponent {
   private fb = inject(FormBuilder);
   dialogRef = inject(MatDialogRef<EditEventDialogComponent>);
-  data: { gameEvent: GameEvent; activeYear: number } = inject(MAT_DIALOG_DATA);
+  data: {
+    gameEvent: GameEvent;
+    activeYear: number;
+    existingEvents: GameEvent[];
+  } = inject(MAT_DIALOG_DATA);
 
   eventForm!: FormGroup;
 
@@ -32,12 +37,23 @@ export class EditEventDialogComponent {
   }
 
   constructor() {
-    this.eventForm = this.fb.group({
-      title: [this.data.gameEvent.title, [Validators.required]],
-      description: [this.data.gameEvent.description],
-      tag: [this.data.gameEvent.tag, [Validators.required]],
-      isRecurring: [this.data.gameEvent.gameDate.isRecurring],
-    });
+    this.eventForm = this.fb.group(
+      {
+        title: [this.data.gameEvent.title, [Validators.required]],
+        description: [this.data.gameEvent.description],
+        tag: [this.data.gameEvent.tag, [Validators.required]],
+        isRecurring: [this.data.gameEvent.gameDate.isRecurring],
+      },
+      {
+        validators: uniqueTitleTagValidator(
+          this.data.existingEvents.filter(
+            (event) =>
+              event.title !== this.data.gameEvent.title &&
+              event.tag !== this.data.gameEvent.tag,
+          ),
+        ),
+      },
+    );
   }
 
   editEvent() {

@@ -74,6 +74,12 @@ export class EditCalendarDialog {
     });
   }
 
+  async clickCancelButton() {
+    await test.step('Click Cancel Button', async () => {
+      await this.cancelButton.click();
+    });
+  }
+
   async verifyInput(calendar: UnsavedCalendar) {
     await test.step('Verify current calendar settings are set', async () => {
       await expect(this.nameForm).toHaveValue(calendar.name);
