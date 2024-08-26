@@ -195,15 +195,18 @@ test.describe('Main Page', () => {
       await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
       await menuComponent.selectEditCalendar();
       await editCalendarDialog.verifyInput(mockCalendarPlain);
+      await editCalendarDialog.clickCancelButton();
       await menuComponent.deleteCalendar();
     });
 
     test('Create New from menu opens create dialog', async ({
       welcomePage,
       menuComponent,
+      createCalendarDialog,
     }) => {
       await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
       await menuComponent.selectCreateCalendar();
+      await createCalendarDialog.clickCancelButton();
       await menuComponent.deleteCalendar();
     });
 
@@ -215,6 +218,7 @@ test.describe('Main Page', () => {
       await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
       await menuComponent.selectSelectCalendar();
       await selectCalendarDialog.verifySelectedCalendar(mockCalendarPlain.name);
+      await selectCalendarDialog.clickCancelButton();
       await menuComponent.deleteCalendar();
     });
   });

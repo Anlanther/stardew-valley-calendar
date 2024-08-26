@@ -131,7 +131,7 @@ export class WelcomePage {
         .isVisible();
       await this.selectCalendarDialog.escapeSelector();
       if (!calendarOptionExists) {
-        await this.selectCalendarDialog.clickCancel();
+        await this.selectCalendarDialog.clickCancelButton();
         await this.clickCreateCalendar();
         return await this.createCalendarDialog.createCalendar(calendar);
       }

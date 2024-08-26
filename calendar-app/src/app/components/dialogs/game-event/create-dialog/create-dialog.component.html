@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Edit Event</h2>
+<h2 mat-dialog-title>Create Event</h2>
 <mat-dialog-content class="container">
   <form [formGroup]="eventForm" class="row">
     <div class="col">
@@ -16,11 +16,8 @@
           }
         </mat-form-field>
 
-        <button
-          class="tag-menu--button btn btn-secondary"
-          [matMenuTriggerFor]="tagCategories"
-        >
-          {{ eventForm.get("tag")!.value | titlecase }}
+        <button class="btn btn-secondary" [matMenuTriggerFor]="tagCategories">
+          {{ eventForm.get("tag")?.value ?? "Tag*" | titlecase }}
         </button>
         <mat-menu #tagCategories="matMenu">
           <button mat-menu-item [matMenuTriggerFor]="activity">
@@ -31,12 +28,11 @@
           </button>
           <button mat-menu-item [matMenuTriggerFor]="crop">Crops</button>
         </mat-menu>
-        <br />
 
         <mat-menu #activity="matMenu">
           @for (activity of activitiesTags; track activity) {
             <button mat-menu-item (click)="updateSelectedTag(activity)">
-              {{ activity | titlecase }}
+              {{ activity }}
             </button>
           }
         </mat-menu>
@@ -44,7 +40,7 @@
         <mat-menu #character="matMenu">
           @for (character of charactersTags; track character) {
             <button mat-menu-item (click)="updateSelectedTag(character)">
-              {{ character | titlecase }}
+              {{ character }}
             </button>
           }
         </mat-menu>
@@ -52,10 +48,14 @@
         <mat-menu #crop="matMenu">
           @for (crop of cropsTags; track crop) {
             <button mat-menu-item (click)="updateSelectedTag(crop)">
-              {{ crop | titlecase }}
+              {{ crop }}
             </button>
           }
         </mat-menu>
+        @if (eventForm.errors?.["uniqueTitleTag"]) {
+          <mat-error>Event with title and tag already exists</mat-error>
+        }
+        <br />
 
         <mat-form-field>
           <mat-label>Description</mat-label>
@@ -78,8 +78,8 @@
     type="button"
     class="btn btn-primary"
     [disabled]="!eventForm.valid"
-    (click)="editEvent()"
+    (click)="createEvent()"
   >
-    Edit
+    Create
   </button>
 </mat-dialog-actions>

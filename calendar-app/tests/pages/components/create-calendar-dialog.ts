@@ -58,6 +58,12 @@ export class CreateCalendarDialog {
     });
   }
 
+  async clickCancelButton() {
+    await test.step('Click Cancel Button', async () => {
+      await this.cancelButton.click();
+    });
+  }
+
   async createCalendar(calendar: UnsavedCalendar) {
     await test.step('Create Calendar', async () => {
       await this.fillForm(

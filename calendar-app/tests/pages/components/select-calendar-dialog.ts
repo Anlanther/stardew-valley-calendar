@@ -29,7 +29,7 @@ export class SelectCalendarDialog {
     });
   }
 
-  async clickCancel() {
+  async clickCancelButton() {
     await test.step('Click Cancel', async () => {
       await this.cancelButton.click();
     });
