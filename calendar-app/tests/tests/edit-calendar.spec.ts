@@ -69,7 +69,7 @@ test('Calendar toggles crops on', async ({
 }) => {
   await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
   await menuComponent.selectEditCalendar();
-  await editCalendarDialog.updateIncludeBirthdaysCheckbox(true);
+  await editCalendarDialog.updateIncludeCropsCheckbox(true);
   await editCalendarDialog.clickEditButton();
 
   for (let i = 0; i < MOCK_CROP_EVENTS.length; i++) {
