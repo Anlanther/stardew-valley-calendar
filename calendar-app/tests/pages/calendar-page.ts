@@ -65,7 +65,7 @@ export class CalendarPage {
     await test.step('Verify day form drawer has event', async () => {
       await this.selectDate(day, season);
       const createdEvent = this.page.getByRole('button', {
-        name: new RegExp(`${eventTitle}`),
+        name: new RegExp(`${eventTitle}$`),
       });
       toBeVisible
         ? await expect(createdEvent).toBeVisible()
@@ -107,7 +107,7 @@ export class CalendarPage {
     await test.step('Open Event Edit Menu', async () => {
       await this.selectDate(day, season);
       await this.page
-        .getByRole('button', { name: new RegExp(`${eventTitle}`) })
+        .getByRole('button', { name: new RegExp(`${eventTitle}$`) })
         .click();
       await this.page.getByLabel(eventTitle).getByRole('button').click();
       const editMenuButton = this.page.getByRole('menuitem', { name: 'Edit' });

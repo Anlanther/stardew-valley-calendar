@@ -25,11 +25,17 @@ export class CreateEventDialog {
     this.cancelButton = page.getByRole('button', { name: 'Cancel' });
   }
 
-  async verifyCreateButtonState(disabled: boolean) {
+  async verifyCreateButtonState(enabled: boolean) {
     await test.step('Verify Create Button', async () => {
-      disabled
-        ? await expect(this.createButton).toBeDisabled()
-        : await expect(this.createButton).toBeEnabled();
+      enabled
+        ? await expect(this.createButton).toBeEnabled()
+        : await expect(this.createButton).toBeDisabled();
+    });
+  }
+
+  async clickCancelButton() {
+    await test.step('Click Cancel Button', async () => {
+      await this.cancelButton.click();
     });
   }
 
@@ -41,13 +47,24 @@ export class CreateEventDialog {
     isRecurring: boolean,
   ) {
     await test.step('Create Mock Event', async () => {
+      await this.fillTitleForm(title);
+      await this.selectTag(tagCategory, tag);
+      await this.descriptionForm.fill(description);
+      await this.recurringToggle.setChecked(isRecurring);
+    });
+  }
+
+  async fillTitleForm(title: string) {
+    await test.step('Fill Title Form', async () => {});
+    await this.titleForm.fill(title);
+  }
+
+  async selectTag(tagCategory: TagCategory, tag: Tag) {
+    await test.step('Select Tag', async () => {
       const menuItemToHover = DISPLAYED_CATEGORY[tagCategory];
-      await this.titleForm.fill(title);
       await this.tagMenu.click();
       await this.page.getByRole('menuitem', { name: menuItemToHover }).hover();
       await this.page.getByRole('menuitem', { name: tag }).click();
-      await this.descriptionForm.fill(description);
-      await this.recurringToggle.setChecked(isRecurring);
     });
   }
 

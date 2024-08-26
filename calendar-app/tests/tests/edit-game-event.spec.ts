@@ -174,22 +174,56 @@ test('Game event recurs if set', async ({
       mockEventRecurring.title,
       true,
     );
-
-    await menuComponent.selectEditCalendar();
-    await editCalendarDialog.updateYearForm(1);
-    await editCalendarDialog.clickEditButton();
-
-    await calendarPage.deleteEvent(
-      mockGameDate.day,
-      mockGameDate.season,
-      mockEvent.title,
-    );
-    await calendarPage.deleteEvent(
-      mockGameDate.day,
-      mockGameDate.season,
-      mockEventRecurring.title,
-    );
   }
+
+  await menuComponent.selectEditCalendar();
+  await editCalendarDialog.updateYearForm(1);
+  await editCalendarDialog.clickEditButton();
+
+  await calendarPage.deleteEvent(
+    mockGameDate.day,
+    mockGameDate.season,
+    mockEvent.title,
+  );
+  await calendarPage.deleteEvent(
+    mockGameDate.day,
+    mockGameDate.season,
+    mockEventRecurring.title,
+  );
 });
 
-// test('Validate game event form requires name and tag', async({}) => {})
+test('Validate game event form requires name and tag', async ({
+  welcomePage,
+  calendarPage,
+  createEventDialog,
+}) => {
+  const mockGameDate = {
+    day: 3,
+    season: Season.FALL,
+  };
+  const mockEvent: EventForm = {
+    title: 'Mining Day',
+    description: 'Try to get to floor 50 in the mines.',
+    tag: Tag.Mining,
+    tagCategory: TagCategory.ACTIVITY,
+    isRecurring: false,
+  };
+  await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
+  await calendarPage.selectDate(mockGameDate.day, mockGameDate.season);
+
+  await calendarPage.clickCreateEventButton();
+  await createEventDialog.fillTitleForm(mockEvent.title);
+  await createEventDialog.verifyCreateButtonState(false);
+  await createEventDialog.clickCancelButton();
+
+  await calendarPage.clickCreateEventButton();
+  await createEventDialog.selectTag(mockEvent.tagCategory, mockEvent.tag);
+  await createEventDialog.verifyCreateButtonState(false);
+  await createEventDialog.clickCancelButton();
+
+  await calendarPage.clickCreateEventButton();
+  await createEventDialog.fillTitleForm(mockEvent.title);
+  await createEventDialog.selectTag(mockEvent.tagCategory, mockEvent.tag);
+  await createEventDialog.verifyCreateButtonState(true);
+  await createEventDialog.clickCancelButton();
+});
