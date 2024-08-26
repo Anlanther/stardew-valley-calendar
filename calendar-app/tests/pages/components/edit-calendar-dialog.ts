@@ -1,5 +1,5 @@
 import { Locator, Page, expect, test } from '@playwright/test';
-import { UnsavedCalendar } from '../../src/app/models/calendar.model';
+import { UnsavedCalendar } from '../../../src/app/models/calendar.model';
 
 export class EditCalendarDialog {
   readonly page: Page;

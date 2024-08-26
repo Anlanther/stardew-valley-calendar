@@ -16,7 +16,10 @@
           }
         </mat-form-field>
 
-        <button class="btn btn-secondary" [matMenuTriggerFor]="tagCategories">
+        <button
+          class="tag-menu--button btn btn-secondary"
+          [matMenuTriggerFor]="tagCategories"
+        >
           {{ eventForm.get("tag")!.value | titlecase }}
         </button>
         <mat-menu #tagCategories="matMenu">
