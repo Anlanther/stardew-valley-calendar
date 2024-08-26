@@ -1,8 +1,8 @@
 import { Locator, Page, expect, test } from '@playwright/test';
 import { UnsavedCalendar } from '../../src/app/models/calendar.model';
 import { URL } from '../models/url.model';
-import { CreateCalendarDialog } from './create-calendar-dialog';
-import { SelectCalendarDialog } from './select-calendar-dialog';
+import { CreateCalendarDialog } from './components/create-calendar-dialog';
+import { SelectCalendarDialog } from './components/select-calendar-dialog';
 
 export class WelcomePage {
   readonly page: Page;

@@ -1,10 +1,12 @@
 import { test as base } from '@playwright/test';
 import { CalendarPage } from '../pages/calendar-page';
-import { CreateCalendarDialog } from '../pages/create-calendar-dialog';
-import { DrawerComponent } from '../pages/drawer-component';
-import { EditCalendarDialog } from '../pages/edit-calendar-dialog';
-import { MenuComponent } from '../pages/menu-component';
-import { SelectCalendarDialog } from '../pages/select-calendar-dialog';
+import { CreateCalendarDialog } from '../pages/components/create-calendar-dialog';
+import { CreateEventDialog } from '../pages/components/create-event-dialog';
+import { DrawerComponent } from '../pages/components/drawer-component';
+import { EditCalendarDialog } from '../pages/components/edit-calendar-dialog';
+import { EditEventDialog } from '../pages/components/edit-event-dialog';
+import { MenuComponent } from '../pages/components/menu-component';
+import { SelectCalendarDialog } from '../pages/components/select-calendar-dialog';
 import { WelcomePage } from '../pages/welcome-page';
 
 type AppFixtures = {
@@ -12,6 +14,8 @@ type AppFixtures = {
   calendarPage: CalendarPage;
   createCalendarDialog: CreateCalendarDialog;
   selectCalendarDialog: SelectCalendarDialog;
+  createEventDialog: CreateEventDialog;
+  editEventDialog: EditEventDialog;
   menuComponent: MenuComponent;
   drawerComponent: DrawerComponent;
   editCalendarDialog: EditCalendarDialog;
@@ -26,6 +30,12 @@ export const test = base.extend<AppFixtures>({
   },
   editCalendarDialog: async ({ page }, use) => {
     await use(new EditCalendarDialog(page));
+  },
+  createEventDialog: async ({ page }, use) => {
+    await use(new CreateEventDialog(page));
+  },
+  editEventDialog: async ({ page }, use) => {
+    await use(new EditEventDialog(page));
   },
   selectCalendarDialog: async ({ page }, use) => {
     await use(new SelectCalendarDialog(page));
