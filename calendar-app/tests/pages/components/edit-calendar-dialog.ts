@@ -1,5 +1,5 @@
 import { Locator, Page, expect, test } from '@playwright/test';
-import { UnsavedCalendar } from '../../../src/app/models/calendar.model';
+import { CalendarForm } from '../../models/calendar-form.model';
 
 export class EditCalendarDialog {
   readonly page: Page;
@@ -80,17 +80,17 @@ export class EditCalendarDialog {
     });
   }
 
-  async verifyInput(calendar: UnsavedCalendar) {
+  async verifyInput(calendarForm: CalendarForm) {
     await test.step('Verify current calendar settings are set', async () => {
-      await expect(this.nameForm).toHaveValue(calendar.name);
-      await expect(this.descriptionForm).toHaveValue(calendar.description);
-      calendar.systemConfig.includeBirthdays
+      await expect(this.nameForm).toHaveValue(calendarForm.name);
+      await expect(this.descriptionForm).toHaveValue(calendarForm.description);
+      calendarForm.includeBirthdays
         ? await expect(this.includeBirthdaysToggle).toBeChecked()
         : await expect(this.includeBirthdaysToggle).not.toBeChecked();
-      calendar.systemConfig.includeCrops
+      calendarForm.includeCrops
         ? await expect(this.includeCropsToggle).toBeChecked()
         : await expect(this.includeCropsToggle).not.toBeChecked();
-      calendar.systemConfig.includeFestivals
+      calendarForm.includeFestivals
         ? await expect(this.includeFestivalsToggle).toBeChecked()
         : await expect(this.includeFestivalsToggle).not.toBeChecked();
     });

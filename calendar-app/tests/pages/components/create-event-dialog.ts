@@ -30,6 +30,7 @@ export class CreateEventDialog {
       enabled
         ? await expect(this.createButton).toBeEnabled()
         : await expect(this.createButton).toBeDisabled();
+      await this.clickCancelButton();
     });
   }
 

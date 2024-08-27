@@ -1,5 +1,5 @@
 import { Locator, Page, expect, test } from '@playwright/test';
-import { UnsavedCalendar } from '../../src/app/models/calendar.model';
+import { CalendarForm } from '../models/calendar-form.model';
 import { URL } from '../models/url.model';
 import { CreateCalendarDialog } from './components/create-calendar-dialog';
 import { SelectCalendarDialog } from './components/select-calendar-dialog';
@@ -91,21 +91,6 @@ export class WelcomePage {
     });
   }
 
-  async openAndCreateCalendar(calendar: UnsavedCalendar) {
-    await test.step('Create Calendar', async () => {
-      await this.openCalendarReadyPage();
-      await this.clickCreateCalendar();
-      await this.createCalendarDialog.fillForm(
-        calendar.name,
-        calendar.description,
-        calendar.systemConfig.includeBirthdays,
-        calendar.systemConfig.includeFestivals,
-        calendar.systemConfig.includeCrops,
-      );
-      await this.createCalendarDialog.clickCreateButton();
-    });
-  }
-
   async openExistingCalendar(name: string) {
     await test.step('Open Existing Calendar', async () => {
       await this.openCalendarReadyPage();
@@ -114,29 +99,46 @@ export class WelcomePage {
     });
   }
 
-  async selectOrCreateCalendar(calendar: UnsavedCalendar) {
+  async selectOrCreateCalendar(calendarForm: CalendarForm) {
     await test.step('Open Existing Calendar', async () => {
       await this.openCalendarReadyPage();
       await expect(this.apiConnectionFailedMessage).not.toBeVisible();
       const createButtonIsVisible = await this.selectCalendarButton.isVisible();
       if (!createButtonIsVisible) {
         await this.clickCreateCalendar();
-        return await this.createCalendarDialog.createCalendar(calendar);
+        return await this.createCalendarDialog.createCalendar(calendarForm);
       }
 
       await this.selectCalendarButton.click();
       await this.selectCalendarDialog.clickOnSelector();
       const calendarOptionExists = await this.page
-        .getByRole('option', { name: calendar.name, exact: true })
+        .getByRole('option', { name: calendarForm.name, exact: true })
         .isVisible();
       await this.selectCalendarDialog.escapeSelector();
       if (!calendarOptionExists) {
         await this.selectCalendarDialog.clickCancelButton();
         await this.clickCreateCalendar();
-        return await this.createCalendarDialog.createCalendar(calendar);
+        return await this.createCalendarDialog.createCalendar(calendarForm);
       }
 
-      await this.selectCalendarDialog.selectCalendar(calendar.name);
+      await this.selectCalendarDialog.selectCalendar(calendarForm.name);
+    });
+  }
+
+  async verifyCreateActionIsDisabled() {
+    await test.step('Verify Create Calendar Action is Disabled by Default', async () => {
+      await this.clickCreateCalendar();
+      await this.createCalendarDialog.verifyCreateButtonIsDisabled();
+      await this.createCalendarDialog.clickCancelButton();
+    });
+  }
+
+  async verifyCreateActionRequiresName(calendarForm: CalendarForm) {
+    await test.step('Verify Create Calendar Action is Disabled Unless Name is Provided', async () => {
+      await this.clickCreateCalendar();
+      await this.createCalendarDialog.fillForm(calendarForm);
+      await this.createCalendarDialog.verifyCreateButtonIsDisabled();
+      await this.createCalendarDialog.clickCancelButton();
     });
   }
 }

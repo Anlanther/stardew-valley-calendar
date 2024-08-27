@@ -1,5 +1,5 @@
 import { Locator, Page, expect, test } from '@playwright/test';
-import { UnsavedCalendar } from '../../../src/app/models/calendar.model';
+import { CalendarForm } from '../../models/calendar-form.model';
 
 export class CreateCalendarDialog {
   readonly page: Page;
@@ -36,19 +36,17 @@ export class CreateCalendarDialog {
     });
   }
 
-  async fillForm(
-    name: string,
-    description: string,
-    includeBirthdays: boolean,
-    includeFestivals: boolean,
-    includeCrops: boolean,
-  ) {
+  async fillForm(calendarForm: CalendarForm) {
     await test.step('Create Mock Calendar', async () => {
-      await this.nameForm.fill(name);
-      await this.descriptionForm.fill(description);
-      await this.includeBirthdaysToggle.setChecked(includeBirthdays);
-      await this.includeFestivalsToggle.setChecked(includeFestivals);
-      await this.includeCropsToggle.setChecked(includeCrops);
+      await this.nameForm.fill(calendarForm.name);
+      await this.descriptionForm.fill(calendarForm.description);
+      await this.includeBirthdaysToggle.setChecked(
+        calendarForm.includeBirthdays,
+      );
+      await this.includeFestivalsToggle.setChecked(
+        calendarForm.includeFestivals,
+      );
+      await this.includeCropsToggle.setChecked(calendarForm.includeCrops);
     });
   }
 
@@ -64,15 +62,9 @@ export class CreateCalendarDialog {
     });
   }
 
-  async createCalendar(calendar: UnsavedCalendar) {
+  async createCalendar(calendarForm: CalendarForm) {
     await test.step('Create Calendar', async () => {
-      await this.fillForm(
-        calendar.name,
-        calendar.description,
-        calendar.systemConfig.includeBirthdays,
-        calendar.systemConfig.includeFestivals,
-        calendar.systemConfig.includeCrops,
-      );
+      await this.fillForm(calendarForm);
       await this.clickCreateButton();
     });
   }
