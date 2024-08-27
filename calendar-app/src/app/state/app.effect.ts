@@ -312,27 +312,25 @@ export class AppEffects {
       ),
       switchMap(([{ downloadedCalendar }, availableCalendars]) => {
         let calendarName = downloadedCalendar.name;
-        const hasDuplicateName = availableCalendars.some(
-          (calendar) => calendar.name === downloadedCalendar.name,
-        );
-        if (hasDuplicateName) {
-          const duplicateIndicator = new RegExp('[(d+)]');
-          const wasDuplicated = duplicateIndicator.test(
-            downloadedCalendar.name,
+        const duplicates = availableCalendars.filter((calendar) => {
+          const test = new RegExp(downloadedCalendar.name, 'g').test(
+            calendar.name,
           );
-          if (wasDuplicated) {
-            const numberToIncrement =
-              downloadedCalendar.name.match(duplicateIndicator)!;
-            const updatedNumber = +numberToIncrement[1] + 1;
-            const newName = downloadedCalendar.name.replace(
-              duplicateIndicator,
-              `${updatedNumber}`,
-            );
-            calendarName = newName;
-          } else {
-            const newName = `${downloadedCalendar.name}[1]`;
-            calendarName = newName;
-          }
+          return test;
+        });
+        if (duplicates.length === 0) {
+          const newName = `${downloadedCalendar.name}[1]`;
+          calendarName = newName;
+        } else if (duplicates.length > 0) {
+          const nonOriginalDuplicates = duplicates.filter((d) =>
+            /\d/.test(d.name),
+          );
+          const duplicateIndicator = /\[(\d+)\]/;
+          const duplicateNumbers = nonOriginalDuplicates
+            .map((d) => +d.name.match(duplicateIndicator)![1])
+            .sort((a, b) => b - a);
+          const newName = `${downloadedCalendar.name}[${duplicateNumbers[0] + 1}]`;
+          calendarName = newName;
         }
         return this.calendarDataService
           .create(
