@@ -1,6 +1,6 @@
 import { Calendar } from '../../src/app/models/calendar.model';
 
-export const CALENDAR_MOCKS: Calendar[] = [
+export const MOCK_CALENDARS: Calendar[] = [
   {
     id: '1',
     publishedAt: '',
