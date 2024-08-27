@@ -12,7 +12,6 @@ export const AppFeature = createFeature({
       (date) =>
         `${date.day} ${date.season[0].toUpperCase() + date.season.substring(1)}`,
     ),
-
     selectNavTitle: createSelector(
       baseSelectors.selectActiveCalendar,
       baseSelectors.selectSelectedDate,
