@@ -362,6 +362,175 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiCalendarCalendar extends Schema.CollectionType {
+  collectionName: 'calendars';
+  info: {
+    singularName: 'calendar';
+    pluralName: 'calendars';
+    displayName: 'Calendar';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    gameEvents: Attribute.Relation<
+      'api::calendar.calendar',
+      'oneToMany',
+      'api::game-event.game-event'
+    >;
+    systemConfig: Attribute.Component<'calendar.system-config'> &
+      Attribute.Required;
+    description: Attribute.Text & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::calendar.calendar',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::calendar.calendar',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiGameEventGameEvent extends Schema.CollectionType {
+  collectionName: 'game_events';
+  info: {
+    singularName: 'game-event';
+    pluralName: 'game-events';
+    displayName: 'Game Event';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text & Attribute.Required;
+    tag: Attribute.Enumeration<
+      [
+        'abigail',
+        'alex',
+        'artisan',
+        'building',
+        'caroline',
+        'clint',
+        'demetrius',
+        'dwarf',
+        'elliott',
+        'emily',
+        'evelyn',
+        'festival',
+        'fishing',
+        'george',
+        'gift',
+        'gus',
+        'haley',
+        'harvey',
+        'jas',
+        'jodi',
+        'kent',
+        'krobus',
+        'leah',
+        'leo',
+        'lewis',
+        'linus',
+        'marlon',
+        'marnie',
+        'maru',
+        'mining',
+        'morris',
+        'pam',
+        'penny',
+        'pierre',
+        'robin',
+        'sam',
+        'sandy',
+        'sebastian',
+        'shane',
+        'vincent',
+        'willy',
+        'wizard',
+        'teaLeaves',
+        'sweetGemBerry',
+        'taroRoot',
+        'pineapple',
+        'cactusFruit',
+        'ancientFruit',
+        'powdermelon',
+        'yam',
+        'pumpkin',
+        'grape',
+        'fairyRose',
+        'eggplant',
+        'cranberries',
+        'broccoli',
+        'bokChoy',
+        'beet',
+        'artichoke',
+        'amaranth',
+        'wheat',
+        'tomato',
+        'sunflower',
+        'summerSquash',
+        'summerSpangle',
+        'starfruit',
+        'redCabbage',
+        'radish',
+        'poppy',
+        'melon',
+        'hotPepper',
+        'hops',
+        'corn',
+        'blueberry',
+        'rice',
+        'tulip',
+        'strawberry',
+        'rhubarb',
+        'potato',
+        'kale',
+        'greenBean',
+        'garlic',
+        'coffeeBean',
+        'cauliflower',
+        'carrot',
+        'blueJazz',
+        'parsnip'
+      ]
+    > &
+      Attribute.Required;
+    gameDate: Attribute.Component<'calendar.game-date'> & Attribute.Required;
+    type: Attribute.Enumeration<
+      ['system_birthdays', 'system_crops', 'system_festivals', 'user']
+    > &
+      Attribute.Required &
+      Attribute.DefaultTo<'user'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::game-event.game-event',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::game-event.game-event',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -788,175 +957,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface ApiCalendarCalendar extends Schema.CollectionType {
-  collectionName: 'calendars';
-  info: {
-    singularName: 'calendar';
-    pluralName: 'calendars';
-    displayName: 'Calendar';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
-    gameEvents: Attribute.Relation<
-      'api::calendar.calendar',
-      'oneToMany',
-      'api::game-event.game-event'
-    >;
-    systemConfig: Attribute.Component<'calendar.system-config'> &
-      Attribute.Required;
-    description: Attribute.Text & Attribute.Required;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::calendar.calendar',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::calendar.calendar',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiGameEventGameEvent extends Schema.CollectionType {
-  collectionName: 'game_events';
-  info: {
-    singularName: 'game-event';
-    pluralName: 'game-events';
-    displayName: 'Game Event';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    description: Attribute.Text & Attribute.Required;
-    tag: Attribute.Enumeration<
-      [
-        'abigail',
-        'alex',
-        'artisan',
-        'building',
-        'caroline',
-        'clint',
-        'demetrius',
-        'dwarf',
-        'elliott',
-        'emily',
-        'evelyn',
-        'festival',
-        'fishing',
-        'george',
-        'gift',
-        'gus',
-        'haley',
-        'harvey',
-        'jas',
-        'jodi',
-        'kent',
-        'krobus',
-        'leah',
-        'leo',
-        'lewis',
-        'linus',
-        'marlon',
-        'marnie',
-        'maru',
-        'mining',
-        'morris',
-        'pam',
-        'penny',
-        'pierre',
-        'robin',
-        'sam',
-        'sandy',
-        'sebastian',
-        'shane',
-        'vincent',
-        'willy',
-        'wizard',
-        'teaLeaves',
-        'sweetGemBerry',
-        'taroRoot',
-        'pineapple',
-        'cactusFruit',
-        'ancientFruit',
-        'powdermelon',
-        'yam',
-        'pumpkin',
-        'grape',
-        'fairyRose',
-        'eggplant',
-        'cranberries',
-        'broccoli',
-        'bokChoy',
-        'beet',
-        'artichoke',
-        'amaranth',
-        'wheat',
-        'tomato',
-        'sunflower',
-        'summerSquash',
-        'summerSpangle',
-        'starfruit',
-        'redCabbage',
-        'radish',
-        'poppy',
-        'melon',
-        'hotPepper',
-        'hops',
-        'corn',
-        'blueberry',
-        'rice',
-        'tulip',
-        'strawberry',
-        'rhubarb',
-        'potato',
-        'kale',
-        'greenBean',
-        'garlic',
-        'coffeeBean',
-        'cauliflower',
-        'carrot',
-        'blueJazz',
-        'parsnip'
-      ]
-    > &
-      Attribute.Required;
-    gameDate: Attribute.Component<'calendar.game-date'> & Attribute.Required;
-    type: Attribute.Enumeration<
-      ['system_birthdays', 'system_crops', 'system_festivals', 'user']
-    > &
-      Attribute.Required &
-      Attribute.DefaultTo<'user'>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::game-event.game-event',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::game-event.game-event',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -967,6 +967,8 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::calendar.calendar': ApiCalendarCalendar;
+      'api::game-event.game-event': ApiGameEventGameEvent;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -975,8 +977,6 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'api::calendar.calendar': ApiCalendarCalendar;
-      'api::game-event.game-event': ApiGameEventGameEvent;
     }
   }
 }

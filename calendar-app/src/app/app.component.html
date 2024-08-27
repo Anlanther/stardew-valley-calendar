@@ -13,6 +13,21 @@
         <button class="btn btn-primary" (click)="openCreateDialog()">
           Create New
         </button>
+        <button
+          class="btn btn-primary"
+          mat-raised-button
+          (click)="fileInput.click()"
+        >
+          Choose File
+        </button>
+        <input
+          hidden
+          (change)="onFileChange($event)"
+          #fileInput
+          type="file"
+          accept=".json"
+          id="file"
+        />
       </section>
     </app-welcome>
   } @else if (status === noSelectedCalendar) {
@@ -25,6 +40,21 @@
         <button class="btn btn-primary" (click)="openCreateDialog()">
           Create New
         </button>
+        <button
+          class="btn btn-primary"
+          mat-raised-button
+          (click)="fileInput.click()"
+        >
+          Choose File
+        </button>
+        <input
+          hidden
+          (change)="onFileChange($event)"
+          #fileInput
+          type="file"
+          id="file"
+          accept=".json"
+        />
       </section>
     </app-welcome>
   } @else if (status === ready) {

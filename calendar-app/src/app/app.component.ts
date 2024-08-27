@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppStore } from './models/app-store.model';
+import { DownloadedCalendar } from './models/downloaded-calendar.model';
 import { StatusMessage } from './models/status-message.model';
 import { AppActions } from './state/app.actions';
 import { AppFeature } from './state/app.state';
@@ -15,6 +16,8 @@ export class AppComponent {
   store = inject(Store<AppStore>);
 
   status$: Observable<StatusMessage>;
+
+  uploadFailed = false;
 
   get noApi() {
     return StatusMessage.NO_API_ACCESS;
@@ -40,5 +43,21 @@ export class AppComponent {
 
   openSelectDialog() {
     this.store.dispatch(AppActions.selectCalendar());
+  }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      if (typeof fileReader.result === 'string') {
+        const uploadedCalendar: DownloadedCalendar = JSON.parse(
+          fileReader.result,
+        );
+        this.store.dispatch(
+          AppActions.createUploadedCalendar(uploadedCalendar),
+        );
+      }
+    };
+    fileReader.readAsText(file);
   }
 }

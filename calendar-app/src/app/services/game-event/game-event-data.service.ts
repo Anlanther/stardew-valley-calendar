@@ -52,6 +52,15 @@ export class GameEventDataService {
     );
   }
 
+  createMultiple(gameEvents: UnsavedGameEvent[]): Observable<GameEvent[]> {
+    if (gameEvents.length === 0) {
+      return of([]);
+    }
+    return forkJoin(gameEvents.map((gameEvent) => this.create(gameEvent))).pipe(
+      map((gameEvents) => gameEvents),
+    );
+  }
+
   update(gameEvent: GameEvent): Observable<GameEvent> {
     const variables = {
       id: gameEvent.id,
