@@ -1,5 +1,6 @@
 import { createActionGroup, emptyProps } from '@ngrx/store';
 import { Calendar } from '../models/calendar.model';
+import { DownloadedCalendar } from '../models/downloaded-calendar.model';
 import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 
@@ -58,5 +59,22 @@ export const AppActions = createActionGroup({
     'API Failed': emptyProps(),
     'Toggle Nav Bar': (isOpen: boolean) => ({ isOpen }),
     Initialise: emptyProps(),
+    'Create Uploaded Calendar': (downloadedCalendar: DownloadedCalendar) => ({
+      downloadedCalendar,
+    }),
+    'Create Uploaded Calendar Base Success': (
+      calendar: Calendar,
+      gameEventsToAdd: GameEvent[],
+    ) => ({
+      calendar,
+      gameEventsToAdd,
+    }),
+    'Create Uploaded Calendar Events Success': (
+      calendar: Calendar,
+      gameEventsToAdd: GameEvent[],
+    ) => ({
+      calendar,
+      gameEventsToAdd,
+    }),
   },
 });

@@ -1,32 +1,8 @@
-import { Story } from '../models/story.model';
 import { User } from '../models/user.model';
 import { AppActions } from './app.actions';
 import { appReducer, AppState, initialState } from './app.reducer';
 
 describe('AppReducer', () => {
-  const mockUsers: User[] = [
-    {
-      name: 'John Doe',
-      favouriteStories: [{ title: 'Matilda', author: 'Roald Dahl' }],
-    },
-    {
-      name: 'Jane Doe',
-      favouriteStories: [{ title: 'Fantastic Mr. Fox', author: 'Roald Dahl' }],
-    },
-  ];
-  const mockStories: Story[] = [
-    {
-      title: 'Story1',
-      author: 'A1',
-    },
-    {
-      title: 'Story2',
-      author: 'A2',
-    },
-    { title: 'Matilda', author: 'Roald Dahl' },
-    { title: 'Fantastic Mr. Fox', author: 'Roald Dahl' },
-  ];
-
   describe(AppActions.getUsersSuccess.type, () => {
     it('should update the state', () => {
       const state: AppState = initialState;

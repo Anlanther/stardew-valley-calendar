@@ -3,6 +3,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { EffectsModule } from '@ngrx/effects';
@@ -26,6 +27,7 @@ import { ViewsModule } from './views/views.module';
     DayFormModule,
     ViewsModule,
     DialogsModule,
+    MatFormFieldModule,
     StoreModule.forRoot({ [AppFeature.name]: AppFeature.reducer }),
     EffectsModule.forRoot(AppEffects),
     StoreDevtoolsModule.instrument({

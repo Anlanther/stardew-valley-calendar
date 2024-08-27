@@ -303,4 +303,90 @@ export class AppEffects {
       }),
     ),
   );
+
+  createUploadedCalendar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.createUploadedCalendar),
+      concatLatestFrom(() =>
+        this.store.pipe(select(AppFeature.selectAvailableCalendars)),
+      ),
+      switchMap(([{ downloadedCalendar }, availableCalendars]) => {
+        let calendarName = downloadedCalendar.name;
+        const hasDuplicateName = availableCalendars.some(
+          (calendar) => calendar.name === downloadedCalendar.name,
+        );
+        if (hasDuplicateName) {
+          const duplicateIndicator = new RegExp('[(d+)]');
+          const wasDuplicated = duplicateIndicator.test(
+            downloadedCalendar.name,
+          );
+          if (wasDuplicated) {
+            const numberToIncrement =
+              downloadedCalendar.name.match(duplicateIndicator)!;
+            const updatedNumber = +numberToIncrement[1] + 1;
+            const newName = downloadedCalendar.name.replace(
+              duplicateIndicator,
+              `${updatedNumber}`,
+            );
+            calendarName = newName;
+          } else {
+            const newName = `${downloadedCalendar.name}[1]`;
+            calendarName = newName;
+          }
+        }
+        return this.calendarDataService
+          .create(
+            calendarName,
+            downloadedCalendar.description,
+            downloadedCalendar.systemConfig.includeBirthdays,
+            downloadedCalendar.systemConfig.includeFestivals,
+            downloadedCalendar.systemConfig.includeCrops,
+          )
+          .pipe(
+            map((calendar) =>
+              AppActions.createUploadedCalendarBaseSuccess(
+                calendar,
+                downloadedCalendar.gameEvents,
+              ),
+            ),
+          );
+      }),
+    ),
+  );
+
+  createEventsForUploadedCalendar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.createUploadedCalendarBaseSuccess),
+      switchMap((action) =>
+        this.gameEventDataService
+          .createMultiple(action.gameEventsToAdd)
+          .pipe(
+            map((gameEvents) =>
+              AppActions.createUploadedCalendarEventsSuccess(
+                action.calendar,
+                gameEvents,
+              ),
+            ),
+          ),
+      ),
+    ),
+  );
+
+  addGameEventsToUploadedCalendar = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.createUploadedCalendarEventsSuccess),
+      switchMap((action) => {
+        const updatedCalendar: Partial<Calendar> = {
+          id: action.calendar.id,
+          gameEvents: [
+            ...action.calendar.gameEvents,
+            ...action.gameEventsToAdd,
+          ],
+        };
+        return this.calendarDataService
+          .updateEvents(updatedCalendar)
+          .pipe(map((calendar) => AppActions.createCalendarSuccess(calendar)));
+      }),
+    ),
+  );
 }
