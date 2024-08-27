@@ -15,7 +15,10 @@ export class MenuComponent {
   constructor(page: Page) {
     this.page = page;
 
-    this.menuButton = page.getByRole('button').filter({ hasText: 'more_vert' });
+    this.menuButton = page
+      .locator('div.navbar--menu')
+      .getByRole('button')
+      .filter({ hasText: 'more_vert' });
     this.deleteOption = page.getByRole('menuitem', { name: 'Delete' });
     this.editOption = page.getByRole('menuitem', { name: 'Edit Calendar' });
     this.selectOption = page.getByRole('menuitem', {

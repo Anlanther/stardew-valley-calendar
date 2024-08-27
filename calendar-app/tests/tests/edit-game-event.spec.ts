@@ -1,171 +1,142 @@
-import { UnsavedCalendar } from '../../src/app/models/calendar.model';
-import { UnsavedGameDate } from '../../src/app/models/game-date.model';
 import { Season } from '../../src/app/models/season.model';
 import { TagCategory } from '../../src/app/models/tag-category.model';
 import { Tag } from '../../src/app/models/tag.model';
 import { test } from '../fixtures/app-fixture';
-import { MOCK_CALENDAR_TO_CREATE } from '../mocks/calendar-to-create.mock';
+import { MOCK_CALENDAR_FORM } from '../mocks/calendar-form';
+import { CalendarForm } from '../models/calendar-form.model';
 import { EventForm } from '../models/event-form.model';
 
-const mockCalendarWithAllSystem: UnsavedCalendar = {
-  ...MOCK_CALENDAR_TO_CREATE,
-  systemConfig: {
-    includeBirthdays: true,
-    includeCrops: true,
-    includeFestivals: true,
-  },
+const mockCalendarWithAllSystem: CalendarForm = {
+  ...MOCK_CALENDAR_FORM,
+  name: `${MOCK_CALENDAR_FORM.name} with All System`,
+  includeBirthdays: true,
+  includeCrops: true,
+  includeFestivals: true,
+};
+const mockGameDate = {
+  day: 3,
+  season: Season.FALL,
+};
+const mockEventPlain: EventForm = {
+  title: 'Mining Day',
+  description: 'Try to get to floor 50 in the mines',
+  tag: Tag.Mining,
+  tagCategory: TagCategory.ACTIVITY,
+  isRecurring: false,
+};
+const mockEventRecurring: EventForm = {
+  ...mockEventPlain,
+  title: `${mockEventPlain.title} Recurring`,
+  description: 'Try to get to floor 50 in the mines.',
+  isRecurring: true,
 };
 
-test('Day form drawer opens', async ({
-  welcomePage,
-  calendarPage,
-  menuComponent,
-}) => {
-  const mockGameDate: UnsavedGameDate = {
-    day: 3,
-    season: Season.FALL,
-    isRecurring: true,
-  };
+test('Day form drawer opens', async ({ welcomePage, calendarPage }) => {
   await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
-  await calendarPage.selectDate(mockGameDate.day, mockGameDate.season);
-  await calendarPage.validateDayFormDrawerIsOpenWithDate(
+  await calendarPage.verifyDayFormDrawerIsOpenWithDate(
     mockGameDate.day,
     mockGameDate.season,
   );
-  await menuComponent.deleteCalendar();
+  await calendarPage.deleteCalendar();
 });
 
-test('Add game event', async ({
-  welcomePage,
-  calendarPage,
-  createEventDialog,
-}) => {
-  const mockGameDate: UnsavedGameDate = {
-    day: 3,
-    season: Season.FALL,
-    isRecurring: true,
-  };
-  const mockEvent: EventForm = {
-    title: 'Mining Day',
-    description: 'Try to get to floor 50 in the mines',
-    tag: Tag.Mining,
-    tagCategory: TagCategory.ACTIVITY,
-    isRecurring: false,
-  };
+test('Add game event', async ({ welcomePage, calendarPage }) => {
   await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
-  await calendarPage.selectDate(mockGameDate.day, mockGameDate.season);
-  await calendarPage.clickCreateEventButton();
-  await createEventDialog.createEvent(mockEvent);
+  await calendarPage.createGameEvent(
+    mockGameDate.day,
+    mockGameDate.season,
+    mockEventPlain,
+  );
   await calendarPage.verifyEventOnCalendar(
     mockGameDate.day,
     mockGameDate.season,
-    mockEvent.title,
+    mockEventPlain.title,
     true,
   );
   await calendarPage.verifyEventOnDayFormDrawer(
     mockGameDate.day,
     mockGameDate.season,
-    mockEvent.title,
+    mockEventPlain.title,
     true,
   );
+  await calendarPage.deleteCalendar();
+});
+
+test('Delete game event', async ({ welcomePage, calendarPage }) => {
+  await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
+  await calendarPage.createGameEvent(
+    mockGameDate.day,
+    mockGameDate.season,
+    mockEventPlain,
+  );
+  await calendarPage.verifyEventOnCalendar(
+    mockGameDate.day,
+    mockGameDate.season,
+    mockEventPlain.title,
+    true,
+  );
+  await calendarPage.verifyEventOnDayFormDrawer(
+    mockGameDate.day,
+    mockGameDate.season,
+    mockEventPlain.title,
+    true,
+  );
+
   await calendarPage.deleteEvent(
     mockGameDate.day,
     mockGameDate.season,
-    mockEvent.title,
+    mockEventPlain.title,
   );
+  await calendarPage.verifyEventOnDayFormDrawer(
+    mockGameDate.day,
+    mockGameDate.season,
+    mockEventPlain.title,
+    false,
+  );
+
+  await calendarPage.deleteCalendar();
 });
 
 test('Edit game event has correct input', async ({
   welcomePage,
   calendarPage,
-  createEventDialog,
-  editEventDialog,
 }) => {
-  const mockGameDate: UnsavedGameDate = {
-    day: 3,
-    season: Season.FALL,
-    isRecurring: true,
-  };
-  const mockEvent: EventForm = {
-    title: 'Mining Day',
-    description: 'Try to get to floor 50 in the mines.',
-    tag: Tag.Mining,
-    tagCategory: TagCategory.ACTIVITY,
-    isRecurring: false,
-  };
   await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
-  await calendarPage.selectDate(mockGameDate.day, mockGameDate.season);
-  await calendarPage.clickCreateEventButton();
-  await createEventDialog.createEvent(mockEvent);
-  await calendarPage.openEventEditDialog(
+  await calendarPage.createGameEvent(
     mockGameDate.day,
     mockGameDate.season,
-    mockEvent.title,
+    mockEventPlain,
   );
-  await editEventDialog.verifyInput(mockEvent);
-
-  await editEventDialog.clickCancelButton();
-  await calendarPage.deleteEvent(
+  await calendarPage.verifyEventDetailsInEditDialog(
     mockGameDate.day,
     mockGameDate.season,
-    mockEvent.title,
+    mockEventPlain,
   );
+  await calendarPage.deleteCalendar();
 });
 
-test('Game event recurs if set', async ({
-  welcomePage,
-  calendarPage,
-  createEventDialog,
-  menuComponent,
-  editCalendarDialog,
-}) => {
+test('Game event recurs if set', async ({ welcomePage, calendarPage }) => {
   const mockOtherYearsToTest = [2, 5, 10];
-  const mockGameDate = {
-    day: 3,
-    season: Season.FALL,
-  };
-  const mockEvent: EventForm = {
-    title: 'Mining Day',
-    description: 'Try to get to floor 50 in the mines.',
-    tag: Tag.Mining,
-    tagCategory: TagCategory.ACTIVITY,
-    isRecurring: false,
-  };
-  const mockEventRecurring: EventForm = {
-    title: 'Mining Day Recurring',
-    description: 'Try to get to floor 50 in the mines.',
-    tag: Tag.Mining,
-    tagCategory: TagCategory.ACTIVITY,
-    isRecurring: true,
-  };
+
   await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
-  await calendarPage.selectDate(mockGameDate.day, mockGameDate.season);
-  await calendarPage.clickCreateEventButton();
-  await createEventDialog.createEvent(mockEvent);
-  await calendarPage.clickCreateEventButton();
-  await createEventDialog.createEvent(mockEventRecurring);
-  await calendarPage.verifyEventOnCalendar(
+  await calendarPage.createGameEvent(
     mockGameDate.day,
     mockGameDate.season,
-    mockEvent.title,
-    true,
+    mockEventPlain,
   );
-  await calendarPage.verifyEventOnCalendar(
+  await calendarPage.createGameEvent(
     mockGameDate.day,
     mockGameDate.season,
-    mockEventRecurring.title,
-    true,
+    mockEventRecurring,
   );
 
   for (let i = 0; i < mockOtherYearsToTest.length; i++) {
     const year = mockOtherYearsToTest[i];
-    await menuComponent.selectEditCalendar();
-    await editCalendarDialog.updateYearForm(year);
-    await editCalendarDialog.clickEditButton();
+    await calendarPage.updateYear(year);
     await calendarPage.verifyEventOnCalendar(
       mockGameDate.day,
       mockGameDate.season,
-      mockEvent.title,
+      mockEventPlain.title,
       false,
     );
     await calendarPage.verifyEventOnCalendar(
@@ -176,54 +147,28 @@ test('Game event recurs if set', async ({
     );
   }
 
-  await menuComponent.selectEditCalendar();
-  await editCalendarDialog.updateYearForm(1);
-  await editCalendarDialog.clickEditButton();
+  await calendarPage.updateYear(1);
 
   await calendarPage.deleteEvent(
     mockGameDate.day,
     mockGameDate.season,
-    mockEvent.title,
+    mockEventPlain.title,
   );
   await calendarPage.deleteEvent(
     mockGameDate.day,
     mockGameDate.season,
     mockEventRecurring.title,
   );
+
+  await calendarPage.deleteCalendar();
 });
 
 test('Validate game event form requires name and tag', async ({
   welcomePage,
   calendarPage,
-  createEventDialog,
 }) => {
-  const mockGameDate = {
-    day: 3,
-    season: Season.FALL,
-  };
-  const mockEvent: EventForm = {
-    title: 'Mining Day',
-    description: 'Try to get to floor 50 in the mines.',
-    tag: Tag.Mining,
-    tagCategory: TagCategory.ACTIVITY,
-    isRecurring: false,
-  };
   await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
-  await calendarPage.selectDate(mockGameDate.day, mockGameDate.season);
-
-  await calendarPage.clickCreateEventButton();
-  await createEventDialog.fillTitleForm(mockEvent.title);
-  await createEventDialog.verifyCreateButtonState(false);
-  await createEventDialog.clickCancelButton();
-
-  await calendarPage.clickCreateEventButton();
-  await createEventDialog.selectTag(mockEvent.tagCategory, mockEvent.tag);
-  await createEventDialog.verifyCreateButtonState(false);
-  await createEventDialog.clickCancelButton();
-
-  await calendarPage.clickCreateEventButton();
-  await createEventDialog.fillTitleForm(mockEvent.title);
-  await createEventDialog.selectTag(mockEvent.tagCategory, mockEvent.tag);
-  await createEventDialog.verifyCreateButtonState(true);
-  await createEventDialog.clickCancelButton();
+  await calendarPage.selectDateForEvents(mockGameDate.day, mockGameDate.season);
+  await calendarPage.verifyEventNameAndTagAreUnique(mockEventPlain);
+  await calendarPage.deleteCalendar();
 });

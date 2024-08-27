@@ -1,8 +1,14 @@
 import { test } from '../fixtures/app-fixture';
+import { MOCK_CALENDAR_FORM } from '../mocks/calendar-form';
 import { MOCK_CALENDARS_RESPONSE } from '../mocks/calendars-response.mock';
 import { MOCK_SYSTEM_EVENTS_RESPONSE } from '../mocks/system-events-response.mock';
+import { CalendarForm } from '../models/calendar-form.model';
 import { Queries } from '../models/queries.model';
 
+const mockCalendarNoName: CalendarForm = {
+  ...MOCK_CALENDAR_FORM,
+  name: '',
+};
 test('API not available', async ({ welcomePage }) => {
   await welcomePage.page.route(/graphql/, (route) => {
     route.fulfill({
@@ -86,4 +92,10 @@ test('With no existing calendars available', async ({ welcomePage }) => {
   });
   await welcomePage.openPage();
   await welcomePage.verifyNoExistingCalendarsMessage();
+});
+
+test('Dialogs work correctly', async ({ welcomePage }) => {
+  await welcomePage.openCalendarReadyPage();
+  await welcomePage.verifyCreateActionIsDisabled();
+  await welcomePage.verifyCreateActionRequiresName(mockCalendarNoName);
 });

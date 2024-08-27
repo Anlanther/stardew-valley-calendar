@@ -1,52 +1,21 @@
-import { UnsavedCalendar } from '../../src/app/models/calendar.model';
 import { test } from '../fixtures/app-fixture';
 import { MOCK_BIRTHDAY_EVENTS } from '../mocks/birthday-events.mock';
-import { MOCK_CALENDAR_TO_CREATE } from '../mocks/calendar-to-create.mock';
+import { MOCK_CALENDAR_FORM } from '../mocks/calendar-form';
 import { MOCK_CROP_EVENTS } from '../mocks/crop-events.mock';
 import { MOCK_FESTIVAL_EVENTS } from '../mocks/festival-events.mock';
 
-const mockCalendarPlain: UnsavedCalendar = { ...MOCK_CALENDAR_TO_CREATE };
-
-test('Name in title updates', async ({
-  welcomePage,
-  calendarPage,
-  menuComponent,
-  editCalendarDialog,
-}) => {
+test('Name in title updates', async ({ welcomePage, calendarPage }) => {
   const updatedName = 'Updated Plain Mock';
-  await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
-  await menuComponent.selectEditCalendar();
-  await editCalendarDialog.updateNameForm(updatedName);
-  await editCalendarDialog.clickEditButton();
-  await calendarPage.verifyCorrectTitle(updatedName, 1);
-  await menuComponent.deleteCalendar();
-});
-
-test('Year in title updates', async ({
-  welcomePage,
-  calendarPage,
-  menuComponent,
-  editCalendarDialog,
-}) => {
   const updatedYear = 2;
-  await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
-  await menuComponent.selectEditCalendar();
-  await editCalendarDialog.updateYearForm(updatedYear);
-  await editCalendarDialog.clickEditButton();
-  await calendarPage.verifyCorrectTitle(mockCalendarPlain.name, updatedYear);
-  await menuComponent.deleteCalendar();
+
+  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
+  await calendarPage.verifyTitleUpdatesOnEdit(updatedName, updatedYear);
+  await calendarPage.deleteCalendar();
 });
 
-test('Calendar toggles birthdays on', async ({
-  welcomePage,
-  calendarPage,
-  menuComponent,
-  editCalendarDialog,
-}) => {
-  await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
-  await menuComponent.selectEditCalendar();
-  await editCalendarDialog.updateIncludeBirthdaysCheckbox(true);
-  await editCalendarDialog.clickEditButton();
+test('Calendar toggles birthdays on', async ({ welcomePage, calendarPage }) => {
+  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
+  await calendarPage.toggleSystemSettings(true, false, false);
 
   for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
     const mockBirthday = MOCK_BIRTHDAY_EVENTS[i];
@@ -58,19 +27,12 @@ test('Calendar toggles birthdays on', async ({
     );
   }
 
-  await menuComponent.deleteCalendar();
+  await calendarPage.deleteCalendar();
 });
 
-test('Calendar toggles crops on', async ({
-  welcomePage,
-  calendarPage,
-  menuComponent,
-  editCalendarDialog,
-}) => {
-  await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
-  await menuComponent.selectEditCalendar();
-  await editCalendarDialog.updateIncludeCropsCheckbox(true);
-  await editCalendarDialog.clickEditButton();
+test('Calendar toggles crops on', async ({ welcomePage, calendarPage }) => {
+  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
+  await calendarPage.toggleSystemSettings(false, false, true);
 
   for (let i = 0; i < MOCK_CROP_EVENTS.length; i++) {
     const mockCrop = MOCK_CROP_EVENTS[i];
@@ -82,19 +44,12 @@ test('Calendar toggles crops on', async ({
     );
   }
 
-  await menuComponent.deleteCalendar();
+  await calendarPage.deleteCalendar();
 });
 
-test('Calendar toggles festivals on', async ({
-  welcomePage,
-  calendarPage,
-  menuComponent,
-  editCalendarDialog,
-}) => {
-  await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
-  await menuComponent.selectEditCalendar();
-  await editCalendarDialog.updateIncludeBirthdaysCheckbox(true);
-  await editCalendarDialog.clickEditButton();
+test('Calendar toggles festivals on', async ({ welcomePage, calendarPage }) => {
+  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
+  await calendarPage.toggleSystemSettings(false, true, false);
 
   for (let i = 0; i < MOCK_FESTIVAL_EVENTS.length; i++) {
     const mockFestival = MOCK_FESTIVAL_EVENTS[i];
@@ -102,9 +57,9 @@ test('Calendar toggles festivals on', async ({
       mockFestival.gameDate.day,
       mockFestival.gameDate.season,
       mockFestival.title,
-      false,
+      true,
     );
   }
 
-  await menuComponent.deleteCalendar();
+  await calendarPage.deleteCalendar();
 });

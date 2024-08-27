@@ -1,6 +1,13 @@
 import { Locator, Page, expect, test } from '@playwright/test';
 import { Season } from '../../src/app/models/season.model';
+import { CalendarForm } from '../models/calendar-form.model';
+import { EventForm } from '../models/event-form.model';
 import { Selectors } from '../models/selectors.model';
+import { CreateCalendarDialog } from './components/create-calendar-dialog';
+import { DrawerComponent } from './components/drawer-component';
+import { EditCalendarDialog } from './components/edit-calendar-dialog';
+import { MenuComponent } from './components/menu-component';
+import { SelectCalendarDialog } from './components/select-calendar-dialog';
 
 export class CalendarPage {
   readonly page: Page;
@@ -8,8 +15,12 @@ export class CalendarPage {
   private readonly calendarTitle: Locator;
   private readonly seasonTab: Locator;
   private readonly dayCell: Locator;
-  private readonly dayFormDrawer: Locator;
-  private readonly createEventButton: Locator;
+
+  private readonly menuComponent: MenuComponent;
+  private readonly drawerComponent: DrawerComponent;
+  private readonly editCalendarDialog: EditCalendarDialog;
+  private readonly createCalendarDialog: CreateCalendarDialog;
+  private readonly selectCalendarDialog: SelectCalendarDialog;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,8 +28,12 @@ export class CalendarPage {
     this.calendarTitle = page.getByRole('heading');
     this.seasonTab = page.getByRole('tab');
     this.dayCell = page.locator(Selectors.EVENT_COMPONENT);
-    this.dayFormDrawer = page.locator(Selectors.DAY_FORM_COMPONENT);
-    this.createEventButton = page.getByRole('button', { name: 'Create Event' });
+
+    this.menuComponent = new MenuComponent(page);
+    this.drawerComponent = new DrawerComponent(page);
+    this.editCalendarDialog = new EditCalendarDialog(page);
+    this.createCalendarDialog = new CreateCalendarDialog(page);
+    this.selectCalendarDialog = new SelectCalendarDialog(page);
   }
 
   async verifySeasonIsSelected(season: Season) {
@@ -56,24 +71,7 @@ export class CalendarPage {
     });
   }
 
-  async verifyEventOnDayFormDrawer(
-    day: number,
-    season: Season,
-    eventTitle: string,
-    toBeVisible: boolean,
-  ) {
-    await test.step('Verify day form drawer has event', async () => {
-      await this.selectDate(day, season);
-      const createdEvent = this.page.getByRole('button', {
-        name: new RegExp(`${eventTitle}$`),
-      });
-      toBeVisible
-        ? await expect(createdEvent).toBeVisible()
-        : await expect(createdEvent).not.toBeVisible();
-    });
-  }
-
-  async selectDate(day: number, season: Season) {
+  async selectDateForEvents(day: number, season: Season) {
     await test.step('Select date and season', async () => {
       const selectedSeasonTab = this.seasonTab.filter({ hasText: season });
       await selectedSeasonTab.click();
@@ -85,54 +83,123 @@ export class CalendarPage {
     });
   }
 
-  async validateDayFormDrawerIsOpenWithDate(day: number, season: Season) {
+  async deleteCalendar() {
+    await test.step('Delete Calendar', async () => {
+      await this.menuComponent.deleteCalendar();
+    });
+  }
+
+  async updateYear(updatedYear: number) {
+    await test.step('Update Year', async () => {
+      await this.menuComponent.selectEditCalendar();
+      await this.editCalendarDialog.updateYearForm(updatedYear);
+      await this.editCalendarDialog.clickEditButton();
+    });
+  }
+
+  async verifyCalendarDetailsInEditDialog(calendar: CalendarForm) {
+    await test.step('Verify Calendar Details are Correctly Displayed in Edit Dialog', async () => {
+      await this.menuComponent.selectEditCalendar();
+      await this.editCalendarDialog.verifyInput(calendar);
+      await this.editCalendarDialog.clickCancelButton();
+    });
+  }
+
+  async verifyCanOpenCreateDialog() {
+    await test.step('Verify Menu Can Open Create Dialog', async () => {
+      await this.menuComponent.selectCreateCalendar();
+      await this.createCalendarDialog.clickCancelButton();
+    });
+  }
+
+  async verifyActiveCalendarIsMarkedAsSelected(calendarName: string) {
+    await test.step('Verify Calendar is Marked as Selected in Select Calendar Dialog', async () => {
+      await this.menuComponent.selectSelectCalendar();
+      await this.selectCalendarDialog.verifySelectedCalendar(calendarName);
+      await this.selectCalendarDialog.clickCancelButton();
+    });
+  }
+
+  async verifyTitleUpdatesOnEdit(updatedName: string, updatedYear: number) {
+    await test.step('Verify Title On Page Updates On Edit', async () => {
+      await this.menuComponent.selectEditCalendar();
+      await this.editCalendarDialog.updateNameForm(updatedName);
+      await this.editCalendarDialog.updateYearForm(updatedYear);
+      await this.editCalendarDialog.clickEditButton();
+      await this.verifyCorrectTitle(updatedName, updatedYear);
+    });
+  }
+
+  async verifyDayFormDrawerIsOpenWithDate(day: number, season: Season) {
     await test.step('Validate Day Form Drawer Is Open', async () => {
-      await expect(this.dayFormDrawer).toBeVisible();
-      const selectedDateTitle = new RegExp(
-        `${day}(?:st|nd|rd|th)\\s+${season}`,
-        'i',
+      await this.selectDateForEvents(day, season);
+      await this.drawerComponent.verifyIsVisibleWithDate(day, season);
+    });
+  }
+
+  async verifyEventOnDayFormDrawer(
+    day: number,
+    season: Season,
+    eventTitle: string,
+    toBeVisible: boolean,
+  ) {
+    await test.step('Verify day form drawer has event', async () => {
+      await this.selectDateForEvents(day, season);
+      await this.drawerComponent.verifyEventOnDayFormDrawer(
+        eventTitle,
+        toBeVisible,
       );
-      await expect(this.dayFormDrawer).toHaveText(selectedDateTitle);
-    });
-  }
-
-  async clickCreateEventButton() {
-    await test.step('Create Event', async () => {
-      await expect(this.dayFormDrawer).toBeVisible();
-      await this.createEventButton.click();
-    });
-  }
-
-  async openEventSettingsMenu(day: number, season: Season, eventTitle: string) {
-    await test.step('Open Event Edit Menu', async () => {
-      await this.selectDate(day, season);
-      await this.page
-        .getByRole('button', { name: new RegExp(`${eventTitle}$`) })
-        .click();
-      await this.page.getByLabel(eventTitle).getByRole('button').click();
-      const editMenuButton = this.page.getByRole('menuitem', { name: 'Edit' });
-      const deleteMenuButton = this.page.getByRole('menuitem', {
-        name: 'Delete',
-      });
-      await expect(editMenuButton).toBeVisible();
-      await expect(deleteMenuButton).toBeVisible();
-    });
-  }
-
-  async openEventEditDialog(day: number, season: Season, eventTitle: string) {
-    await test.step('Open Event Edit Dialog', async () => {
-      await this.openEventSettingsMenu(day, season, eventTitle);
-      const editMenuButton = this.page.getByRole('menuitem', { name: 'Edit' });
-      await editMenuButton.click();
     });
   }
 
   async deleteEvent(day: number, season: Season, eventTitle: string) {
     await test.step('Delete Event', async () => {
-      await this.openEventSettingsMenu(day, season, eventTitle);
-      await this.page.getByRole('menuitem', { name: 'Delete' }).click();
-      await this.page.getByRole('button', { name: 'Delete' }).click();
-      await this.verifyEventOnDayFormDrawer(day, season, eventTitle, false);
+      await this.selectDateForEvents(day, season);
+      await this.drawerComponent.deleteEvent(eventTitle);
+    });
+  }
+
+  async toggleSystemSettings(
+    includeBirthdaysToggle: boolean,
+    includeFestivalsToggle: boolean,
+    includeCropsToggle: boolean,
+  ) {
+    await test.step('Set Calendar to Show Birthdays', async () => {
+      await this.menuComponent.selectEditCalendar();
+      await this.editCalendarDialog.updateIncludeBirthdaysCheckbox(
+        includeBirthdaysToggle,
+      );
+      await this.editCalendarDialog.updateIncludeCropsCheckbox(
+        includeCropsToggle,
+      );
+      await this.editCalendarDialog.updateIncludeFestivalsCheckbox(
+        includeFestivalsToggle,
+      );
+      await this.editCalendarDialog.clickEditButton();
+    });
+  }
+
+  async createGameEvent(day: number, season: Season, eventForm: EventForm) {
+    await test.step('Create Game Event', async () => {
+      await this.selectDateForEvents(day, season);
+      await this.drawerComponent.createGameEvent(eventForm);
+    });
+  }
+
+  async verifyEventDetailsInEditDialog(
+    day: number,
+    season: Season,
+    eventForm: EventForm,
+  ) {
+    await test.step('Verify Event Details are Correctly Displayed in Edit Dialog', async () => {
+      await this.selectDateForEvents(day, season);
+      await this.drawerComponent.verifyEventDetailsInEditDialog(eventForm);
+    });
+  }
+
+  async verifyEventNameAndTagAreUnique(eventForm: EventForm) {
+    await test.step('Verify Even Name and Tag are Unique', async () => {
+      await this.drawerComponent.verifyEventNameAndTagAreUnique(eventForm);
     });
   }
 }
