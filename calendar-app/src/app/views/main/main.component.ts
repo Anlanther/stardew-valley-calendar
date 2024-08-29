@@ -84,4 +84,20 @@ export class MainComponent {
       })
       .unsubscribe();
   }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      if (typeof fileReader.result === 'string') {
+        const uploadedCalendar: DownloadedCalendar = JSON.parse(
+          fileReader.result,
+        );
+        this.store.dispatch(
+          AppActions.createUploadedCalendar(uploadedCalendar),
+        );
+      }
+    };
+    fileReader.readAsText(file);
+  }
 }

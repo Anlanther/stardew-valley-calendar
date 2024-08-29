@@ -61,10 +61,10 @@ export class EventUtils {
     const regexString = regexArray.join('|');
 
     const filteredGameEvents = gameEvents.filter((event) => {
+      if (event.type.includes('user')) return true;
       return regexString === ''
         ? false
-        : new RegExp(regexString).test(event.type) ||
-            event.type.includes('user');
+        : new RegExp(regexString).test(event.type);
     });
 
     return filteredGameEvents;
