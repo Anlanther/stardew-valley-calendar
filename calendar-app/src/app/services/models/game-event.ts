@@ -94,6 +94,9 @@ export enum Tag {
   Cauliflower = 'cauliflower',
   Carrot = 'carrot',
   BlueJazz = 'blueJazz',
+
+  Foraging = 'foraging',
+  Farming = 'farming',
 }
 
 export enum Type {
