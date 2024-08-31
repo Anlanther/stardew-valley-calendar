@@ -1,4 +1,3 @@
-import { TitleCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -21,7 +20,6 @@ import { uniqueTitleTagValidator } from '../../../../services/form-validators.ut
 })
 export class CreateEventDialogComponent {
   private fb = inject(FormBuilder);
-  private titleCase = inject(TitleCasePipe);
   dialogRef = inject(MatDialogRef<CreateEventDialogComponent>);
   data: {
     day: number;
@@ -33,21 +31,15 @@ export class CreateEventDialogComponent {
   eventForm!: FormGroup;
 
   get activitiesTags() {
-    return this.filterTag(TagCategory.ACTIVITY).map((tag) =>
-      this.titleCase.transform(tag),
-    );
+    return this.filterTag(TagCategory.ACTIVITY);
   }
 
   get cropsTags() {
-    return this.filterTag(TagCategory.CROP).map((tag) =>
-      this.titleCase.transform(tag),
-    );
+    return this.filterTag(TagCategory.CROP);
   }
 
   get charactersTags() {
-    return this.filterTag(TagCategory.CHARACTER).map((tag) =>
-      this.titleCase.transform(tag),
-    );
+    return this.filterTag(TagCategory.CHARACTER);
   }
 
   constructor() {
@@ -90,7 +82,7 @@ export class CreateEventDialogComponent {
   }
 
   updateSelectedTag(value: string) {
-    this.eventForm.get('tag')?.patchValue(value.toLowerCase());
+    this.eventForm.get('tag')?.patchValue(value);
   }
 
   cancel(): void {
@@ -98,10 +90,14 @@ export class CreateEventDialogComponent {
   }
 
   private filterTag(category: TagCategory) {
-    const tags: Tag[] = [];
+    const tags: { tag: Tag; displayName: string }[] = [];
     TAG_METADATA.forEach(
       (_, key) =>
-        TAG_METADATA.get(key)!.category === category && tags.push(key),
+        TAG_METADATA.get(key)!.category === category &&
+        tags.push({
+          tag: key,
+          displayName: TAG_METADATA.get(key)!.displayName,
+        }),
     );
     return tags;
   }

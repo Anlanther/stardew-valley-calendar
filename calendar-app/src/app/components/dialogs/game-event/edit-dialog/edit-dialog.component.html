@@ -33,25 +33,25 @@
         </mat-menu>
 
         <mat-menu #activity="matMenu">
-          @for (activity of activitiesTags; track activity) {
-            <button mat-menu-item (click)="updateSelectedTag(activity)">
-              {{ activity | titlecase }}
+          @for (activity of activitiesTags; track activity.tag) {
+            <button mat-menu-item (click)="updateSelectedTag(activity.tag)">
+              {{ activity.displayName }}
             </button>
           }
         </mat-menu>
 
         <mat-menu #character="matMenu">
-          @for (character of charactersTags; track character) {
-            <button mat-menu-item (click)="updateSelectedTag(character)">
-              {{ character | titlecase }}
+          @for (character of charactersTags; track character.tag) {
+            <button mat-menu-item (click)="updateSelectedTag(character.tag)">
+              {{ character.displayName }}
             </button>
           }
         </mat-menu>
 
         <mat-menu #crop="matMenu">
-          @for (crop of cropsTags; track crop) {
-            <button mat-menu-item (click)="updateSelectedTag(crop)">
-              {{ crop | titlecase }}
+          @for (crop of cropsTags; track crop.tag) {
+            <button mat-menu-item (click)="updateSelectedTag(crop.tag)">
+              {{ crop.displayName }}
             </button>
           }
         </mat-menu>
