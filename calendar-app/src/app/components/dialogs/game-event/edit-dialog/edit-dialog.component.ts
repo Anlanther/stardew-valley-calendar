@@ -96,10 +96,14 @@ export class EditEventDialogComponent {
   }
 
   private filterTag(category: TagCategory) {
-    const tags: Tag[] = [];
+    const tags: { tag: Tag; displayName: string }[] = [];
     TAG_METADATA.forEach(
       (_, key) =>
-        TAG_METADATA.get(key)!.category === category && tags.push(key),
+        TAG_METADATA.get(key)!.category === category &&
+        tags.push({
+          tag: key,
+          displayName: TAG_METADATA.get(key)!.displayName,
+        }),
     );
     return tags;
   }
