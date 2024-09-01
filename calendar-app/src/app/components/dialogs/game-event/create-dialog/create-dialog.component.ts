@@ -30,6 +30,8 @@ export class CreateEventDialogComponent {
 
   eventForm!: FormGroup;
 
+  selectedTag: string = 'Tag*';
+
   get activitiesTags() {
     return this.filterTag(TagCategory.ACTIVITY);
   }
@@ -82,11 +84,16 @@ export class CreateEventDialogComponent {
   }
 
   updateSelectedTag(value: string) {
+    this.selectedTag = this.getTagDisplayName(value);
     this.eventForm.get('tag')?.patchValue(value);
   }
 
   cancel(): void {
     this.dialogRef.close();
+  }
+
+  private getTagDisplayName(tag: string) {
+    return TAG_METADATA.get(tag as Tag)!.displayName;
   }
 
   private filterTag(category: TagCategory) {

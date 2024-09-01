@@ -90,4 +90,5 @@ export enum Tag {
 
   Foraging = 'foraging',
   Farming = 'farming',
+  Shopping = 'shopping',
 }

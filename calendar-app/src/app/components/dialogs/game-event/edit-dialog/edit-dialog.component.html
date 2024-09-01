@@ -20,7 +20,7 @@
           class="tag-menu--button btn btn-secondary"
           [matMenuTriggerFor]="tagCategories"
         >
-          {{ eventForm.get("tag")!.value | titlecase }}
+          {{ selectedTag }}
         </button>
         <mat-menu #tagCategories="matMenu">
           <button mat-menu-item [matMenuTriggerFor]="activity">
