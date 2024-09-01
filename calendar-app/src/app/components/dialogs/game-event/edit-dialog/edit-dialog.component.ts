@@ -24,6 +24,8 @@ export class EditEventDialogComponent {
 
   eventForm!: FormGroup;
 
+  selectedTag: string = 'Tag*';
+
   get activitiesTags() {
     return this.filterTag(TagCategory.ACTIVITY);
   }
@@ -37,6 +39,7 @@ export class EditEventDialogComponent {
   }
 
   constructor() {
+    this.selectedTag = this.getTagDisplayName(this.data.gameEvent.tag);
     this.eventForm = this.fb.group(
       {
         title: [this.data.gameEvent.title, [Validators.required]],
@@ -87,12 +90,17 @@ export class EditEventDialogComponent {
     this.dialogRef.close({ gameEvent });
   }
 
-  updateSelectedTag(value: string) {
+  updateSelectedTag(value: Tag) {
+    this.selectedTag = this.getTagDisplayName(value);
     this.eventForm.get('tag')?.patchValue(value);
   }
 
   cancel(): void {
     this.dialogRef.close();
+  }
+
+  private getTagDisplayName(tag: string) {
+    return TAG_METADATA.get(tag as Tag)!.displayName;
   }
 
   private filterTag(category: TagCategory) {

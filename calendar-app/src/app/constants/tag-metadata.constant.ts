@@ -564,6 +564,14 @@ export const TAG_METADATA: Map<Tag, TagMetadata> = new Map([
     },
   ],
   [
+    Tag.Shopping,
+    {
+      category: TagCategory.ACTIVITY,
+      url: 'gold-icon.png',
+      displayName: 'Shopping',
+    },
+  ],
+  [
     Tag.Starfruit,
     {
       category: TagCategory.CROP,
