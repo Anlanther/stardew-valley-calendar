@@ -78,5 +78,7 @@ export const AppActions = createActionGroup({
     }),
     'Update System Events': emptyProps(),
     'Updated System Events Success': emptyProps(),
+    'Set Token': emptyProps(),
+    'Set Token Success': (token: string) => ({ token }),
   },
 });

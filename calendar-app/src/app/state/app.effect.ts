@@ -10,11 +10,13 @@ import { SelectCalendarDialogComponent } from '../components/dialogs/calendar/se
 import { DeleteDialogComponent } from '../components/dialogs/delete/delete-dialog.component';
 import { CreateEventDialogComponent } from '../components/dialogs/game-event/create-dialog/create-dialog.component';
 import { EditEventDialogComponent } from '../components/dialogs/game-event/edit-dialog/edit-dialog.component';
+import { TokenDialogComponent } from '../components/dialogs/token/token-dialog.component';
 import { AppStore } from '../models/app-store.model';
 import { Calendar } from '../models/calendar.model';
 import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
 import { Type } from '../models/type.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
+import { DataService } from '../services/data.service';
 import { GameEventDataService } from '../services/game-event/game-event-data.service';
 import { AppActions } from './app.actions';
 import { AppFeature } from './app.state';
@@ -26,6 +28,7 @@ export class AppEffects {
   private dialog = inject(MatDialog);
   private calendarDataService = inject(CalendarDataService);
   private gameEventDataService = inject(GameEventDataService);
+  private dataService = inject(DataService);
 
   initialise$ = createEffect(() =>
     this.actions$.pipe(
@@ -89,6 +92,21 @@ export class AppEffects {
               map((calendar) => AppActions.createCalendarSuccess(calendar)),
             ),
       ),
+    ),
+  );
+
+  setToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.setToken),
+      exhaustMap(() => {
+        const dialogRef = this.dialog.open(TokenDialogComponent);
+        return dialogRef.afterClosed();
+      }),
+      filter((dialogRes) => !!dialogRes),
+      map((dialogRes: { token: string }) => {
+        this.dataService.setToken(dialogRes.token);
+        return AppActions.initialise();
+      }),
     ),
   );
 

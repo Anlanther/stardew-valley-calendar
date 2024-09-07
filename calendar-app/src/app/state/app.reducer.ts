@@ -159,7 +159,7 @@ export const appReducer = createReducer<AppState>(
       selectedDate: { ...state.selectedDate, year: action.year },
     };
   }),
-  on(AppActions.aPIFailed, (state, action) => ({
+  on(AppActions.aPIFailed, (state) => ({
     ...state,
     apiFailed: true,
   })),
