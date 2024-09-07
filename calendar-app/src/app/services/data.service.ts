@@ -10,19 +10,29 @@ export class DataService {
   private apiKey = KEYS.STRAPI_KEY;
   private apiUrl = 'http://localhost:1337/graphql';
 
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${this.apiKey}`,
-    }),
-  };
   constructor(private http: HttpClient) {}
 
+  setToken(token: string) {
+    this.apiKey = token;
+  }
+
   graphql(query: string, variables?: { [key: string]: any }) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.apiKey}`,
+    });
+
     return this.http
-      .post(this.apiUrl, JSON.stringify({ query, variables }), this.httpOptions)
+      .post(this.apiUrl, JSON.stringify({ query, variables }), {
+        headers,
+      })
       .pipe(
-        map((response: any) => response.data),
+        map((response: any) => {
+          if (response.errors) {
+            throw Error(response.errors.map((e: any) => e.message));
+          }
+          return response.data;
+        }),
         catchError((e) => {
           throw Error(e);
         }),

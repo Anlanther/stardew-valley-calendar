@@ -14,6 +14,7 @@ import { SelectCalendarDialogComponent } from './calendar/select-dialog/select-d
 import { DeleteDialogComponent } from './delete/delete-dialog.component';
 import { CreateEventDialogComponent } from './game-event/create-dialog/create-dialog.component';
 import { EditEventDialogComponent } from './game-event/edit-dialog/edit-dialog.component';
+import { TokenDialogComponent } from './token/token-dialog.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { EditEventDialogComponent } from './game-event/edit-dialog/edit-dialog.c
     CreateEventDialogComponent,
     DeleteDialogComponent,
     EditCalendarDialogComponent,
+    TokenDialogComponent,
   ],
   imports: [
     CommonModule,

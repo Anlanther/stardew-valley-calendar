@@ -14,4 +14,8 @@ export class WelcomeComponent {
   updateSystemEvents() {
     this.store.dispatch(AppActions.updateSystemEvents());
   }
+
+  setToken() {
+    this.store.dispatch(AppActions.setToken());
+  }
 }

@@ -7,6 +7,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="setToken()">Set Token</button>
           <button mat-menu-item (click)="updateSystemEvents()">
             [DEV] Update System
           </button>
