@@ -504,6 +504,7 @@ export interface ApiGameEventGameEvent extends Schema.CollectionType {
         'tulip',
         'vincent',
         'wheat',
+        'winterSeeds',
         'willy',
         'wizard',
         'yam'

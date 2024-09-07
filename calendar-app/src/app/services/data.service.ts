@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { catchError, map } from 'rxjs';
 import { KEYS } from '../constants/keys.constant';
 
 @Injectable({
@@ -21,6 +21,11 @@ export class DataService {
   graphql(query: string, variables?: { [key: string]: any }) {
     return this.http
       .post(this.apiUrl, JSON.stringify({ query, variables }), this.httpOptions)
-      .pipe(map((response: any) => response.data));
+      .pipe(
+        map((response: any) => response.data),
+        catchError((e) => {
+          throw Error(e);
+        }),
+      );
   }
 }

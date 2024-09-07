@@ -94,7 +94,10 @@ export class AppEffects {
 
   getOrCreateSystemEvents$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.createDefaultGameEvents),
+      ofType(
+        AppActions.createDefaultGameEvents,
+        AppActions.updatedSystemEventsSuccess,
+      ),
       switchMap(() =>
         this.gameEventDataService
           .getOrCreateDefaults()
@@ -384,6 +387,17 @@ export class AppEffects {
         return this.calendarDataService
           .updateEvents(updatedCalendar)
           .pipe(map((calendar) => AppActions.createCalendarSuccess(calendar)));
+      }),
+    ),
+  );
+
+  updateSystemEvents = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.updateSystemEvents),
+      switchMap(() => {
+        return this.gameEventDataService
+          .updateSystem()
+          .pipe(map(() => AppActions.updatedSystemEventsSuccess()));
       }),
     ),
   );

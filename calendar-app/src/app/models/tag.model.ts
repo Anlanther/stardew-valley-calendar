@@ -87,6 +87,7 @@ export enum Tag {
   Cauliflower = 'cauliflower',
   Carrot = 'carrot',
   BlueJazz = 'blueJazz',
+  WinterSeeds= 'winterSeeds',
 
   Foraging = 'foraging',
   Farming = 'farming',

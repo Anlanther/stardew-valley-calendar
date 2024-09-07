@@ -660,6 +660,14 @@ export const TAG_METADATA: Map<Tag, TagMetadata> = new Map([
     { category: TagCategory.CROP, url: 'wheat-icon.png', displayName: 'Wheat' },
   ],
   [
+    Tag.WinterSeeds,
+    {
+      category: TagCategory.CROP,
+      url: 'winter-seeds-icon.png',
+      displayName: 'Winter Seeds',
+    },
+  ],
+  [
     Tag.Willy,
     {
       category: TagCategory.CHARACTER,

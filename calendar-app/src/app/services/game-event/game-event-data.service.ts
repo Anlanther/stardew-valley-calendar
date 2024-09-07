@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
+import { Observable, concatMap, forkJoin, map, of, switchMap } from 'rxjs';
 import { BIRTHDAY_EVENTS } from '../../constants/birthday-events.constant';
 import { CROPS_DEADLINES } from '../../constants/crops-deadline.constant';
 import { FESTIVAL_EVENTS } from '../../constants/festival-events.constant';
@@ -127,6 +127,86 @@ export class GameEventDataService {
     return gameEvent;
   }
 
+  updateSystem() {
+    return this.getSystem().pipe(
+      map((savedEvents) => {
+        const updatedEvents = savedEvents.reduce<GameEvent[]>((prev, curr) => {
+          const unsavedEvent = [
+            ...BIRTHDAY_EVENTS,
+            ...FESTIVAL_EVENTS,
+            ...CROPS_DEADLINES,
+          ].find((event) => new RegExp(`${event.title}$`).test(curr.title));
+          if (unsavedEvent) {
+            prev.push({
+              ...curr,
+              ...unsavedEvent,
+              gameDate: { ...curr.gameDate, ...unsavedEvent.gameDate },
+            });
+          }
+          return prev;
+        }, []);
+
+        return { savedEvents, updatedEvents };
+      }),
+      switchMap(({ savedEvents, updatedEvents }) =>
+        this.updateSystemDetails(updatedEvents).pipe(
+          concatMap(() => this.deleteSystemEvents(savedEvents)),
+          concatMap(() => this.createSystemEvents(savedEvents)),
+        ),
+      ),
+    );
+  }
+
+  private updateSystemDetails(gameEvents: GameEvent[]) {
+    return forkJoin(
+      gameEvents.map((event) =>
+        this.update(event).pipe(map((gameEvents) => gameEvents)),
+      ),
+    );
+  }
+
+  private deleteSystemEvents(gameEvents: GameEvent[]) {
+    const eventsDeleted = gameEvents.filter(
+      (event) =>
+        ![...BIRTHDAY_EVENTS, ...FESTIVAL_EVENTS, ...CROPS_DEADLINES].some(
+          (unsavedEvent) =>
+            new RegExp(`${unsavedEvent.title}$`).test(event.title),
+        ),
+    );
+
+    if (eventsDeleted.length === 0) {
+      return of([]);
+    }
+    return forkJoin(
+      eventsDeleted.map((event) =>
+        this.delete(event.id).pipe(map((deletedIds) => deletedIds)),
+      ),
+    );
+  }
+
+  private createSystemEvents(gameEvents: GameEvent[]) {
+    const eventsCreated = [
+      ...BIRTHDAY_EVENTS,
+      ...FESTIVAL_EVENTS,
+      ...CROPS_DEADLINES,
+    ].filter(
+      (event) =>
+        !gameEvents.some((savedEvent) =>
+          new RegExp(`${savedEvent.title}$`).test(event.title),
+        ),
+    );
+
+    if (eventsCreated.length === 0) {
+      return of([]);
+    }
+
+    return forkJoin(
+      eventsCreated.map((event) =>
+        this.create(event).pipe(map((deletedIds) => deletedIds)),
+      ),
+    );
+  }
+
   private getSystemQuery() {
     const getAll = -1;
     return `
@@ -208,4 +288,9 @@ export class GameEventDataService {
         }
       }`;
   }
+}
+function concatLatestFrom(
+  arg0: () => any,
+): import('rxjs').OperatorFunction<GameEvent[], unknown> {
+  throw new Error('Function not implemented.');
 }
