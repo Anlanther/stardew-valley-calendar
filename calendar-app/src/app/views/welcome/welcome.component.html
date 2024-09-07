@@ -1,6 +1,18 @@
 <div class="welcome-bg d-flex h-100 justify-content-center align-items-center">
   <div class="welcome--content">
-    <h1>Welcome</h1>
+    <section class="welcome---header d-flex justify-content-between">
+      <h1 class="welcome--heading">Welcome</h1>
+      <div class="welcome--menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="updateSystemEvents()">
+            [DEV] Update System
+          </button>
+        </mat-menu>
+      </div>
+    </section>
     <ng-content></ng-content>
   </div>
 </div>

@@ -19,7 +19,7 @@ const SPRING_CROPS_DEADLINE: UnsavedGameEvent[] = [
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Coffee Bean',
+    title: 'LAST DAY: Coffee Bean Spring',
     description: 'Sells for 15g.\n10 days to harvest.',
     tag: Tag.CoffeeBean,
     gameDate: { isRecurring: true, day: 18, season: Season.SPRING },
@@ -92,14 +92,14 @@ const SUMMER_CROPS_DEADLINE: UnsavedGameEvent[] = [
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Coffee Bean',
+    title: 'LAST DAY: Coffee Bean Summer',
     description: 'Sells for 15g.\n10 days to harvest.',
     tag: Tag.CoffeeBean,
     gameDate: { isRecurring: true, day: 18, season: Season.SUMMER },
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Corn',
+    title: 'LAST DAY: Corn Summer',
     description: 'Sells for 50g.\n14 days to harvest.',
     tag: Tag.Corn,
     gameDate: { isRecurring: true, day: 14, season: Season.SUMMER },
@@ -163,7 +163,7 @@ const SUMMER_CROPS_DEADLINE: UnsavedGameEvent[] = [
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Sunflower',
+    title: 'LAST DAY: Sunflower Summer',
     description: 'Sells for 80g.\n8 days to harvest.',
     tag: Tag.Sunflower,
     gameDate: { isRecurring: true, day: 20, season: Season.SUMMER },
@@ -177,7 +177,7 @@ const SUMMER_CROPS_DEADLINE: UnsavedGameEvent[] = [
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Wheat',
+    title: 'LAST DAY: Wheat Summer',
     description: 'Sells for 25g.\n4 days to harvest.',
     tag: Tag.Wheat,
     gameDate: { isRecurring: true, day: 24, season: Season.SUMMER },
@@ -186,21 +186,21 @@ const SUMMER_CROPS_DEADLINE: UnsavedGameEvent[] = [
 ];
 const FALL_CROPS_DEADLINE: UnsavedGameEvent[] = [
   {
-    title: 'LAST DAY: Wheat',
+    title: 'LAST DAY: Wheat Fall',
     description: 'Sells for 25g.\n4 days to harvest.',
     tag: Tag.Wheat,
     gameDate: { isRecurring: true, day: 24, season: Season.FALL },
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Sunflower',
+    title: 'LAST DAY: Sunflower Fall',
     description: 'Sells for 80g.\n8 days to harvest.',
     tag: Tag.Sunflower,
     gameDate: { isRecurring: true, day: 20, season: Season.FALL },
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Corn',
+    title: 'LAST DAY: Corn Fall',
     description: 'Sells for 50g.\n14 days to harvest.',
     tag: Tag.Corn,
     gameDate: { isRecurring: true, day: 14, season: Season.FALL },
@@ -286,24 +286,32 @@ const SPECIAL_CROPS_DEADLINE: UnsavedGameEvent[] = [
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Ancient Fruit',
+    title: 'LAST DAY: Ancient Fruit Winter',
     description: 'Sells for 550g.\n28 days to harvest.',
     tag: Tag.AncientFruit,
     gameDate: { isRecurring: true, day: 28, season: Season.WINTER },
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Ancient Fruit',
+    title: 'LAST DAY: Ancient Fruit Spring',
     description: 'Sells for 550g.\n28 days to harvest.',
     tag: Tag.AncientFruit,
     gameDate: { isRecurring: true, day: 28, season: Season.SPRING },
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Ancient Fruit',
+    title: 'LAST DAY: Ancient Fruit Summer',
     description: 'Sells for 550g.\n28 days to harvest.',
     tag: Tag.AncientFruit,
     gameDate: { isRecurring: true, day: 28, season: Season.SUMMER },
+    type: Type.SystemCrops,
+  },
+  {
+    title: 'LAST DAY: Winter Seeds',
+    description:
+      'Mature plants yield, at random, a Crocus, Crystal Fruit, Snow Yam, or Winter Root.\nCrocus: 60g, Crystal Fruit: 150g, Snow Yam: 100g, Winter Root: 70g.',
+    tag: Tag.WinterSeeds,
+    gameDate: { isRecurring: true, day: 21, season: Season.WINTER },
     type: Type.SystemCrops,
   },
 ];

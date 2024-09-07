@@ -76,5 +76,7 @@ export const AppActions = createActionGroup({
       calendar,
       gameEventsToAdd,
     }),
+    'Update System Events': emptyProps(),
+    'Updated System Events Success': emptyProps(),
   },
 });
