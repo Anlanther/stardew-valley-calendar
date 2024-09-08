@@ -2,6 +2,8 @@
 
 Docker setup is still in progress. In the meantime, after doing an `npm i` in both the `calendar-app` and `calendar-db` directories, to set up, you may make use of the VSCode tasks.
 
+![Show All Commands](./assets/banner.png)
+
 ### Setting Up Locally
 
 ### 1. Press Commands to Show All Commands
@@ -43,3 +45,20 @@ Once you have signed in, you will need to create an API token, of which you will
 
 A token should be generated for you to copy. Save this.
 ![Show All Commands](./assets/strapi-token.png)
+
+### Setting Up the App with a Token
+
+After you have set up your Strapi account and token and still have the Strapi server running locally, there are 2 options to getting ready with the app.
+
+#### 1. Opening the App Locally
+
+To save time if opening the app locally, you may paste the token into the constant file `./calendar-app/src/app/constants/keys.constant.ts`. This will pass the token into the data service by default so that you do not need to input it again.
+
+#### 2. Opening the App via Live GitHub Pages Page
+
+If you are accessing the app via the live page (`https://anlanther.github.io/stardew-valley-calendar/`), you will need to add the token via the token dialog:
+![Show All Commands](./assets/set-token.png)
+![Show All Commands](./assets/token-input.png)
+
+If the token works, you will be able to see this version of the welcome page:
+![Show All Commands](./assets/authenticated.png)

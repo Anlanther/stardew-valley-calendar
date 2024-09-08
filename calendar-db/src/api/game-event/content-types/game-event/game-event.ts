@@ -79,6 +79,7 @@ export enum Tag {
   Sandy = 'sandy',
   Sebastian = 'sebastian',
   Shane = 'shane',
+  Shopping = 'shopping',
   Starfruit = 'starfruit',
   Strawberry = 'strawberry',
   SummerSpangle = 'summerSpangle',
@@ -91,6 +92,7 @@ export enum Tag {
   Tulip = 'tulip',
   Vincent = 'vincent',
   Wheat = 'wheat',
+  WinterSeeds = 'winterSeeds',
   Willy = 'willy',
   Wizard = 'wizard',
   Yam = 'yam',}
