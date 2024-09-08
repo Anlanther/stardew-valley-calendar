@@ -29,7 +29,7 @@ And voila! If you have not already, you will be prompted to create a Strapi acco
 
 ## Setting Up Strapi Locally
 
-If you are setting up Strapi for the first time, when you open [`localhost:1337/admin](http://localhost:1337/admin), it will prompt you to sign up. Do not worry, this sign up is free and just saves your login details locally.
+If you are setting up Strapi for the first time, when you open [localhost:1337/admin](http://localhost:1337/admin), it will prompt you to sign up. Do not worry, this sign up is free and just saves your login details locally.
 
 Once you have signed in, you will need to create an API token, of which you will have to pass to the application.
 
@@ -53,6 +53,7 @@ After you have set up your Strapi account and token and still have the Strapi se
 #### 1. Opening the App Locally
 
 To save time if opening the app locally, you may paste the token into the constant file `./calendar-app/src/app/constants/keys.constant.ts`. This will pass the token into the data service by default so that you do not need to input it again.
+![Show All Commands](./assets/set-token-locally.png)
 
 #### 2. Opening the App via Live GitHub Pages Page
 
@@ -61,4 +62,4 @@ If you are accessing the app via the live page (`https://anlanther.github.io/sta
 ![Show All Commands](./assets/token-input.png)
 
 If the token works, you will be able to see this version of the welcome page:
-![Show All Commands](./assets/authenticated.png)
+![Show All Commands](./assets/authenticated-page.png)
