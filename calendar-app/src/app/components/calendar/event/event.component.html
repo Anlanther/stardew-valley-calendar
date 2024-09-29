@@ -2,7 +2,7 @@
   <div class="event__content">
     <section class="date">{{ day }}</section>
     <section class="events">
-      @for (gameEvent of gameEvents; track gameEvent) {
+      @for (gameEvent of gameEvents; track gameEvent.id) {
         <img
           [src]="gameEvent.url"
           alt="icon"

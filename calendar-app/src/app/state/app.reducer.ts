@@ -16,6 +16,7 @@ export interface AppState {
   savedSystemEvents: GameEvent[];
   apiFailed: boolean;
   navBarOpen: boolean;
+  offlineMode: boolean;
 }
 
 export const initialState: AppState = {
@@ -26,6 +27,7 @@ export const initialState: AppState = {
   savedSystemEvents: [],
   apiFailed: false,
   navBarOpen: false,
+  offlineMode: false,
 };
 
 export const appReducer = createReducer<AppState>(
@@ -162,5 +164,9 @@ export const appReducer = createReducer<AppState>(
   on(AppActions.aPIFailed, (state) => ({
     ...state,
     apiFailed: true,
+  })),
+  on(AppActions.setOfflineMode, (state) => ({
+    ...state,
+    offlineMode: true,
   })),
 );

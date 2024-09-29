@@ -2,17 +2,21 @@
   <div class="welcome--content">
     <section class="welcome---header d-flex justify-content-between">
       <h1 class="welcome--heading">Welcome</h1>
-      <div class="welcome--menu">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="setToken()">Set Token</button>
-          <button mat-menu-item (click)="updateSystemEvents()">
-            [DEV] Update System
-          </button>
-        </mat-menu>
-      </div>
+      @if (offlineMode$ | async; as offlineMode) {
+        @if (!offlineMode) {
+          <div class="welcome--menu">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="setToken()">Set Token</button>
+              <button mat-menu-item (click)="updateSystemEvents()">
+                Update System
+              </button>
+            </mat-menu>
+          </div>
+        }
+      }
     </section>
     <ng-content></ng-content>
   </div>

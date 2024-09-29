@@ -34,7 +34,7 @@ export class DataService {
           return response.data;
         }),
         catchError((e) => {
-          throw Error(e);
+          throw Error(JSON.stringify(e));
         }),
       );
   }

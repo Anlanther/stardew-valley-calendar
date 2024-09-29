@@ -9,6 +9,11 @@
           >here</a
         >. Reload when it is ready.
       </p>
+      <section class="welcome__actions d-flex">
+        <button class="btn btn-primary" (click)="setOfflineMode()">
+          Offline Mode
+        </button>
+      </section>
     </app-welcome>
   } @else if (status === noCalendars) {
     <app-welcome>

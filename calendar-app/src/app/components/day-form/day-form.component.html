@@ -10,7 +10,7 @@
         <mat-accordion class="accordion" multi>
           @for (
             activeEvent of activeEvents;
-            track activeEvent;
+            track activeEvent.id;
             let index = $index
           ) {
             @if (activeEvent.type.includes("system")) {
@@ -36,7 +36,7 @@
         <mat-accordion class="accordion" multi>
           @for (
             activeEvent of activeEvents;
-            track activeEvent;
+            track activeEvent.id;
             let index = $index
           ) {
             @if (!activeEvent.type.includes("system")) {

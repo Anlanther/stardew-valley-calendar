@@ -60,4 +60,8 @@ export class AppComponent {
     };
     fileReader.readAsText(file);
   }
+
+  setOfflineMode() {
+    this.store.dispatch(AppActions.setOfflineMode());
+  }
 }

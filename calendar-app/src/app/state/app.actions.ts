@@ -80,5 +80,6 @@ export const AppActions = createActionGroup({
     'Updated System Events Success': emptyProps(),
     'Set Token': emptyProps(),
     'Set Token Success': (token: string) => ({ token }),
+    'Set Offline Mode': emptyProps(),
   },
 });

@@ -34,9 +34,9 @@ export const AppFeature = createFeature({
       baseSelectors.selectApiFailed,
       baseSelectors.selectActiveCalendar,
       baseSelectors.selectAvailableCalendars,
-      baseSelectors.selectSavedSystemEvents,
-      (apiFailed, hasSelectedCalendar, availableCalendars, systemEvents) => {
-        const appNotReady = apiFailed || systemEvents.length === 0;
+      baseSelectors.selectOfflineMode,
+      (apiFailed, hasSelectedCalendar, availableCalendars, offlineMode) => {
+        const appNotReady = apiFailed && !offlineMode;
 
         if (appNotReady) {
           return StatusMessage.NO_API_ACCESS;

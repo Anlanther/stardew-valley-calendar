@@ -5,7 +5,7 @@
     <mat-select [formControl]="availableCalendarsFormControl">
       @for (
         availableCalendar of data.availableCalendars;
-        track availableCalendar
+        track availableCalendar.id
       ) {
         <mat-option value="{{ availableCalendar.id }}">
           {{ availableCalendar.name }}
