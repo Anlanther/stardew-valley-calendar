@@ -125,7 +125,7 @@ Likes:
 All Artifacts, Cave Carrot, Quartz`,tag:f.Dwarf,gameDate:{isRecurring:!0,day:22,season:E.SUMMER},type:D.SystemBirthdays},{title:"Elliott's Birthday",description:`Loves:
 Crab Cakes, Duck Feather, Lobster, Pomegranate, Squid Ink, Tom Kha Soup
 Likes:
-All Books, All Fruit (except Pomegranate & Salmonberry) ,Octopus, Squid`,tag:f.Elliott,gameDate:{isRecurring:!0,day:5,season:E.FALL},type:D.SystemBirthdays},{title:"Emily's Birthday",description:`Loves:
+All Books, All Fruit (except Pomegranate & Salmonberry),Octopus, Squid`,tag:f.Elliott,gameDate:{isRecurring:!0,day:5,season:E.FALL},type:D.SystemBirthdays},{title:"Emily's Birthday",description:`Loves:
 Amethyst, Aquamarine, Cloth, Emerald, Jade, Parrot Egg, Ruby, Survival Burger, Topaz, Wool
 Likes:
 Daffodil, Quartz`,tag:f.Emily,gameDate:{isRecurring:!0,day:27,season:E.SPRING},type:D.SystemBirthdays},{title:"Evelyn's Birthday",description:`Loves:
@@ -143,22 +143,22 @@ Likes:
 Daffodil`,tag:f.Haley,gameDate:{isRecurring:!0,day:14,season:E.SPRING},type:D.SystemBirthdays},{title:"Harvey's Birthday",description:`Loves:
 Coffee, Pickles, Super Meal, Truffle Oil, Wine
 Likes:
-All Fruit (except Salmonberry & Spice Berry) ,All Mushrooms (except Red) ,Daffodil, Dandelion, Duck Egg, Duck Feather, Ginger, Goat Milk, Hazelnut, Holly, Large Goat Milk, Leek, Quartz, Snow Yam, Spring Onion, Wild Horseradish, Winter Root`,tag:f.Harvey,gameDate:{isRecurring:!0,day:14,season:E.WINTER},type:D.SystemBirthdays},{title:"Jas' Birthday",description:`Loves:
- Ancient Dol, Fairy Bo, Fairy Ros, Pink Cak, Plum Puddin, Strange Doll (green) ,Strange Doll (yellow)
+All Fruit (except Salmonberry & Spice Berry),All Mushrooms (except Red),Daffodil, Dandelion, Duck Egg, Duck Feather, Ginger, Goat Milk, Hazelnut, Holly, Large Goat Milk, Leek, Quartz, Snow Yam, Spring Onion, Wild Horseradish, Winter Root`,tag:f.Harvey,gameDate:{isRecurring:!0,day:14,season:E.WINTER},type:D.SystemBirthdays},{title:"Jas' Birthday",description:`Loves:
+ Ancient Dol, Fairy Bo, Fairy Ros, Pink Cak, Plum Puddin, Strange Doll (green),Strange Doll (yellow)
 Likes:
 All Milk, Coconut, Daffodil`,tag:f.Jas,gameDate:{isRecurring:!0,day:4,season:E.SUMMER},type:D.SystemBirthdays},{title:"Jodi's Birthday",description:`Loves:
 Chocolate Cake, Crispy Bass, Diamond, Eggplant Parmesan, Fried Eel, Pancakes, Rhubarb Pie, Vegetable Medley
 Likes:
-All Eggs (except Void Egg) ,All Fruit (except Spice Berry) ,All Milk`,tag:f.Jodi,gameDate:{isRecurring:!0,day:11,season:E.FALL},type:D.SystemBirthdays},{title:"Kent's Birthday",description:`Loves:
+All Eggs (except Void Egg),All Fruit (except Spice Berry),All Milk`,tag:f.Jodi,gameDate:{isRecurring:!0,day:11,season:E.FALL},type:D.SystemBirthdays},{title:"Kent's Birthday",description:`Loves:
 Fiddlehead Risotto, Roasted Hazelnuts
 Likes:
-All Eggs (except Void Egg) ,All Fruit, Daffodil, Dwarvish Safety Manual`,tag:f.Kent,gameDate:{isRecurring:!0,day:4,season:E.SPRING},type:D.SystemBirthdays},{title:"Krobus' Birthday",description:`Loves:
+All Eggs (except Void Egg),All Fruit, Daffodil, Dwarvish Safety Manual`,tag:f.Kent,gameDate:{isRecurring:!0,day:4,season:E.SPRING},type:D.SystemBirthdays},{title:"Krobus' Birthday",description:`Loves:
 Diamond, Iridium Bar, Monster Compendium, Monster Musk, Pumpkin, Void Egg, Void Mayonnaise, Wild Horseradish
 Likes:
 Gold Bar, Quartz, Seafoam Pudding, Strange Bun`,tag:f.Krobus,gameDate:{isRecurring:!0,day:1,season:E.WINTER},type:D.SystemBirthdays},{title:"Leah's Birthday",description:`Loves:
 Goat Cheese, nPoppyseed Muffin, nSalad, nStir Fry, nTruffle, nVegetable Medley, nWine
 Likes:
-All Eggs (except Void Egg) ,All Fruit, All Milk, All Mushrooms (except Red) ,Daffodil, Dandelion, Driftwood, Ginger, Hazelnut, Holly, Leek, Snow Yam, Spring Onion, Wild Horseradish, Winter Root`,tag:f.Leah,gameDate:{isRecurring:!0,day:23,season:E.WINTER},type:D.SystemBirthdays},{title:"Leo's Birthday",description:`Loves:
+All Eggs (except Void Egg),All Fruit, All Milk, All Mushrooms (except Red),Daffodil, Dandelion, Driftwood, Ginger, Hazelnut, Holly, Leek, Snow Yam, Spring Onion, Wild Horseradish, Winter Root`,tag:f.Leah,gameDate:{isRecurring:!0,day:23,season:E.WINTER},type:D.SystemBirthdays},{title:"Leo's Birthday",description:`Loves:
 Duck Feather, Mango, Ostrich Egg, Parrot Egg, Poi
 Likes:
 Dragon Tooth, Nautilus Shell, Quartz, Rainbow Shell, Sea Urchin, Spice Berry`,tag:f.Leo,gameDate:{isRecurring:!0,day:26,season:E.SUMMER},type:D.SystemBirthdays},{title:"Lewis' Birthday",description:`Loves:
@@ -167,31 +167,28 @@ Likes:
 Blueberry, Cactus Fruit, Coconut`,tag:f.Lewis,gameDate:{isRecurring:!0,day:7,season:E.SPRING},type:D.SystemBirthdays},{title:"Linus' Birthday",description:`Loves:
 Blueberry Tart, Cactus Fruit, Coconut, Dish O' The Sea, The Alleyway Buffet, Yam
 Likes:
-All Eggs (except Void Egg) ,All Fruit (except Cactus Fruit & Coconut) ,All Milk, All Mushrooms (except Red) ,Daffodil, Dandelion, Ginger, Hazelnut, Holly, Leek, Snow Yam, Spring Onion, Wild Horseradish, Winter Root`,tag:f.Linus,gameDate:{isRecurring:!0,day:3,season:E.WINTER},type:D.SystemBirthdays},{title:"Marlon's Birthday",description:`Loves:
-Roots Platter, ALL Slime Eggs, Life Elixir, Aged Blue Moon Wine, Armor Elixir, Haste Elixir, Hero Elixir, Void Delight
-Likes:
-Beer, Pale Ale, Wine, Mead, Fried Mushroom, Purple Mushroom, Bomb, Mega Bomb, Blue Moon Wine, Big Bark Burger, Frog Legs, Glazed Butterfish, Void Salmon Sushi, Void Shard Void Pebble, Rusty Blade`,tag:f.Marlon,gameDate:{isRecurring:!0,day:19,season:E.WINTER},type:D.SystemBirthdays},{title:"Marnie's Birthday",description:`Loves:
+All Eggs (except Void Egg),All Fruit (except Cactus Fruit & Coconut),All Milk, All Mushrooms (except Red),Daffodil, Dandelion, Ginger, Hazelnut, Holly, Leek, Snow Yam, Spring Onion, Wild Horseradish, Winter Root`,tag:f.Linus,gameDate:{isRecurring:!0,day:3,season:E.WINTER},type:D.SystemBirthdays},{title:"Marnie's Birthday",description:`Loves:
 Diamond, Farmer's Lunch, Pink Cake, Pumpkin Pie
 Likes:
-All Eggs (except Void Egg) ,All Milk, Stardew Valley Almanac, Quartz`,tag:f.Marnie,gameDate:{isRecurring:!0,day:18,season:E.FALL},type:D.SystemBirthdays},{title:"Maru's Birthday",description:`Loves:
+All Eggs (except Void Egg),All Milk, Stardew Valley Almanac, Quartz`,tag:f.Marnie,gameDate:{isRecurring:!0,day:18,season:E.FALL},type:D.SystemBirthdays},{title:"Maru's Birthday",description:`Loves:
 Battery Pack, Cauliflower, Cheese Cauliflower, Diamond, Dwarf Gadget, Gold Bar, Iridium Bar, Miner's Treat, Pepper Poppers, Radioactive Bar, Rhubarb Pie, Strawberry
 Likes:
-All Mushrooms (except Common & Red) ,Copper Bar, Iron Bar, Oak Resin, Pine Tar, Quartz, Radioactive Ore`,tag:f.Maru,gameDate:{isRecurring:!0,day:10,season:E.SUMMER},type:D.SystemBirthdays},{title:"Morris' Birthday",description:"The Pelican Town JojaMart is Morris' first store as manager. He truly believes that Joja Corporation will propel the Ferngill Republic toward a more prosperous future",tag:f.Morris,gameDate:{isRecurring:!0,day:2,season:E.SPRING},type:D.SystemBirthdays},{title:"Pam's Birthday",description:`Loves:
+All Mushrooms (except Common & Red),Copper Bar, Iron Bar, Oak Resin, Pine Tar, Quartz, Radioactive Ore`,tag:f.Maru,gameDate:{isRecurring:!0,day:10,season:E.SUMMER},type:D.SystemBirthdays},{title:"Pam's Birthday",description:`Loves:
 Beer, Cactus Fruit, Glazed Yams, Mead, Pale Ale, Parsnip, Parsnip Soup, Pi\xF1a Colada
 Likes:
-All Fruit (except Cactus Fruit) ,All Milk, Daffodil`,tag:f.Pam,gameDate:{isRecurring:!0,day:18,season:E.SPRING},type:D.SystemBirthdays},{title:"Penny's Birthday",description:`Loves:
+All Fruit (except Cactus Fruit),All Milk, Daffodil`,tag:f.Pam,gameDate:{isRecurring:!0,day:18,season:E.SPRING},type:D.SystemBirthdays},{title:"Penny's Birthday",description:`Loves:
 All Books, Diamond, Emerald, Melon, Poppy, Poppyseed Muffin, Red Plate, Roots Platter, Sandfish, Tom Kha Soup
 Likes:
 All Artifacts, All Milk, Dandelion, Leek`,tag:f.Penny,gameDate:{isRecurring:!0,day:2,season:E.FALL},type:D.SystemBirthdays},{title:"Pierre's Birthday",description:`Loves:
 Fried Calamari, Price Catalogue
 Likes:
-All Eggs (except Void Egg) ,All Milk, Daffodil, Dandelion`,tag:f.Pierre,gameDate:{isRecurring:!0,day:26,season:E.SPRING},type:D.SystemBirthdays},{title:"Robin's Birthday",description:`Loves:
+All Eggs (except Void Egg),All Milk, Daffodil, Dandelion`,tag:f.Pierre,gameDate:{isRecurring:!0,day:26,season:E.SPRING},type:D.SystemBirthdays},{title:"Robin's Birthday",description:`Loves:
 Goat Cheese, Peach, Spaghetti, Woody's Secret
 Likes:
-All Fruit (except Peach) ,All Milk, Hardwood, Quartz, Woodcutter's Weekly`,tag:f.Robin,gameDate:{isRecurring:!0,day:21,season:E.FALL},type:D.SystemBirthdays},{title:"Sam's Birthday",description:`Loves:
+All Fruit (except Peach),All Milk, Hardwood, Quartz, Woodcutter's Weekly`,tag:f.Robin,gameDate:{isRecurring:!0,day:21,season:E.FALL},type:D.SystemBirthdays},{title:"Sam's Birthday",description:`Loves:
 Cactus Fruit, Maple Bar, Pizza, Tigerseye
 Likes:
-All Eggs (except Void Egg) ,Joja Cola`,tag:f.Sam,gameDate:{isRecurring:!0,day:17,season:E.SUMMER},type:D.SystemBirthdays},{title:"Sandy's Birthday",description:`Loves:
+All Eggs (except Void Egg),Joja Cola`,tag:f.Sam,gameDate:{isRecurring:!0,day:17,season:E.SUMMER},type:D.SystemBirthdays},{title:"Sandy's Birthday",description:`Loves:
 Crocus, Daffodil, Mango Sticky Rice, Sweet Pea
 Likes:
 All Fruit, Goat Milk, Large Goat Milk, Quartz, Wool`,tag:f.Sandy,gameDate:{isRecurring:!0,day:15,season:E.FALL},type:D.SystemBirthdays},{title:"Sebastian's Birthday",description:`Loves:
@@ -200,7 +197,7 @@ Likes:
 Combat Quarterly, Flounder, Monster Compendium, Quartz`,tag:f.Sebastian,gameDate:{isRecurring:!0,day:10,season:E.WINTER},type:D.SystemBirthdays},{title:"Shane's Birthday",description:`Loves:
 Beer, Hot Pepper, Pepper Poppers, Pizza
 Likes:
-All Eggs (except Void Egg) ,All Fruit (except Hot Pepper)`,tag:f.Shane,gameDate:{isRecurring:!0,day:20,season:E.SPRING},type:D.SystemBirthdays},{title:"Vincent's Birthday",description:`Loves:
+All Eggs (except Void Egg),All Fruit (except Hot Pepper)`,tag:f.Shane,gameDate:{isRecurring:!0,day:20,season:E.SPRING},type:D.SystemBirthdays},{title:"Vincent's Birthday",description:`Loves:
 Cranberry Candy, Frog Egg, Ginger Ale, Grape, Pink Cake, Snail
 Likes:
 All Milk, Coconut, Daffodil`,tag:f.Vincent,gameDate:{isRecurring:!0,day:10,season:E.SPRING},type:D.SystemBirthdays},{title:"Willy's Birthday",description:`Loves:
