@@ -55,7 +55,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Elliott's Birthday",
     description:
-      'Loves:\nCrab Cakes, Duck Feather, Lobster, Pomegranate, Squid Ink, Tom Kha Soup\nLikes:\nAll Books, All Fruit (except Pomegranate & Salmonberry) ,Octopus, Squid',
+      'Loves:\nCrab Cakes, Duck Feather, Lobster, Pomegranate, Squid Ink, Tom Kha Soup\nLikes:\nAll Books, All Fruit (except Pomegranate & Salmonberry),Octopus, Squid',
     tag: Tag.Elliott,
     gameDate: { isRecurring: true, day: 5, season: Season.FALL },
     type: Type.SystemBirthdays,
@@ -102,7 +102,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Harvey's Birthday",
     description:
-      'Loves:\nCoffee, Pickles, Super Meal, Truffle Oil, Wine\nLikes:\nAll Fruit (except Salmonberry & Spice Berry) ,All Mushrooms (except Red) ,Daffodil, Dandelion, Duck Egg, Duck Feather, Ginger, Goat Milk, Hazelnut, Holly, Large Goat Milk, Leek, Quartz, Snow Yam, Spring Onion, Wild Horseradish, Winter Root',
+      'Loves:\nCoffee, Pickles, Super Meal, Truffle Oil, Wine\nLikes:\nAll Fruit (except Salmonberry & Spice Berry),All Mushrooms (except Red),Daffodil, Dandelion, Duck Egg, Duck Feather, Ginger, Goat Milk, Hazelnut, Holly, Large Goat Milk, Leek, Quartz, Snow Yam, Spring Onion, Wild Horseradish, Winter Root',
     tag: Tag.Harvey,
     gameDate: { isRecurring: true, day: 14, season: Season.WINTER },
     type: Type.SystemBirthdays,
@@ -110,7 +110,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Jas' Birthday",
     description:
-      'Loves:\n Ancient Dol, Fairy Bo, Fairy Ros, Pink Cak, Plum Puddin, Strange Doll (green) ,Strange Doll (yellow)\nLikes:\nAll Milk, Coconut, Daffodil',
+      'Loves:\n Ancient Dol, Fairy Bo, Fairy Ros, Pink Cak, Plum Puddin, Strange Doll (green),Strange Doll (yellow)\nLikes:\nAll Milk, Coconut, Daffodil',
     tag: Tag.Jas,
     gameDate: { isRecurring: true, day: 4, season: Season.SUMMER },
     type: Type.SystemBirthdays,
@@ -118,7 +118,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Jodi's Birthday",
     description:
-      'Loves:\nChocolate Cake, Crispy Bass, Diamond, Eggplant Parmesan, Fried Eel, Pancakes, Rhubarb Pie, Vegetable Medley\nLikes:\nAll Eggs (except Void Egg) ,All Fruit (except Spice Berry) ,All Milk',
+      'Loves:\nChocolate Cake, Crispy Bass, Diamond, Eggplant Parmesan, Fried Eel, Pancakes, Rhubarb Pie, Vegetable Medley\nLikes:\nAll Eggs (except Void Egg),All Fruit (except Spice Berry),All Milk',
     tag: Tag.Jodi,
     gameDate: { isRecurring: true, day: 11, season: Season.FALL },
     type: Type.SystemBirthdays,
@@ -126,7 +126,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Kent's Birthday",
     description:
-      'Loves:\nFiddlehead Risotto, Roasted Hazelnuts\nLikes:\nAll Eggs (except Void Egg) ,All Fruit, Daffodil, Dwarvish Safety Manual',
+      'Loves:\nFiddlehead Risotto, Roasted Hazelnuts\nLikes:\nAll Eggs (except Void Egg),All Fruit, Daffodil, Dwarvish Safety Manual',
     tag: Tag.Kent,
     gameDate: { isRecurring: true, day: 4, season: Season.SPRING },
     type: Type.SystemBirthdays,
@@ -142,7 +142,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Leah's Birthday",
     description:
-      'Loves:\nGoat Cheese, nPoppyseed Muffin, nSalad, nStir Fry, nTruffle, nVegetable Medley, nWine\nLikes:\nAll Eggs (except Void Egg) ,All Fruit, All Milk, All Mushrooms (except Red) ,Daffodil, Dandelion, Driftwood, Ginger, Hazelnut, Holly, Leek, Snow Yam, Spring Onion, Wild Horseradish, Winter Root',
+      'Loves:\nGoat Cheese, nPoppyseed Muffin, nSalad, nStir Fry, nTruffle, nVegetable Medley, nWine\nLikes:\nAll Eggs (except Void Egg),All Fruit, All Milk, All Mushrooms (except Red),Daffodil, Dandelion, Driftwood, Ginger, Hazelnut, Holly, Leek, Snow Yam, Spring Onion, Wild Horseradish, Winter Root',
     tag: Tag.Leah,
     gameDate: { isRecurring: true, day: 23, season: Season.WINTER },
     type: Type.SystemBirthdays,
@@ -166,23 +166,15 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Linus' Birthday",
     description:
-      "Loves:\nBlueberry Tart, Cactus Fruit, Coconut, Dish O' The Sea, The Alleyway Buffet, Yam\nLikes:\nAll Eggs (except Void Egg) ,All Fruit (except Cactus Fruit & Coconut) ,All Milk, All Mushrooms (except Red) ,Daffodil, Dandelion, Ginger, Hazelnut, Holly, Leek, Snow Yam, Spring Onion, Wild Horseradish, Winter Root",
+      "Loves:\nBlueberry Tart, Cactus Fruit, Coconut, Dish O' The Sea, The Alleyway Buffet, Yam\nLikes:\nAll Eggs (except Void Egg),All Fruit (except Cactus Fruit & Coconut),All Milk, All Mushrooms (except Red),Daffodil, Dandelion, Ginger, Hazelnut, Holly, Leek, Snow Yam, Spring Onion, Wild Horseradish, Winter Root",
     tag: Tag.Linus,
     gameDate: { isRecurring: true, day: 3, season: Season.WINTER },
     type: Type.SystemBirthdays,
   },
   {
-    title: "Marlon's Birthday",
-    description:
-      'Loves:\nRoots Platter, ALL Slime Eggs, Life Elixir, Aged Blue Moon Wine, Armor Elixir, Haste Elixir, Hero Elixir, Void Delight\nLikes:\nBeer, Pale Ale, Wine, Mead, Fried Mushroom, Purple Mushroom, Bomb, Mega Bomb, Blue Moon Wine, Big Bark Burger, Frog Legs, Glazed Butterfish, Void Salmon Sushi, Void Shard Void Pebble, Rusty Blade',
-    tag: Tag.Marlon,
-    gameDate: { isRecurring: true, day: 19, season: Season.WINTER },
-    type: Type.SystemBirthdays,
-  },
-  {
     title: "Marnie's Birthday",
     description:
-      "Loves:\nDiamond, Farmer's Lunch, Pink Cake, Pumpkin Pie\nLikes:\nAll Eggs (except Void Egg) ,All Milk, Stardew Valley Almanac, Quartz",
+      "Loves:\nDiamond, Farmer's Lunch, Pink Cake, Pumpkin Pie\nLikes:\nAll Eggs (except Void Egg),All Milk, Stardew Valley Almanac, Quartz",
     tag: Tag.Marnie,
     gameDate: { isRecurring: true, day: 18, season: Season.FALL },
     type: Type.SystemBirthdays,
@@ -190,23 +182,15 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Maru's Birthday",
     description:
-      "Loves:\nBattery Pack, Cauliflower, Cheese Cauliflower, Diamond, Dwarf Gadget, Gold Bar, Iridium Bar, Miner's Treat, Pepper Poppers, Radioactive Bar, Rhubarb Pie, Strawberry\nLikes:\nAll Mushrooms (except Common & Red) ,Copper Bar, Iron Bar, Oak Resin, Pine Tar, Quartz, Radioactive Ore",
+      "Loves:\nBattery Pack, Cauliflower, Cheese Cauliflower, Diamond, Dwarf Gadget, Gold Bar, Iridium Bar, Miner's Treat, Pepper Poppers, Radioactive Bar, Rhubarb Pie, Strawberry\nLikes:\nAll Mushrooms (except Common & Red),Copper Bar, Iron Bar, Oak Resin, Pine Tar, Quartz, Radioactive Ore",
     tag: Tag.Maru,
     gameDate: { isRecurring: true, day: 10, season: Season.SUMMER },
     type: Type.SystemBirthdays,
   },
   {
-    title: "Morris' Birthday",
-    description:
-      "The Pelican Town JojaMart is Morris' first store as manager. He truly believes that Joja Corporation will propel the Ferngill Republic toward a more prosperous future",
-    tag: Tag.Morris,
-    gameDate: { isRecurring: true, day: 2, season: Season.SPRING },
-    type: Type.SystemBirthdays,
-  },
-  {
     title: "Pam's Birthday",
     description:
-      'Loves:\nBeer, Cactus Fruit, Glazed Yams, Mead, Pale Ale, Parsnip, Parsnip Soup, Piña Colada\nLikes:\nAll Fruit (except Cactus Fruit) ,All Milk, Daffodil',
+      'Loves:\nBeer, Cactus Fruit, Glazed Yams, Mead, Pale Ale, Parsnip, Parsnip Soup, Piña Colada\nLikes:\nAll Fruit (except Cactus Fruit),All Milk, Daffodil',
     tag: Tag.Pam,
     gameDate: { isRecurring: true, day: 18, season: Season.SPRING },
     type: Type.SystemBirthdays,
@@ -222,7 +206,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Pierre's Birthday",
     description:
-      'Loves:\nFried Calamari, Price Catalogue\nLikes:\nAll Eggs (except Void Egg) ,All Milk, Daffodil, Dandelion',
+      'Loves:\nFried Calamari, Price Catalogue\nLikes:\nAll Eggs (except Void Egg),All Milk, Daffodil, Dandelion',
     tag: Tag.Pierre,
     gameDate: { isRecurring: true, day: 26, season: Season.SPRING },
     type: Type.SystemBirthdays,
@@ -230,7 +214,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Robin's Birthday",
     description:
-      "Loves:\nGoat Cheese, Peach, Spaghetti, Woody's Secret\nLikes:\nAll Fruit (except Peach) ,All Milk, Hardwood, Quartz, Woodcutter's Weekly",
+      "Loves:\nGoat Cheese, Peach, Spaghetti, Woody's Secret\nLikes:\nAll Fruit (except Peach),All Milk, Hardwood, Quartz, Woodcutter's Weekly",
     tag: Tag.Robin,
     gameDate: { isRecurring: true, day: 21, season: Season.FALL },
     type: Type.SystemBirthdays,
@@ -238,7 +222,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Sam's Birthday",
     description:
-      'Loves:\nCactus Fruit, Maple Bar, Pizza, Tigerseye\nLikes:\nAll Eggs (except Void Egg) ,Joja Cola',
+      'Loves:\nCactus Fruit, Maple Bar, Pizza, Tigerseye\nLikes:\nAll Eggs (except Void Egg),Joja Cola',
     tag: Tag.Sam,
     gameDate: { isRecurring: true, day: 17, season: Season.SUMMER },
     type: Type.SystemBirthdays,
@@ -262,7 +246,7 @@ export const BIRTHDAY_EVENTS: UnsavedGameEvent[] = [
   {
     title: "Shane's Birthday",
     description:
-      'Loves:\nBeer, Hot Pepper, Pepper Poppers, Pizza\nLikes:\nAll Eggs (except Void Egg) ,All Fruit (except Hot Pepper)',
+      'Loves:\nBeer, Hot Pepper, Pepper Poppers, Pizza\nLikes:\nAll Eggs (except Void Egg),All Fruit (except Hot Pepper)',
     tag: Tag.Shane,
     gameDate: { isRecurring: true, day: 20, season: Season.SPRING },
     type: Type.SystemBirthdays,
