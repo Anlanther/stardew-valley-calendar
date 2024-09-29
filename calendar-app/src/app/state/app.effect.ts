@@ -390,6 +390,7 @@ export class AppEffects {
         this.store.pipe(select(AppFeature.selectOfflineMode)),
       ]),
       switchMap(([{ downloadedCalendar }, availableCalendars, offlineMode]) => {
+        console.log('test', downloadedCalendar);
         let calendarName = downloadedCalendar.name;
         const duplicates = availableCalendars.filter((calendar) => {
           const test = new RegExp(downloadedCalendar.name, 'g').test(
@@ -468,9 +469,8 @@ export class AppEffects {
       ofType(AppActions.createUploadedCalendarEventsSuccess),
       concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectOfflineMode)),
-        this.store.pipe(select(AppFeature.selectActiveCalendar)),
       ]),
-      switchMap(([action, offlineMode, offlineActiveCalendar]) => {
+      switchMap(([action, offlineMode]) => {
         const updatedCalendar: Partial<Calendar> = {
           id: action.calendar.id,
           gameEvents: [
@@ -482,7 +482,7 @@ export class AppEffects {
           offlineMode
             ? this.offlineDataService.updateCalendarEvents(
                 updatedCalendar,
-                offlineActiveCalendar!,
+                action.calendar,
               )
             : this.calendarDataService.updateEvents(updatedCalendar)
         ).pipe(map((calendar) => AppActions.createCalendarSuccess(calendar)));

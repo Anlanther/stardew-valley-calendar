@@ -85,9 +85,9 @@ export class OfflineDataService {
 
   updateGameEvent(
     gameEvent: GameEvent,
-    activeCalendar: Calendar,
+    offlineActiveCalendar: Calendar,
   ): Observable<GameEvent> {
-    const gameEventToUpdate: GameEvent = activeCalendar.gameEvents.find(
+    const gameEventToUpdate: GameEvent = offlineActiveCalendar.gameEvents.find(
       (event) => event.id === gameEvent.id,
     )!;
     const updatedGameEvent: GameEvent = {
