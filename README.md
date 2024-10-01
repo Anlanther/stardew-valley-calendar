@@ -1,10 +1,10 @@
 # Stardew Valley Calendar Planner
 
-Docker setup is still in progress. In the meantime, after doing an `npm i` in both the `calendar-app` and `calendar-db` directories, to set up, you may make use of the VSCode tasks.
-
 ![Show All Commands](./assets/banner.png)
 
 ### Setting Up Locally
+
+Docker setup is still in progress. In the meantime, after doing an `npm i` in both the `calendar-app` and `calendar-db` directories, to set up, you may make use of the VSCode tasks.
 
 ### 1. Press Commands to Show All Commands
 

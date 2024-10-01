@@ -1,14 +1,21 @@
 @if (status$ | async; as status) {
   @if (status === noApi) {
     <app-welcome>
-      <p class="fail-message">
-        Please start up the Strapi server to begin. You may find instructions on
-        how to do so
-        <a
-          href="https://github.com/Anlanther/stardew-valley-calendar/blob/main/README.md"
-          >here</a
-        >. Reload when it is ready.
-      </p>
+      <section class="fail-message">
+        <p>
+          Please start up the Strapi server to begin. You may find instructions
+          on how to do so
+          <a
+            href="https://github.com/Anlanther/stardew-valley-calendar?tab=readme-ov-file#setting-up-strapi-locally"
+            >here</a
+          >. Reload when it is ready.
+        </p>
+        <p>
+          Alternatively, you may use the `Offline Mode` button below, however
+          your changes will not be persisted and
+          <strong>will be lost</strong> whenever the page is reloaded.
+        </p>
+      </section>
       <section class="welcome__actions d-flex">
         <button class="btn btn-primary" (click)="setOfflineMode()">
           Offline Mode

@@ -1,9 +1,11 @@
 .welcome-bg {
   background-image: url("../../../../public/stardew-valley-bg.png");
+  background-size: cover;
 }
 
 .welcome--content {
   background-color: white;
   padding: 60px 50px 65px 50px;
   border-radius: 25px;
+  max-width: 50vw;
 }
