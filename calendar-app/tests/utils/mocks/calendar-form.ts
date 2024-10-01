@@ -1,4 +1,4 @@
-import { CalendarForm } from '../models/calendar-form.model';
+import { CalendarForm } from '../../models/calendar-form.model';
 
 export const MOCK_CALENDAR_FORM: CalendarForm = {
   name: 'Mock Calendar',

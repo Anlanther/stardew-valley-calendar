@@ -1,10 +1,10 @@
-import { Season } from '../../src/app/models/season.model';
-import { TagCategory } from '../../src/app/models/tag-category.model';
-import { Tag } from '../../src/app/models/tag.model';
-import { test } from '../fixtures/app-fixture';
-import { MOCK_CALENDAR_FORM } from '../mocks/calendar-form';
-import { CalendarForm } from '../models/calendar-form.model';
-import { EventForm } from '../models/event-form.model';
+import { Season } from '../src/app/models/season.model';
+import { TagCategory } from '../src/app/models/tag-category.model';
+import { Tag } from '../src/app/models/tag.model';
+import { test } from './fixtures/app-fixture';
+import { CalendarForm } from './models/calendar-form.model';
+import { EventForm } from './models/event-form.model';
+import { MOCK_CALENDAR_FORM } from './utils/mocks/calendar-form';
 
 const mockCalendarWithAllSystem: CalendarForm = {
   ...MOCK_CALENDAR_FORM,

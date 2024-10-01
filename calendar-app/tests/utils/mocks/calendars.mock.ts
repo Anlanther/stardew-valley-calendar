@@ -1,4 +1,4 @@
-import { Calendar } from '../../src/app/models/calendar.model';
+import { Calendar } from '../../../src/app/models/calendar.model';
 
 export const MOCK_CALENDARS: Calendar[] = [
   {

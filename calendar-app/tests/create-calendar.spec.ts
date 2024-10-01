@@ -1,9 +1,9 @@
-import { test } from '../fixtures/app-fixture';
-import { MOCK_BIRTHDAY_EVENTS } from '../mocks/birthday-events.mock';
-import { MOCK_CALENDAR_FORM } from '../mocks/calendar-form';
-import { MOCK_CROP_EVENTS } from '../mocks/crop-events.mock';
-import { MOCK_FESTIVAL_EVENTS } from '../mocks/festival-events.mock';
-import { CalendarForm } from '../models/calendar-form.model';
+import { test } from './fixtures/app-fixture';
+import { CalendarForm } from './models/calendar-form.model';
+import { MOCK_BIRTHDAY_EVENTS } from './utils/mocks/birthday-events.mock';
+import { MOCK_CALENDAR_FORM } from './utils/mocks/calendar-form';
+import { MOCK_CROP_EVENTS } from './utils/mocks/crop-events.mock';
+import { MOCK_FESTIVAL_EVENTS } from './utils/mocks/festival-events.mock';
 
 const mockCalendarWithBirthdays: CalendarForm = {
   ...MOCK_CALENDAR_FORM,

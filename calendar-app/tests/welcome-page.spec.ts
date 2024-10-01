@@ -1,9 +1,9 @@
-import { test } from '../fixtures/app-fixture';
-import { MOCK_CALENDAR_FORM } from '../mocks/calendar-form';
-import { MOCK_CALENDARS_RESPONSE } from '../mocks/calendars-response.mock';
-import { MOCK_SYSTEM_EVENTS_RESPONSE } from '../mocks/system-events-response.mock';
-import { CalendarForm } from '../models/calendar-form.model';
-import { Queries } from '../models/queries.model';
+import { test } from './fixtures/app-fixture';
+import { CalendarForm } from './models/calendar-form.model';
+import { Queries } from './models/queries.model';
+import { MOCK_CALENDAR_FORM } from './utils/mocks/calendar-form';
+import { MOCK_CALENDARS_RESPONSE } from './utils/mocks/calendars-response.mock';
+import { MOCK_SYSTEM_EVENTS_RESPONSE } from './utils/mocks/system-events-response.mock';
 
 const mockCalendarNoName: CalendarForm = {
   ...MOCK_CALENDAR_FORM,

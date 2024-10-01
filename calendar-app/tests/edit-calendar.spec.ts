@@ -1,8 +1,8 @@
-import { test } from '../fixtures/app-fixture';
-import { MOCK_BIRTHDAY_EVENTS } from '../mocks/birthday-events.mock';
-import { MOCK_CALENDAR_FORM } from '../mocks/calendar-form';
-import { MOCK_CROP_EVENTS } from '../mocks/crop-events.mock';
-import { MOCK_FESTIVAL_EVENTS } from '../mocks/festival-events.mock';
+import { test } from './fixtures/app-fixture';
+import { MOCK_BIRTHDAY_EVENTS } from './utils/mocks/birthday-events.mock';
+import { MOCK_CALENDAR_FORM } from './utils/mocks/calendar-form';
+import { MOCK_CROP_EVENTS } from './utils/mocks/crop-events.mock';
+import { MOCK_FESTIVAL_EVENTS } from './utils/mocks/festival-events.mock';
 
 test('Name in title updates', async ({ welcomePage, calendarPage }) => {
   const updatedName = 'Updated Plain Mock';

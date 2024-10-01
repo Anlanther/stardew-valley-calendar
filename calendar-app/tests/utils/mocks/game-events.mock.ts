@@ -1,7 +1,7 @@
-import { GameEvent } from '../../src/app/models/game-event.model';
-import { Season } from '../../src/app/models/season.model';
-import { Tag } from '../../src/app/models/tag.model';
-import { Type } from '../../src/app/models/type.model';
+import { GameEvent } from '../../../src/app/models/game-event.model';
+import { Season } from '../../../src/app/models/season.model';
+import { Tag } from '../../../src/app/models/tag.model';
+import { Type } from '../../../src/app/models/type.model';
 
 export const MOCK_GAME_EVENTS: GameEvent[] = [
   {
