@@ -1,7 +1,7 @@
 @if (status$ | async; as status) {
   @if (status === noApi) {
     <app-welcome>
-      <p>
+      <p class="fail-message">
         Please start up the Strapi server to begin. You may find instructions on
         how to do so
         <a
@@ -17,7 +17,7 @@
     </app-welcome>
   } @else if (status === noCalendars) {
     <app-welcome>
-      <p>Please create a calendar to start.</p>
+      <p class="no-existing-message">Please create a calendar to start.</p>
       <section class="welcome__actions d-flex">
         <button class="btn btn-primary" (click)="openCreateDialog()">
           Create New
@@ -41,7 +41,9 @@
     </app-welcome>
   } @else if (status === noSelectedCalendar) {
     <app-welcome>
-      <p>Please select a calendar or create one to start.</p>
+      <p class="with-existing-message">
+        Please select a calendar or create one to start.
+      </p>
       <section class="welcome__actions d-flex">
         <button class="btn btn-primary" (click)="openSelectDialog()">
           Select Calendar

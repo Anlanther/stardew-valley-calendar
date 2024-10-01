@@ -1,8 +1,10 @@
-import { Type } from '@angular/core';
 import { DeepPartial } from '../../../src/app/models/deep-partial.model';
 import { Season } from '../../../src/app/models/season.model';
 import { Tag } from '../../../src/app/models/tag.model';
-import { GameEvent_Data } from '../../../src/app/services/models/game-event';
+import {
+  GameEvent_Data,
+  Type,
+} from '../../../src/app/services/models/game-event';
 
 export const MOCK_SYSTEM_EVENTS_RESPONSE: {
   gameEvents: { data: DeepPartial<GameEvent_Data>[] };

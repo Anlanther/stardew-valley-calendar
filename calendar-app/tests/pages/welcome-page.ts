@@ -1,5 +1,8 @@
 import { Locator, Page, expect, test } from '@playwright/test';
+import { DeepPartial } from '../../src/app/models/deep-partial.model';
+import { Calendar_Data } from '../../src/app/services/models/calendar';
 import { CalendarForm } from '../models/calendar-form.model';
+import { Queries } from '../models/queries.model';
 import { URL } from '../models/url.model';
 import { CreateCalendarDialog } from './components/create-calendar-dialog';
 import { SelectCalendarDialog } from './components/select-calendar-dialog';
@@ -18,14 +21,10 @@ export class WelcomePage {
 
   constructor(page: Page) {
     this.page = page;
-    this.apiConnectionFailedMessage = page.getByText(
-      'Please start up the Strapi',
-    );
-    this.noExistingCalendarsMessage = page.getByText(
-      'Please create a calendar to start.',
-    );
-    this.selectOrCreateCalendarMessage = page.getByText(
-      'Please select a calendar or create one to start.',
+    this.apiConnectionFailedMessage = page.locator('p.fail-message');
+    this.noExistingCalendarsMessage = page.locator('p.no-existing-message');
+    this.selectOrCreateCalendarMessage = page.locator(
+      'p.with-existing-message',
     );
     this.createCalendarButton = page.getByRole('button', {
       name: 'Create New',
@@ -139,6 +138,24 @@ export class WelcomePage {
       await this.createCalendarDialog.fillForm(calendarForm);
       await this.createCalendarDialog.verifyCreateButtonIsDisabled();
       await this.createCalendarDialog.clickCancelButton();
+    });
+  }
+
+  async loadExistingCalendarsAndSystemEvents(calendars: {
+    calendars: { data: DeepPartial<Calendar_Data>[] };
+  }) {
+    await test.step('Load Existing Calendars and System Events', async () => {
+      await this.page.route(/graphql/, (route) => {
+        const req: { query: string } = route.request().postDataJSON();
+
+        if (req.query.includes(Queries.GET_ALL_CALENDARS)) {
+          route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({ data: calendars }),
+          });
+        }
+      });
     });
   }
 }
