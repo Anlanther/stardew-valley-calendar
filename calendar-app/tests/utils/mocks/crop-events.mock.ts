@@ -19,7 +19,7 @@ export const MOCK_CROP_EVENTS: UnsavedGameEvent[] = [
     type: Type.SystemCrops,
   },
   {
-    title: 'LAST DAY: Wheat',
+    title: 'LAST DAY: Wheat Fall',
     description: 'Sells for 25g.\n4 days to harvest.',
     tag: Tag.Wheat,
     gameDate: { isRecurring: true, day: 24, season: Season.FALL },

@@ -20,7 +20,7 @@ export class WelcomePage {
 
   constructor(page: Page) {
     this.page = page;
-    this.apiConnectionFailedMessage = page.locator('p.fail-message');
+    this.apiConnectionFailedMessage = page.locator('section.fail-message');
     this.noExistingCalendarsMessage = page.locator('p.no-existing-message');
     this.selectOrCreateCalendarMessage = page.locator(
       'p.with-existing-message',
@@ -48,7 +48,13 @@ export class WelcomePage {
   async openCalendarReadyPage() {
     await test.step('Open Welcome Page with API Ready and Calendars Loaded', async () => {
       await this.page.goto(URL.LOCAL_APP);
-      await this.page.waitForSelector('section.welcome__actions');
+      const offlineModeButtonIsVisible =
+        await this.offlineModeButton.isVisible();
+
+      if (offlineModeButtonIsVisible) {
+        await this.offlineModeButton.click();
+      }
+
       await expect(this.createCalendarButton).toBeVisible();
     });
   }

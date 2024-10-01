@@ -1,7 +1,9 @@
 import { Page } from '@playwright/test';
 import { DeepPartial } from '../../src/app/models/deep-partial.model';
 import { Calendar_Data } from '../../src/app/services/models/calendar';
+import { CalendarForm } from '../models/calendar-form.model';
 import { Queries } from '../models/queries.model';
+import { MOCK_CALENDAR_FORM } from './mocks/calendar-form';
 import { MOCK_CALENDARS_RESPONSE } from './mocks/calendars-response.mock';
 
 export async function dBNotAvailableResponse(page: Page) {
@@ -39,4 +41,18 @@ export async function loadExistingCalendarsAndSystemEvents(
       });
     }
   });
+}
+
+export function getMockCalendarForm(
+  calendarOverride: Partial<CalendarForm>,
+): CalendarForm {
+  const updatedCalendarForm = (
+    Object.keys(MOCK_CALENDAR_FORM) as Array<keyof CalendarForm>
+  ).reduce(
+    (acc, key) =>
+      calendarOverride[key] ? { ...acc, [key]: calendarOverride[key] } : acc,
+    MOCK_CALENDAR_FORM,
+  );
+
+  return updatedCalendarForm;
 }

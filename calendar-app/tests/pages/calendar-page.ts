@@ -1,4 +1,5 @@
 import { Locator, Page, expect, test } from '@playwright/test';
+import { UnsavedGameEvent } from '../../src/app/models/game-event.model';
 import { Season } from '../../src/app/models/season.model';
 import { CalendarForm } from '../models/calendar-form.model';
 import { EventForm } from '../models/event-form.model';
@@ -200,6 +201,20 @@ export class CalendarPage {
   async verifyEventNameAndTagAreUnique(eventForm: EventForm) {
     await test.step('Verify Even Name and Tag are Unique', async () => {
       await this.drawerComponent.verifyEventNameAndTagAreUnique(eventForm);
+    });
+  }
+
+  async verifyEventsOnCalendar(events: UnsavedGameEvent[]) {
+    await test.step('Verify Events are on Calendar', async () => {
+      for (let i = 0; i < events.length; i++) {
+        const mockEvent = events[i];
+        await this.verifyEventOnCalendar(
+          mockEvent.gameDate.day,
+          mockEvent.gameDate.season,
+          mockEvent.title,
+          true,
+        );
+      }
     });
   }
 }
