@@ -1,9 +1,8 @@
 import { test } from './fixtures/app-fixture';
-import { CalendarForm } from './models/calendar-form.model';
-import { MOCK_CALENDAR_FORM } from './utils/mocks/calendar-form';
 import {
   dBNotAvailableResponse,
   getMockCalendarDataObject,
+  loadExistingCalendarsAndSystemEvents,
 } from './utils/util-functions';
 
 test('API not available', async ({ welcomePage }) => {
@@ -13,10 +12,21 @@ test('API not available', async ({ welcomePage }) => {
   await welcomePage.verifyApiConnectionFailedMessage();
 });
 
+test('Offline Mode button activates page to create calendars', async ({
+  welcomePage,
+}) => {
+  await dBNotAvailableResponse(welcomePage.page);
+
+  await welcomePage.openPage();
+  await welcomePage.clickOfflineMode();
+  await welcomePage.verifyNoExistingCalendarsMessage();
+});
+
 test('With existing calendars available and system events loaded', async ({
   welcomePage,
 }) => {
-  await welcomePage.loadExistingCalendarsAndSystemEvents(
+  await loadExistingCalendarsAndSystemEvents(
+    welcomePage.page,
     getMockCalendarDataObject(),
   );
 
@@ -25,7 +35,8 @@ test('With existing calendars available and system events loaded', async ({
 });
 
 test('With no existing calendars available', async ({ welcomePage }) => {
-  await welcomePage.loadExistingCalendarsAndSystemEvents(
+  await loadExistingCalendarsAndSystemEvents(
+    welcomePage.page,
     getMockCalendarDataObject([]),
   );
 
@@ -33,16 +44,13 @@ test('With no existing calendars available', async ({ welcomePage }) => {
   await welcomePage.verifyNoExistingCalendarsMessage();
 });
 
-test('Dialogs work correctly', async ({ welcomePage }) => {
-  const mockCalendarNoName: CalendarForm = {
-    ...MOCK_CALENDAR_FORM,
-    name: '',
-  };
-  await welcomePage.loadExistingCalendarsAndSystemEvents(
+test('Create Dialog works correctly', async ({ welcomePage }) => {
+  await loadExistingCalendarsAndSystemEvents(
+    welcomePage.page,
     getMockCalendarDataObject(),
   );
 
   await welcomePage.openCalendarReadyPage();
-  await welcomePage.verifyCreateActionIsDisabled();
-  await welcomePage.verifyCreateActionRequiresName(mockCalendarNoName);
+  await welcomePage.verifyCreateActionIsDisabledByDefault();
+  await welcomePage.verifyCreateActionRequiresName();
 });

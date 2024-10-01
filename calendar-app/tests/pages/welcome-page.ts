@@ -1,9 +1,7 @@
 import { Locator, Page, expect, test } from '@playwright/test';
-import { DeepPartial } from '../../src/app/models/deep-partial.model';
-import { Calendar_Data } from '../../src/app/services/models/calendar';
 import { CalendarForm } from '../models/calendar-form.model';
-import { Queries } from '../models/queries.model';
 import { URL } from '../models/url.model';
+import { MOCK_CALENDAR_FORM } from '../utils/mocks/calendar-form';
 import { CreateCalendarDialog } from './components/create-calendar-dialog';
 import { SelectCalendarDialog } from './components/select-calendar-dialog';
 
@@ -15,6 +13,7 @@ export class WelcomePage {
   private readonly selectOrCreateCalendarMessage: Locator;
   private readonly createCalendarButton: Locator;
   private readonly selectCalendarButton: Locator;
+  private readonly offlineModeButton: Locator;
 
   private readonly createCalendarDialog: CreateCalendarDialog;
   private readonly selectCalendarDialog: SelectCalendarDialog;
@@ -32,6 +31,9 @@ export class WelcomePage {
     this.selectCalendarButton = page.getByRole('button', {
       name: 'Select Calendar',
     });
+    this.offlineModeButton = page.getByRole('button', {
+      name: 'Offline Mode',
+    });
 
     this.createCalendarDialog = new CreateCalendarDialog(page);
     this.selectCalendarDialog = new SelectCalendarDialog(page);
@@ -48,6 +50,12 @@ export class WelcomePage {
       await this.page.goto(URL.LOCAL_APP);
       await this.page.waitForSelector('section.welcome__actions');
       await expect(this.createCalendarButton).toBeVisible();
+    });
+  }
+
+  async clickOfflineMode() {
+    await test.step('Click Offline Mode', async () => {
+      await this.offlineModeButton.click();
     });
   }
 
@@ -124,7 +132,7 @@ export class WelcomePage {
     });
   }
 
-  async verifyCreateActionIsDisabled() {
+  async verifyCreateActionIsDisabledByDefault() {
     await test.step('Verify Create Calendar Action is Disabled by Default', async () => {
       await this.clickCreateCalendar();
       await this.createCalendarDialog.verifyCreateButtonIsDisabled();
@@ -132,30 +140,17 @@ export class WelcomePage {
     });
   }
 
-  async verifyCreateActionRequiresName(calendarForm: CalendarForm) {
+  async verifyCreateActionRequiresName() {
     await test.step('Verify Create Calendar Action is Disabled Unless Name is Provided', async () => {
+      const mockCalendarNoName: CalendarForm = {
+        ...MOCK_CALENDAR_FORM,
+        name: '',
+      };
+
       await this.clickCreateCalendar();
-      await this.createCalendarDialog.fillForm(calendarForm);
+      await this.createCalendarDialog.fillForm(mockCalendarNoName);
       await this.createCalendarDialog.verifyCreateButtonIsDisabled();
       await this.createCalendarDialog.clickCancelButton();
-    });
-  }
-
-  async loadExistingCalendarsAndSystemEvents(calendars: {
-    calendars: { data: DeepPartial<Calendar_Data>[] };
-  }) {
-    await test.step('Load Existing Calendars and System Events', async () => {
-      await this.page.route(/graphql/, (route) => {
-        const req: { query: string } = route.request().postDataJSON();
-
-        if (req.query.includes(Queries.GET_ALL_CALENDARS)) {
-          route.fulfill({
-            status: 200,
-            contentType: 'application/json',
-            body: JSON.stringify({ data: calendars }),
-          });
-        }
-      });
     });
   }
 }
