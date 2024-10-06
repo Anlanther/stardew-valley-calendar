@@ -1,5 +1,5 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { DeleteDialog } from './delete-dialog';
+import { DeleteCalendarDialog } from './delete-calendar-dialog';
 
 export class MenuComponent {
   readonly page: Page;
@@ -10,7 +10,7 @@ export class MenuComponent {
   private readonly selectOption: Locator;
   private readonly createOption: Locator;
 
-  private readonly deleteDialog: DeleteDialog;
+  private readonly deleteDialog: DeleteCalendarDialog;
 
   constructor(page: Page) {
     this.page = page;
@@ -28,7 +28,7 @@ export class MenuComponent {
       name: 'Create New',
     });
 
-    this.deleteDialog = new DeleteDialog(page);
+    this.deleteDialog = new DeleteCalendarDialog(page);
   }
 
   async deleteCalendar() {

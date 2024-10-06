@@ -159,4 +159,17 @@ export class WelcomePage {
       await this.createCalendarDialog.clickCancelButton();
     });
   }
+
+  async verifyTestCalendarsDeleted(calendarName: string) {
+    await this.openCalendarReadyPage();
+    const hasExistingCalendars = await this.selectCalendarButton.isVisible();
+
+    if (hasExistingCalendars) {
+      await this.selectCalendarButton.click();
+      await this.selectCalendarDialog.verifyCalendarIsNotVisible(calendarName);
+      return;
+    }
+    await this.verifyNoExistingCalendarsMessage();
+    return;
+  }
 }

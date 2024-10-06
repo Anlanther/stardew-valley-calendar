@@ -7,11 +7,12 @@ import { MOCK_CALENDAR_FORM } from './mocks/calendar-form';
 import { MOCK_CALENDARS_RESPONSE } from './mocks/calendars-response.mock';
 
 export async function dBNotAvailableResponse(page: Page) {
-  return page.route(/graphql/, (route) => {
+  await page.route(/graphql/, (route) => {
     route.fulfill({
       status: 404,
     });
   });
+  return;
 }
 
 export function getMockCalendarDataObject(
@@ -41,6 +42,7 @@ export async function loadExistingCalendarsAndSystemEvents(
       });
     }
   });
+  return;
 }
 
 export function getMockCalendarForm(

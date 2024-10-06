@@ -1,6 +1,6 @@
 import { Locator, Page, test } from '@playwright/test';
 
-export class DeleteDialog {
+export class DeleteCalendarDialog {
   readonly page: Page;
 
   private readonly deleteButton: Locator;

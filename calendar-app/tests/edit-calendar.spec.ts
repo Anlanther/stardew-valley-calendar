@@ -1,65 +1,61 @@
 import { test } from './fixtures/app-fixture';
 import { MOCK_BIRTHDAY_EVENTS } from './utils/mocks/birthday-events.mock';
-import { MOCK_CALENDAR_FORM } from './utils/mocks/calendar-form';
 import { MOCK_CROP_EVENTS } from './utils/mocks/crop-events.mock';
 import { MOCK_FESTIVAL_EVENTS } from './utils/mocks/festival-events.mock';
+import { getMockCalendarForm } from './utils/util-functions';
+
+let testCalendarNameToDelete = '';
+
+test.afterEach(async ({ welcomePage, calendarPage }) => {
+  await calendarPage.deleteCalendar();
+  await welcomePage.verifyTestCalendarsDeleted(testCalendarNameToDelete);
+});
 
 test('Name in title updates', async ({ welcomePage, calendarPage }) => {
-  const updatedName = 'Updated Plain Mock';
+  const updatedNameCalendar = getMockCalendarForm({
+    name: 'Edit Calendar T1 - Updated Plain Mock',
+  });
+  testCalendarNameToDelete = updatedNameCalendar.name;
   const updatedYear = 2;
 
-  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
-  await calendarPage.verifyTitleUpdatesOnEdit(updatedName, updatedYear);
-  await calendarPage.deleteCalendar();
+  await welcomePage.selectOrCreateCalendar(
+    getMockCalendarForm({ name: 'Edit Calendar T1 - Update Name' }),
+  );
+  await calendarPage.verifyTitleUpdatesOnEdit(
+    updatedNameCalendar.name,
+    updatedYear,
+  );
 });
 
 test('Calendar toggles birthdays on', async ({ welcomePage, calendarPage }) => {
-  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
+  const plainCalendar = getMockCalendarForm({
+    name: 'Edit Calendar T2',
+  });
+  testCalendarNameToDelete = plainCalendar.name;
+
+  await welcomePage.selectOrCreateCalendar(plainCalendar);
   await calendarPage.toggleSystemSettings(true, false, false);
-
-  for (let i = 0; i < MOCK_BIRTHDAY_EVENTS.length; i++) {
-    const mockBirthday = MOCK_BIRTHDAY_EVENTS[i];
-    await calendarPage.verifyEventOnCalendar(
-      mockBirthday.gameDate.day,
-      mockBirthday.gameDate.season,
-      mockBirthday.title,
-      true,
-    );
-  }
-
-  await calendarPage.deleteCalendar();
+  await calendarPage.verifyEventsOnCalendar(MOCK_BIRTHDAY_EVENTS);
 });
 
 test('Calendar toggles crops on', async ({ welcomePage, calendarPage }) => {
-  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
+  const plainCalendar = getMockCalendarForm({
+    name: 'Edit Calendar T3',
+  });
+  testCalendarNameToDelete = plainCalendar.name;
+
+  await welcomePage.selectOrCreateCalendar(plainCalendar);
   await calendarPage.toggleSystemSettings(false, false, true);
-
-  for (let i = 0; i < MOCK_CROP_EVENTS.length; i++) {
-    const mockCrop = MOCK_CROP_EVENTS[i];
-    await calendarPage.verifyEventOnCalendar(
-      mockCrop.gameDate.day,
-      mockCrop.gameDate.season,
-      mockCrop.title,
-      true,
-    );
-  }
-
-  await calendarPage.deleteCalendar();
+  await calendarPage.verifyEventsOnCalendar(MOCK_CROP_EVENTS);
 });
 
 test('Calendar toggles festivals on', async ({ welcomePage, calendarPage }) => {
-  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
+  const plainCalendar = getMockCalendarForm({
+    name: 'Edit Calendar T4',
+  });
+  testCalendarNameToDelete = plainCalendar.name;
+
+  await welcomePage.selectOrCreateCalendar(plainCalendar);
   await calendarPage.toggleSystemSettings(false, true, false);
-
-  for (let i = 0; i < MOCK_FESTIVAL_EVENTS.length; i++) {
-    const mockFestival = MOCK_FESTIVAL_EVENTS[i];
-    await calendarPage.verifyEventOnCalendar(
-      mockFestival.gameDate.day,
-      mockFestival.gameDate.season,
-      mockFestival.title,
-      true,
-    );
-  }
-
-  await calendarPage.deleteCalendar();
+  await calendarPage.verifyEventsOnCalendar(MOCK_FESTIVAL_EVENTS);
 });

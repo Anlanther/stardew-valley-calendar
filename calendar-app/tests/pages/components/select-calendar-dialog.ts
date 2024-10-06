@@ -53,4 +53,12 @@ export class SelectCalendarDialog {
       await expect(nameDisplayed).toBeVisible();
     });
   }
+
+  async verifyCalendarIsNotVisible(name: string) {
+    await test.step('Verify Selected Calendar', async () => {
+      await this.calendarSelector.click();
+      const nameDisplayed = this.page.getByText(name, { exact: true });
+      await expect(nameDisplayed).not.toBeVisible();
+    });
+  }
 }
