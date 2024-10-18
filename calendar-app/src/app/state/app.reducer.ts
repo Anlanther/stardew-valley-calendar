@@ -44,6 +44,7 @@ export const appReducer = createReducer<AppState>(
       ...state,
       activeCalendar: { ...action.calendar, filteredGameEvents },
       availableCalendars: [...state.availableCalendars, action.calendar],
+      selectedDate: { ...state.selectedDate, year: 1 },
       navBarOpen: false,
     };
   }),
@@ -90,6 +91,15 @@ export const appReducer = createReducer<AppState>(
     activeFormEvents: state.activeFormEvents
       ? [...state.activeFormEvents, action.gameEvent]
       : null,
+    availableCalendars: [
+      ...state.availableCalendars.filter(
+        (calendar) => calendar.id !== action.calendar.id,
+      ),
+      {
+        ...action.calendar,
+        gameEvents: [...action.calendar.gameEvents],
+      },
+    ],
   })),
   on(AppActions.deleteEventSuccess, (state, action) => ({
     ...state,
@@ -107,6 +117,18 @@ export const appReducer = createReducer<AppState>(
     activeFormEvents: state.activeFormEvents
       ? state.activeFormEvents.filter((event) => event.id !== action.id)
       : null,
+    availableCalendars: [
+      ...state.availableCalendars.map((calendar) =>
+        calendar.id !== state.activeCalendar!.id
+          ? calendar
+          : {
+              ...calendar,
+              gameEvents: calendar.gameEvents.filter(
+                (event) => event.id !== action.id,
+              ),
+            },
+      ),
+    ],
   })),
   on(AppActions.deleteCalendarSuccess, (state, action) => {
     const updatedAvailableCalendars = state.availableCalendars.filter(
@@ -150,6 +172,21 @@ export const appReducer = createReducer<AppState>(
           action.gameEvent,
         ]
       : null,
+    availableCalendars: [
+      ...state.availableCalendars.map((calendar) =>
+        calendar.id !== state.activeCalendar!.id
+          ? calendar
+          : {
+              ...calendar,
+              gameEvents: [
+                ...calendar.gameEvents.filter(
+                  (event) => event.id !== action.gameEvent.id,
+                ),
+                action.gameEvent,
+              ],
+            },
+      ),
+    ],
   })),
   on(AppActions.toggleNavBar, (state, action) => ({
     ...state,
@@ -170,6 +207,12 @@ export const appReducer = createReducer<AppState>(
       ...state,
       activeCalendar: { ...action.calendar, filteredGameEvents },
       selectedDate: { ...state.selectedDate, year: action.year },
+      availableCalendars: [
+        ...state.availableCalendars.filter(
+          (calendar) => calendar.id !== action.calendar.id,
+        ),
+        action.calendar,
+      ],
     };
   }),
   on(AppActions.aPIFailed, (state) => ({
