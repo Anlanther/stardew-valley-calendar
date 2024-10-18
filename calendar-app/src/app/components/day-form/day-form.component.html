@@ -73,11 +73,10 @@
             }
           }
         </mat-accordion>
+        <button class="btn btn-primary" (click)="openCreateDialog()">
+          Create Event
+        </button>
       </div>
-
-      <button class="btn btn-primary" (click)="openCreateDialog()">
-        Create Event
-      </button>
     } @else {
       <p>Please select a day from the calendar on the left.</p>
     }

@@ -2,6 +2,9 @@
   margin-top: 10px;
 }
 
-.max-height {
-  height: calc(100vh - 80px);
+@media only screen and (max-width: 380px) {
+  .day-form {
+    left: 0px;
+    width: 95vw;
+  }
 }

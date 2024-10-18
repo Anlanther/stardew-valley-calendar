@@ -9,7 +9,8 @@
 }
 
 .day {
-  height: calc((100vh - 250px) / 4);
+  min-height: 100px;
+  height: calc((100vh / 4) - 50px);
   overflow: scroll;
 }
 

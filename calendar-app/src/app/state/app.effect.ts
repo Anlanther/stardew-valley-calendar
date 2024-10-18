@@ -73,6 +73,7 @@ export class AppEffects {
               (calendar) => calendar.name,
             ),
           },
+          minHeight: 360,
         });
         return dialogRef.afterClosed();
       }),
