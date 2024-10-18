@@ -1,6 +1,9 @@
 @if (activeCalendar$ | async; as activeCalendar) {
   @if (selectedYear$ | async; as selectedYear) {
-    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab-group
+      [selectedIndex]="selectedSeason"
+      (selectedTabChange)="onTabChange($event)"
+    >
       <mat-tab label="Spring">
         <ng-template matTabContent><app-grid></app-grid></ng-template>
       </mat-tab>

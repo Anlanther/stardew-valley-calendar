@@ -44,7 +44,7 @@ export const appReducer = createReducer<AppState>(
       ...state,
       activeCalendar: { ...action.calendar, filteredGameEvents },
       availableCalendars: [...state.availableCalendars, action.calendar],
-      selectedDate: { ...state.selectedDate, year: 1 },
+      selectedDate: initialState.selectedDate,
       navBarOpen: false,
     };
   }),

@@ -391,7 +391,6 @@ export class AppEffects {
         this.store.pipe(select(AppFeature.selectOfflineMode)),
       ]),
       switchMap(([{ downloadedCalendar }, availableCalendars, offlineMode]) => {
-        console.log('test', downloadedCalendar);
         let calendarName = downloadedCalendar.name;
         const duplicates = availableCalendars.filter((calendar) => {
           const test = new RegExp(downloadedCalendar.name, 'g').test(

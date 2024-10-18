@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { select, Store } from '@ngrx/store';
 import { map, Observable, Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { AppFeature } from '../../state/app.state';
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnDestroy {
   get fall() {
     return Season.FALL;
   }
@@ -26,6 +26,8 @@ export class CalendarComponent {
   get winter() {
     return Season.WINTER;
   }
+
+  selectedSeason = 0;
 
   store = inject(Store<AppStore>);
   subs = new Subscription();
@@ -41,6 +43,32 @@ export class CalendarComponent {
       select(AppFeature.selectSelectedDate),
       map((date) => date.year),
     );
+    this.subs.add(
+      this.store
+        .pipe(
+          select(AppFeature.selectSelectedDate),
+          map((date) => date.season),
+        )
+        .subscribe((season) => {
+          switch (season) {
+            case Season.SPRING:
+              this.selectedSeason = 0;
+              break;
+            case Season.SUMMER:
+              this.selectedSeason = 1;
+              break;
+            case Season.FALL:
+              this.selectedSeason = 2;
+              break;
+            case Season.WINTER:
+              this.selectedSeason = 3;
+              break;
+          }
+        }),
+    );
+  }
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   onTabChange(event: MatTabChangeEvent) {
