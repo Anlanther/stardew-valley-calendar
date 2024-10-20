@@ -1,0 +1,406 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppReducer [App] API Failed should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": true,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Added Event to Calendar should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [
+    {
+      "description": "This is a mock calendar for tests.",
+      "filteredGameEvents": [],
+      "gameEvents": [],
+      "id": "1",
+      "name": "Mock Calendar 1",
+      "publishedAt": "",
+      "systemConfig": {
+        "includeBirthdays": false,
+        "includeCrops": false,
+        "includeFestivals": false,
+      },
+    },
+  ],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Create Calendar Success should update the state 1`] = `
+{
+  "activeCalendar": {
+    "description": "This is a mock calendar for tests.",
+    "filteredGameEvents": [],
+    "gameEvents": [],
+    "id": "1",
+    "name": "Mock Calendar 1",
+    "publishedAt": "",
+    "systemConfig": {
+      "includeBirthdays": false,
+      "includeCrops": false,
+      "includeFestivals": false,
+    },
+  },
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [
+    {
+      "description": "This is a mock calendar for tests.",
+      "filteredGameEvents": [],
+      "gameEvents": [],
+      "id": "1",
+      "name": "Mock Calendar 1",
+      "publishedAt": "",
+      "systemConfig": {
+        "includeBirthdays": false,
+        "includeCrops": false,
+        "includeFestivals": false,
+      },
+    },
+  ],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Create Default Game Events Success should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [
+    {
+      "description": "Only available when raining.",
+      "gameDate": {
+        "day": 13,
+        "id": "1",
+        "isRecurring": true,
+        "season": "fall",
+      },
+      "id": "1",
+      "publishedAt": "",
+      "tag": "fishing",
+      "title": "Fish for Legendary",
+      "type": "user",
+    },
+    {
+      "description": "Need 30 iron ores.",
+      "gameDate": {
+        "day": 1,
+        "id": "2",
+        "isRecurring": true,
+        "season": "winter",
+      },
+      "id": "2",
+      "publishedAt": "",
+      "tag": "fishing",
+      "title": "Go Mining",
+      "type": "user",
+    },
+  ],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Delete Event Success should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Delete Event Success should update the state 2`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Get Calendars Success should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [
+    {
+      "description": "This is a mock calendar for tests.",
+      "filteredGameEvents": [],
+      "gameEvents": [],
+      "id": "1",
+      "name": "Mock Calendar 1",
+      "publishedAt": "",
+      "systemConfig": {
+        "includeBirthdays": false,
+        "includeCrops": false,
+        "includeFestivals": false,
+      },
+    },
+  ],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Set Offline Mode should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": true,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Toggle Nav Bar should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": true,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Update Active Calendar should update the state 1`] = `
+{
+  "activeCalendar": {
+    "description": "This is a mock calendar for tests.",
+    "filteredGameEvents": [],
+    "gameEvents": [],
+    "id": "1",
+    "name": "Mock Calendar 1",
+    "publishedAt": "",
+    "systemConfig": {
+      "includeBirthdays": false,
+      "includeCrops": false,
+      "includeFestivals": false,
+    },
+  },
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Update Active Day should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 2,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Update Active Form Events should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": [
+    {
+      "description": "Only available when raining.",
+      "gameDate": {
+        "day": 13,
+        "id": "1",
+        "isRecurring": true,
+        "season": "fall",
+      },
+      "id": "1",
+      "publishedAt": "",
+      "tag": "fishing",
+      "title": "Fish for Legendary",
+      "type": "user",
+    },
+    {
+      "description": "Need 30 iron ores.",
+      "gameDate": {
+        "day": 1,
+        "id": "2",
+        "isRecurring": true,
+        "season": "winter",
+      },
+      "id": "2",
+      "publishedAt": "",
+      "tag": "fishing",
+      "title": "Go Mining",
+      "type": "user",
+    },
+  ],
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Update Calendar Success should update the state 1`] = `
+{
+  "activeCalendar": {
+    "description": "This is a mock calendar for tests.",
+    "filteredGameEvents": [],
+    "gameEvents": [],
+    "id": "1",
+    "name": "Mock Calendar 1",
+    "publishedAt": "",
+    "systemConfig": {
+      "includeBirthdays": false,
+      "includeCrops": false,
+      "includeFestivals": false,
+    },
+  },
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [
+    {
+      "description": "This is a mock calendar for tests.",
+      "filteredGameEvents": [],
+      "gameEvents": [],
+      "id": "1",
+      "name": "Mock Calendar 1",
+      "publishedAt": "",
+      "systemConfig": {
+        "includeBirthdays": false,
+        "includeCrops": false,
+        "includeFestivals": false,
+      },
+    },
+  ],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 2,
+  },
+}
+`;
+
+exports[`AppReducer [App] Update Event Success should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "spring",
+    "year": 1,
+  },
+}
+`;
+
+exports[`AppReducer [App] Update Season should update the state 1`] = `
+{
+  "activeCalendar": null,
+  "activeFormEvents": null,
+  "apiFailed": false,
+  "availableCalendars": [],
+  "navBarOpen": false,
+  "offlineMode": false,
+  "savedSystemEvents": [],
+  "selectedDate": {
+    "day": 1,
+    "season": "fall",
+    "year": 1,
+  },
+}
+`;
