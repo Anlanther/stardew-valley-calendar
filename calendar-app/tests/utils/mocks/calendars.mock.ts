@@ -14,4 +14,17 @@ export const MOCK_CALENDARS: Calendar[] = [
       includeFestivals: false,
     },
   },
+  {
+    id: '2',
+    publishedAt: '',
+    name: 'Mock Calendar 2',
+    description: 'This is a second mock calendar for tests.',
+    filteredGameEvents: [],
+    gameEvents: [],
+    systemConfig: {
+      includeBirthdays: false,
+      includeCrops: false,
+      includeFestivals: false,
+    },
+  },
 ];

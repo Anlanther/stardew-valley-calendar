@@ -8,7 +8,7 @@ import { GameDateComponent } from './models/GameDateComponent';
 @Injectable({
   providedIn: 'root',
 })
-export class EventUtils {
+export class CalendarUtils {
   static getEventsForDate(
     season: Season,
     year: number,
@@ -68,5 +68,23 @@ export class EventUtils {
     });
 
     return filteredGameEvents;
+  }
+
+  static getLoadedCalendarName(name: string, availableCalendars: Calendar[]) {
+    const duplicates = availableCalendars.filter((calendar) => {
+      const test = new RegExp(name, 'g').test(calendar.name);
+      return test;
+    });
+    if (duplicates.length === 0) {
+      const newName = `${name}[1]`;
+      return newName;
+    }
+    const nonOriginalDuplicates = duplicates.filter((d) => /\d/.test(d.name));
+    const duplicateIndicator = /\[(\d+)\]/;
+    const duplicateNumbers = nonOriginalDuplicates
+      .map((d) => +d.name.match(duplicateIndicator)![1])
+      .sort((a, b) => b - a);
+    const newName = `${name}[${duplicateNumbers[0] + 1}]`;
+    return newName;
   }
 }

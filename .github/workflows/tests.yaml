@@ -27,4 +27,4 @@ jobs:
 
       - name: Run Unit Tests
         working-directory: calendar-app
-        run: npm run test --updateSnapshot
+        run: npm run test -- -u

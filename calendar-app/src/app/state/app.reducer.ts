@@ -5,7 +5,7 @@ import { EventState } from '../models/event-state.model';
 import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { SelectedDate } from '../models/selected-date.model';
-import { EventUtils } from '../services/event.utils';
+import { CalendarUtils } from '../services/calendar.utils';
 import { AppActions } from './app.actions';
 
 export interface AppState {
@@ -33,7 +33,7 @@ export const initialState: AppState = {
 export const appReducer = createReducer<AppState>(
   initialState,
   on(AppActions.createCalendarSuccess, (state, action) => {
-    const filteredGameEvents = EventUtils.getFilteredSystemEvents(
+    const filteredGameEvents = CalendarUtils.getFilteredSystemEvents(
       action.calendar.systemConfig.includeBirthdays,
       action.calendar.systemConfig.includeCrops,
       action.calendar.systemConfig.includeFestivals,
@@ -49,7 +49,7 @@ export const appReducer = createReducer<AppState>(
     };
   }),
   on(AppActions.updateActiveCalendar, (state, action) => {
-    const filteredGameEvents = EventUtils.getFilteredSystemEvents(
+    const filteredGameEvents = CalendarUtils.getFilteredSystemEvents(
       action.calendar.systemConfig.includeBirthdays,
       action.calendar.systemConfig.includeCrops,
       action.calendar.systemConfig.includeFestivals,
@@ -197,7 +197,7 @@ export const appReducer = createReducer<AppState>(
     savedSystemEvents: action.systemEvents,
   })),
   on(AppActions.updateCalendarSuccess, (state, action) => {
-    const filteredGameEvents = EventUtils.getFilteredSystemEvents(
+    const filteredGameEvents = CalendarUtils.getFilteredSystemEvents(
       action.calendar.systemConfig.includeBirthdays,
       action.calendar.systemConfig.includeCrops,
       action.calendar.systemConfig.includeFestivals,

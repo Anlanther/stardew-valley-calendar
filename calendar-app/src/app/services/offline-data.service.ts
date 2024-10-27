@@ -6,7 +6,7 @@ import { FESTIVAL_EVENTS } from '../constants/festival-events.constant';
 import { Calendar } from '../models/calendar.model';
 import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
 import { Type } from '../models/type.model';
-import { EventUtils } from './event.utils';
+import { CalendarUtils } from './calendar.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +39,7 @@ export class OfflineDataService {
       description,
       systemConfig: { includeBirthdays, includeCrops, includeFestivals },
       gameEvents: [],
-      filteredGameEvents: EventUtils.getFilteredSystemEvents(
+      filteredGameEvents: CalendarUtils.getFilteredSystemEvents(
         includeBirthdays,
         includeCrops,
         includeFestivals,

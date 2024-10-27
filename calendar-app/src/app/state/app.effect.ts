@@ -15,6 +15,7 @@ import { AppStore } from '../models/app-store.model';
 import { Calendar } from '../models/calendar.model';
 import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
 import { Type } from '../models/type.model';
+import { CalendarUtils } from '../services/calendar.utils';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
 import { DataService } from '../services/data.service';
 import { GameEventDataService } from '../services/game-event/game-event-data.service';
@@ -139,8 +140,8 @@ export class AppEffects {
           ? this.offlineDataService.getOrCreateEventDefaults()
           : this.gameEventDataService.getOrCreateDefaults()
         ).pipe(
-          map((calendar) =>
-            AppActions.createDefaultGameEventsSuccess(calendar),
+          map((gameEvents) =>
+            AppActions.createDefaultGameEventsSuccess(gameEvents),
           ),
         ),
       ),
@@ -391,27 +392,11 @@ export class AppEffects {
         this.store.pipe(select(AppFeature.selectOfflineMode)),
       ]),
       switchMap(([{ downloadedCalendar }, availableCalendars, offlineMode]) => {
-        let calendarName = downloadedCalendar.name;
-        const duplicates = availableCalendars.filter((calendar) => {
-          const test = new RegExp(downloadedCalendar.name, 'g').test(
-            calendar.name,
-          );
-          return test;
-        });
-        if (duplicates.length === 0) {
-          const newName = `${downloadedCalendar.name}[1]`;
-          calendarName = newName;
-        } else if (duplicates.length > 0) {
-          const nonOriginalDuplicates = duplicates.filter((d) =>
-            /\d/.test(d.name),
-          );
-          const duplicateIndicator = /\[(\d+)\]/;
-          const duplicateNumbers = nonOriginalDuplicates
-            .map((d) => +d.name.match(duplicateIndicator)![1])
-            .sort((a, b) => b - a);
-          const newName = `${downloadedCalendar.name}[${duplicateNumbers[0] + 1}]`;
-          calendarName = newName;
-        }
+        const calendarName = CalendarUtils.getLoadedCalendarName(
+          downloadedCalendar.name,
+          availableCalendars,
+        );
+
         return (
           offlineMode
             ? this.offlineDataService.createCalendar(
@@ -464,7 +449,7 @@ export class AppEffects {
     ),
   );
 
-  addGameEventsToUploadedCalendar = createEffect(() =>
+  addGameEventsToUploadedCalendar$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createUploadedCalendarEventsSuccess),
       concatLatestFrom(() => [
@@ -490,7 +475,7 @@ export class AppEffects {
     ),
   );
 
-  updateSystemEvents = createEffect(() =>
+  updateSystemEvents$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.updateSystemEvents),
       switchMap(() => {
