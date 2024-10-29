@@ -5,8 +5,8 @@ import { CROPS_DEADLINES } from '../../constants/crops-deadline.constant';
 import { FESTIVAL_EVENTS } from '../../constants/festival-events.constant';
 import { DeepPartial } from '../../models/deep-partial.model';
 import { GameEvent, UnsavedGameEvent } from '../../models/game-event.model';
+import { CalendarUtils } from '../calendar.utils';
 import { DataService } from '../data.service';
-import { EventUtils } from '../event.utils';
 import { GameEvent_Data, GameEvent_Plain, Type } from '../models/game-event';
 
 @Injectable({
@@ -118,7 +118,7 @@ export class GameEventDataService {
       description: data.attributes.description,
       tag: data.attributes.tag,
       gameDate: {
-        ...EventUtils.getGameDateUnion(data.attributes.gameDate),
+        ...CalendarUtils.getGameDateUnion(data.attributes.gameDate),
       },
       publishedAt: data.attributes.publishedAt ?? '',
       type: data.attributes.type,

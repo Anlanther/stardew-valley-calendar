@@ -1,5 +1,5 @@
-import { MOCK_CALENDARS } from '../../../tests/mocks/calendars.mock';
-import { MOCK_GAME_EVENTS } from '../../../tests/mocks/game-events.mock';
+import { MOCK_CALENDARS } from '../../../tests/utils/mocks/calendars.mock';
+import { MOCK_GAME_EVENTS } from '../../../tests/utils/mocks/game-events.mock';
 import { Calendar } from '../models/calendar.model';
 import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
@@ -123,11 +123,11 @@ describe('Extra Selectors', () => {
   });
 
   describe('selectStatusMessage', () => {
-    it('returns status ready message when system and active calendar are loaded, there are no API issues, and when there are other calendars available', () => {
+    it('returns status ready message to show calendar page when the API is available and not on offline mode and a calendar is available and open', () => {
       const mockSelectApiFailed = false;
-      const mockSelectSavedSystemEvents = MOCK_GAME_EVENTS;
       const mockSelectActiveCalendar = MOCK_CALENDARS[0];
       const mockSelectAvailableCalendars = MOCK_CALENDARS;
+      const offlineMode = false;
 
       const expected: StatusMessage = StatusMessage.READY;
 
@@ -136,14 +136,31 @@ describe('Extra Selectors', () => {
           mockSelectApiFailed,
           mockSelectActiveCalendar,
           mockSelectAvailableCalendars,
-          mockSelectSavedSystemEvents,
+          offlineMode,
+        ),
+      ).toEqual(expected);
+    });
+
+    it('returns status ready message to show calendar page when the API is unavailable but offline mode is turned on and a calendar is available and open', () => {
+      const mockSelectApiFailed = true;
+      const mockSelectActiveCalendar = MOCK_CALENDARS[0];
+      const mockSelectAvailableCalendars = MOCK_CALENDARS;
+      const offlineMode = true;
+
+      const expected: StatusMessage = StatusMessage.READY;
+
+      expect(
+        AppFeature.selectStatusMessage.projector(
+          mockSelectApiFailed,
+          mockSelectActiveCalendar,
+          mockSelectAvailableCalendars,
+          offlineMode,
         ),
       ).toEqual(expected);
     });
 
     it('returns status no calendars available message when system and active calendar are loaded, there are no API issues, but no other calendars available', () => {
-      const mockSelectApiFailed = false;
-      const mockSelectSavedSystemEvents = MOCK_GAME_EVENTS;
+      const workingApi = { apiStatus: true, offlineMode: true };
       const mockSelectActiveCalendar = MOCK_CALENDARS[0];
       const mockSelectAvailableCalendars: Calendar[] = [];
 
@@ -151,17 +168,17 @@ describe('Extra Selectors', () => {
 
       expect(
         AppFeature.selectStatusMessage.projector(
-          mockSelectApiFailed,
+          workingApi.apiStatus,
           mockSelectActiveCalendar,
           mockSelectAvailableCalendars,
-          mockSelectSavedSystemEvents,
+          workingApi.offlineMode,
         ),
       ).toEqual(expected);
     });
 
-    it('returns status no API access when the API returns with an error', () => {
-      const mockSelectApiFailed = true;
-      const mockSelectSavedSystemEvents = MOCK_GAME_EVENTS;
+    it('returns status no API access when the API returns with an error and offline mode is turned off', () => {
+      const isApiWorking = true;
+      const isOfflineMode = false;
       const mockSelectActiveCalendar = MOCK_CALENDARS[0];
       const mockSelectAvailableCalendars = MOCK_CALENDARS;
 
@@ -169,35 +186,16 @@ describe('Extra Selectors', () => {
 
       expect(
         AppFeature.selectStatusMessage.projector(
-          mockSelectApiFailed,
+          isApiWorking,
           mockSelectActiveCalendar,
           mockSelectAvailableCalendars,
-          mockSelectSavedSystemEvents,
-        ),
-      ).toEqual(expected);
-    });
-
-    it('returns status no API access when system events do not load', () => {
-      const mockSelectApiFailed = false;
-      const mockSelectSavedSystemEvents: GameEvent[] = [];
-      const mockSelectActiveCalendar = MOCK_CALENDARS[0];
-      const mockSelectAvailableCalendars = MOCK_CALENDARS;
-
-      const expected: StatusMessage = StatusMessage.NO_API_ACCESS;
-
-      expect(
-        AppFeature.selectStatusMessage.projector(
-          mockSelectApiFailed,
-          mockSelectActiveCalendar,
-          mockSelectAvailableCalendars,
-          mockSelectSavedSystemEvents,
+          isOfflineMode,
         ),
       ).toEqual(expected);
     });
 
     it('returns status no selected when the user has not selected a calendar but there are calendars currently available', () => {
-      const mockSelectApiFailed = false;
-      const mockSelectSavedSystemEvents = MOCK_GAME_EVENTS;
+      const workingApi = { apiStatus: true, offlineMode: true };
       const mockSelectActiveCalendar = null;
       const mockSelectAvailableCalendars = MOCK_CALENDARS;
 
@@ -205,10 +203,10 @@ describe('Extra Selectors', () => {
 
       expect(
         AppFeature.selectStatusMessage.projector(
-          mockSelectApiFailed,
+          workingApi.apiStatus,
           mockSelectActiveCalendar,
           mockSelectAvailableCalendars,
-          mockSelectSavedSystemEvents,
+          workingApi.offlineMode,
         ),
       ).toEqual(expected);
     });

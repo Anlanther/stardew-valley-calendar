@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Calendar } from '../../models/calendar.model';
 import { GameEvent } from '../../models/game-event.model';
+import { CalendarUtils } from '../calendar.utils';
 import { DataService } from '../data.service';
-import { EventUtils } from '../event.utils';
 import { Calendar_Data } from '../models/calendar';
 
 @Injectable({
@@ -96,11 +96,11 @@ export class CalendarDataService {
         publishedAt: event.attributes.publishedAt ?? '',
         type: event.attributes.type,
         gameDate: {
-          ...EventUtils.getGameDateUnion(event.attributes.gameDate),
+          ...CalendarUtils.getGameDateUnion(event.attributes.gameDate),
         },
       }),
     );
-    const filteredGameEvents = EventUtils.getFilteredSystemEvents(
+    const filteredGameEvents = CalendarUtils.getFilteredSystemEvents(
       data.attributes.systemConfig.includeBirthdays,
       data.attributes.systemConfig.includeCrops,
       data.attributes.systemConfig.includeFestivals,

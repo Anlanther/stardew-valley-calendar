@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { TAG_METADATA } from '../../../constants/tag-metadata.constant';
 import { AppStore } from '../../../models/app-store.model';
 import { GameEvent } from '../../../models/game-event.model';
-import { EventUtils } from '../../../services/event.utils';
+import { CalendarUtils } from '../../../services/calendar.utils';
 import { AppActions } from '../../../state/app.actions';
 import { AppFeature } from '../../../state/app.state';
 
@@ -20,7 +20,7 @@ interface GameEventDisplay extends GameEvent {
 export class EventComponent implements OnInit, OnDestroy {
   @Input() day!: number;
 
-  eventDateUtils = inject(EventUtils);
+  eventDateUtils = inject(CalendarUtils);
   store = inject(Store<AppStore>);
 
   gameEvents: GameEventDisplay[] = [];

@@ -43,6 +43,9 @@ import { TokenDialogComponent } from './token/token-dialog.component';
     SelectCalendarDialogComponent,
     EditEventDialogComponent,
     CreateEventDialogComponent,
+    DeleteDialogComponent,
+    EditCalendarDialogComponent,
+    TokenDialogComponent,
   ],
   providers: [TitleCasePipe],
 })
