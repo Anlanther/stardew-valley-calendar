@@ -26,6 +26,7 @@ export class SelectCalendarDialogComponent {
     const selectedCalendarId = this.availableCalendarsFormControl.value!;
     this.dialogRef.close({
       id: selectedCalendarId,
+      availableCalendars: this.data.availableCalendars,
     });
   }
 

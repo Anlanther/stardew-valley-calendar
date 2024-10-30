@@ -161,16 +161,18 @@ export class AppEffects {
         });
         return dialogRef.afterClosed();
       }),
-      filter((dialogRes: { id: string }) => !!dialogRes),
+      filter(
+        (dialogRes: { id: string; availableCalendars: Calendar[] }) =>
+          !!dialogRes,
+      ),
       concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectOfflineMode)),
-        this.store.pipe(select(AppFeature.selectAvailableCalendars)),
       ]),
-      switchMap(([dialogRes, offlineMode, offlineAvailableCalendars]) =>
+      switchMap(([dialogRes, offlineMode]) =>
         (offlineMode
           ? this.offlineDataService.getCalendar(
               dialogRes.id,
-              offlineAvailableCalendars,
+              dialogRes.availableCalendars,
             )
           : this.calendarDataService.get(dialogRes.id)
         ).pipe(map((calendar) => AppActions.updateActiveCalendar(calendar))),
@@ -181,13 +183,14 @@ export class AppEffects {
   updateGameEvent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.updateEvent),
-      concatLatestFrom(() =>
+      concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectSelectedDate)),
-      ),
-      exhaustMap(([{ gameEvent, existingEvents }, selectedDate]) => {
+        this.store.pipe(select(AppFeature.selectActiveFormEvents)),
+      ]),
+      exhaustMap(([{ gameEvent }, selectedDate, existingEvents]) => {
         const dialogRef = this.dialog.open(EditEventDialogComponent, {
           data: { gameEvent, activeYear: selectedDate.year, existingEvents },
-          minHeight: '420px',
+          minHeight: 420,
         });
         return dialogRef.afterClosed();
       }),
@@ -230,17 +233,17 @@ export class AppEffects {
     ),
   );
 
-  deleteGameEvents$ = createEffect(() =>
+  deleteCalendarGameEvents$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AppActions.deleteDeletedGameEvents),
+      ofType(AppActions.deleteCalendarGameEvents),
       concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectOfflineMode)),
       ]),
-      switchMap(([{ id, eventIds }, offlineMode]) =>
+      switchMap(([{ calendarId, eventIds }, offlineMode]) =>
         (offlineMode
           ? this.offlineDataService.deleteManyGameEvents(eventIds)
           : this.gameEventDataService.deleteMany(eventIds)
-        ).pipe(map(() => AppActions.deleteCalendarSuccess(id))),
+        ).pipe(map(() => AppActions.deleteCalendarSuccess(calendarId))),
       ),
     ),
   );
@@ -277,7 +280,7 @@ export class AppEffects {
             const userEvents = dialogRes.gameEvents
               .filter((event) => event.type === Type.User)
               .map((event) => event.id);
-            return AppActions.deleteDeletedGameEvents(id, userEvents);
+            return AppActions.deleteCalendarGameEvents(id, userEvents);
           }),
         ),
       ),
@@ -287,10 +290,11 @@ export class AppEffects {
   createGameEvent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createEvent),
-      concatLatestFrom(() =>
+      concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectSelectedDate)),
-      ),
-      exhaustMap(([{ existingEvents }, date]) => {
+        this.store.pipe(select(AppFeature.selectActiveFormEvents)),
+      ]),
+      exhaustMap(([, date, existingEvents]) => {
         const dialogRef = this.dialog.open(CreateEventDialogComponent, {
           data: {
             day: date.day,
@@ -298,7 +302,7 @@ export class AppEffects {
             year: date.year,
             existingEvents,
           },
-          minHeight: '420px',
+          minHeight: 420,
         });
         return dialogRef.afterClosed();
       }),
@@ -335,16 +339,21 @@ export class AppEffects {
         });
         return dialogRef.afterClosed();
       }),
-      filter((dialogRes: { calendar: Calendar; year: number }) => !!dialogRes),
+      filter(
+        (dialogRes: {
+          calendar: Calendar;
+          fullActiveCalendar: Calendar;
+          year: number;
+        }) => !!dialogRes,
+      ),
       concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectOfflineMode)),
-        this.store.pipe(select(AppFeature.selectActiveCalendar)),
       ]),
-      switchMap(([dialogRef, offlineMode, offlineActiveCalendar]) =>
+      switchMap(([dialogRef, offlineMode]) =>
         (offlineMode
           ? this.offlineDataService.updateCalendarDetails(
               dialogRef.calendar,
-              offlineActiveCalendar!,
+              dialogRef.fullActiveCalendar,
             )
           : this.calendarDataService.updateDetails(dialogRef.calendar)
         ).pipe(
@@ -356,7 +365,7 @@ export class AppEffects {
     ),
   );
 
-  updateCurrentCalendar$ = createEffect(() =>
+  addEventToCurrentCalendar$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.createEventSuccess),
       concatLatestFrom(() => [
@@ -396,7 +405,6 @@ export class AppEffects {
           downloadedCalendar.name,
           availableCalendars,
         );
-
         return (
           offlineMode
             ? this.offlineDataService.createCalendar(

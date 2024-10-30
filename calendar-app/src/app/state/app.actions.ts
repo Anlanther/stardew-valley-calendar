@@ -28,8 +28,11 @@ export const AppActions = createActionGroup({
       id,
       name,
     }),
-    'Delete Deleted Game Events': (id: string, eventIds: string[]) => ({
-      id,
+    'Delete Calendar Game Events': (
+      calendarId: string,
+      eventIds: string[],
+    ) => ({
+      calendarId,
       eventIds,
     }),
     'Create Default Game Events': emptyProps(),
@@ -39,16 +42,13 @@ export const AppActions = createActionGroup({
     'Delete Event Success': (id: string) => ({ id }),
     'Delete Calendar': emptyProps(),
     'Delete Calendar Success': (id: string) => ({ id }),
-    'Update Event': (gameEvent: GameEvent, existingEvents: GameEvent[]) => ({
+    'Update Event': (gameEvent: GameEvent) => ({
       gameEvent,
-      existingEvents,
     }),
     'Update Event Success': (gameEvent: GameEvent) => ({
       gameEvent,
     }),
-    'Create Event': (existingEvents: GameEvent[]) => ({
-      existingEvents,
-    }),
+    'Create Event': emptyProps(),
     'Create Event Success': (gameEvent: GameEvent) => ({
       gameEvent,
     }),

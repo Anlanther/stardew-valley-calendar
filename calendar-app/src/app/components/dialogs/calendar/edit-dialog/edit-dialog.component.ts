@@ -62,6 +62,7 @@ export class EditCalendarDialogComponent {
     };
 
     this.dialogRef.close({
+      fullActiveCalendar: this.data.activeCalendar,
       calendar,
       year,
     });
