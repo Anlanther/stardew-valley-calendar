@@ -1,6 +1,6 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { map, Observable, Subscription } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { TAG_METADATA } from '../../constants/tag-metadata.constant';
 import { AppStore } from '../../models/app-store.model';
 import { CalendarState } from '../../models/calendar-state.model';
@@ -16,16 +16,13 @@ import { AppFeature } from '../../state/app.state';
   templateUrl: './day-form.component.html',
   styleUrl: './day-form.component.scss',
 })
-export class DayFormComponent implements OnDestroy {
+export class DayFormComponent {
   store = inject(Store<AppStore>);
   ordinalSuffix = inject(OrdinalSuffixPipe);
 
   activeCalendar$: Observable<CalendarState>;
   activeEvents$: Observable<EventState>;
   selectedDate$: Observable<string>;
-  subs = new Subscription();
-
-  existingEvents: GameEvent[] = [];
 
   constructor() {
     this.activeCalendar$ = this.store.pipe(
@@ -38,16 +35,6 @@ export class DayFormComponent implements OnDestroy {
       select(AppFeature.selectSelectedDateString),
       map((date) => this.ordinalSuffix.transform(date)),
     );
-
-    this.subs.add(
-      this.activeEvents$.subscribe((events) => {
-        events && (this.existingEvents = events);
-      }),
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
   }
 
   getEventIcon(gameEventTag: Tag) {
@@ -56,7 +43,7 @@ export class DayFormComponent implements OnDestroy {
   }
 
   openEditDialog(event: GameEvent) {
-    this.store.dispatch(AppActions.updateEvent(event, this.existingEvents));
+    this.store.dispatch(AppActions.updateEvent(event));
   }
 
   openDeleteDialog(id: string, name: string) {
@@ -64,7 +51,7 @@ export class DayFormComponent implements OnDestroy {
   }
 
   openCreateDialog() {
-    this.store.dispatch(AppActions.createEvent(this.existingEvents));
+    this.store.dispatch(AppActions.createEvent());
   }
 
   closeSideNav() {
