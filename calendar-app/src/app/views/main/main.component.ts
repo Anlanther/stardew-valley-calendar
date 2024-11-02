@@ -75,7 +75,7 @@ export class MainComponent {
 
           link.setAttribute('target', '_blank');
           link.setAttribute('href', url);
-          link.setAttribute('download', `${activeCalendar.name}.json`);
+          link.setAttribute('download', `${activeCalendar.name}.txt`);
           link.click();
 
           window.URL.revokeObjectURL(url);

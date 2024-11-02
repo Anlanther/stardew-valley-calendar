@@ -5,6 +5,7 @@ import { CalendarForm } from '../models/calendar-form.model';
 import { EventForm } from '../models/event-form.model';
 import { Selectors } from '../models/selectors.model';
 import { CreateCalendarDialog } from './components/create-calendar-dialog';
+import { DeleteCalendarDialog } from './components/delete-calendar-dialog';
 import { DrawerComponent } from './components/drawer-component';
 import { EditCalendarDialog } from './components/edit-calendar-dialog';
 import { MenuComponent } from './components/menu-component';
@@ -22,11 +23,12 @@ export class CalendarPage {
   private readonly editCalendarDialog: EditCalendarDialog;
   private readonly createCalendarDialog: CreateCalendarDialog;
   private readonly selectCalendarDialog: SelectCalendarDialog;
+  private readonly deleteCalendarDialog: DeleteCalendarDialog;
 
   constructor(page: Page) {
     this.page = page;
 
-    this.calendarTitle = page.getByRole('heading');
+    this.calendarTitle = page.locator('h1.navbar--heading');
     this.seasonTab = page.getByRole('tab');
     this.dayCell = page.locator(Selectors.EVENT_COMPONENT);
 
@@ -35,6 +37,7 @@ export class CalendarPage {
     this.editCalendarDialog = new EditCalendarDialog(page);
     this.createCalendarDialog = new CreateCalendarDialog(page);
     this.selectCalendarDialog = new SelectCalendarDialog(page);
+    this.deleteCalendarDialog = new DeleteCalendarDialog(page);
   }
 
   async verifySeasonIsSelected(season: Season) {
@@ -44,11 +47,13 @@ export class CalendarPage {
     });
   }
 
-  async verifyCorrectTitle(name: string, year: number) {
+  async verifyCorrectTitle(name: string, year?: number) {
     await test.step('Verify title holds calendar name and first year', async () => {
       const yearReference = `year ${year}`;
       await expect(this.calendarTitle).toContainText(name);
-      await expect(this.calendarTitle).toContainText(yearReference);
+      if (year) {
+        await expect(this.calendarTitle).toContainText(yearReference);
+      }
     });
   }
 
@@ -87,6 +92,23 @@ export class CalendarPage {
   async deleteCalendar() {
     await test.step('Delete Calendar', async () => {
       await this.menuComponent.deleteCalendar();
+      await this.deleteCalendarDialog.confirmDelete();
+    });
+  }
+
+  async openMenu() {
+    await test.step('Open Menu', async () => {
+      await this.menuComponent.openMenu();
+    });
+  }
+
+  async openAndDeleteCalendar(name: string) {
+    await test.step('Select Calendar from Menu and Delete', async () => {
+      await this.menuComponent.openMenu();
+      await this.menuComponent.selectSelectCalendar();
+      await this.selectCalendarDialog.selectCalendar(name);
+      await this.verifyCorrectTitle(name);
+      await this.deleteCalendar();
     });
   }
 
@@ -157,6 +179,28 @@ export class CalendarPage {
     await test.step('Delete Event', async () => {
       await this.selectDateForEvents(day, season);
       await this.drawerComponent.deleteEvent(eventTitle);
+    });
+  }
+
+  async downloadAndVerifyCalendar(fileName: string) {
+    await test.step('Download active calendar as a txt file', async () => {
+      const downloadPromise = this.page.waitForEvent('download');
+      await this.menuComponent.selectDownloadCalendar();
+      const download = await downloadPromise;
+      await download.saveAs(
+        './calendar-app/test-results/' + download.suggestedFilename(),
+      );
+
+      expect(download.suggestedFilename()).toBe(fileName);
+    });
+  }
+
+  async loadCalendar(filePath: string) {
+    await test.step('Load Calendar', async () => {
+      await this.openMenu();
+      const handle = this.page.locator('input[type="file"]');
+      await handle.setInputFiles(filePath);
+      await this.page.keyboard.press('Escape');
     });
   }
 

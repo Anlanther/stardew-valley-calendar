@@ -14,6 +14,7 @@ export class WelcomePage {
   private readonly createCalendarButton: Locator;
   private readonly selectCalendarButton: Locator;
   private readonly offlineModeButton: Locator;
+  private readonly loadCalendarButton: Locator;
 
   private readonly createCalendarDialog: CreateCalendarDialog;
   private readonly selectCalendarDialog: SelectCalendarDialog;
@@ -33,6 +34,9 @@ export class WelcomePage {
     });
     this.offlineModeButton = page.getByRole('button', {
       name: 'Offline Mode',
+    });
+    this.loadCalendarButton = page.getByRole('button', {
+      name: 'Load Calendar',
     });
 
     this.createCalendarDialog = new CreateCalendarDialog(page);
@@ -104,9 +108,24 @@ export class WelcomePage {
     });
   }
 
+  async clickLoadCalendar() {
+    await test.step('Click Load Calendar', async () => {
+      await expect(this.apiConnectionFailedMessage).not.toBeVisible();
+      await expect(this.loadCalendarButton).toBeVisible();
+
+      await this.loadCalendarButton.click();
+    });
+  }
+
+  async loadCalendar(filePath: string) {
+    await test.step('Load Calendar', async () => {
+      const handle = this.page.locator('input[type="file"]');
+      await handle.setInputFiles(filePath);
+    });
+  }
+
   async openExistingCalendar(name: string) {
     await test.step('Open Existing Calendar', async () => {
-      await this.openCalendarReadyPage();
       await this.selectCalendarButton.click();
       await this.selectCalendarDialog.selectCalendar(name);
     });

@@ -1,5 +1,4 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { DeleteCalendarDialog } from './delete-calendar-dialog';
 
 export class MenuComponent {
   readonly page: Page;
@@ -9,8 +8,7 @@ export class MenuComponent {
   private readonly editOption: Locator;
   private readonly selectOption: Locator;
   private readonly createOption: Locator;
-
-  private readonly deleteDialog: DeleteCalendarDialog;
+  private readonly downloadOption: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -27,15 +25,15 @@ export class MenuComponent {
     this.createOption = page.getByRole('menuitem', {
       name: 'Create New',
     });
-
-    this.deleteDialog = new DeleteCalendarDialog(page);
+    this.downloadOption = page.getByRole('menuitem', {
+      name: 'Download',
+    });
   }
 
   async deleteCalendar() {
     await test.step('Delete Calendar', async () => {
       await this.menuButton.click();
       await this.deleteOption.click();
-      await this.deleteDialog.confirmDelete();
     });
   }
 
@@ -57,6 +55,13 @@ export class MenuComponent {
     await test.step('Create Calendar', async () => {
       await this.menuButton.click();
       await this.createOption.click();
+    });
+  }
+
+  async selectDownloadCalendar() {
+    await test.step('Download Calendar', async () => {
+      await this.menuButton.click();
+      await this.downloadOption.click();
     });
   }
 
