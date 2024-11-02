@@ -65,7 +65,7 @@ export class MenuComponent {
     });
   }
 
-  async openMenu() {
+  async open() {
     await test.step('Open Menu', async () => {
       await this.menuButton.click();
       await expect(this.deleteOption).toBeVisible();

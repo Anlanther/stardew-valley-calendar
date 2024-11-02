@@ -96,15 +96,16 @@ export class CalendarPage {
     });
   }
 
-  async openMenu() {
-    await test.step('Open Menu', async () => {
-      await this.menuComponent.openMenu();
+  async openExistingCalendar(name: string) {
+    await test.step('Open Existing Calendar', async () => {
+      await this.menuComponent.selectSelectCalendar();
+      await this.selectCalendarDialog.selectCalendar(name);
     });
   }
 
   async openAndDeleteCalendar(name: string) {
     await test.step('Select Calendar from Menu and Delete', async () => {
-      await this.menuComponent.openMenu();
+      await this.menuComponent.open();
       await this.menuComponent.selectSelectCalendar();
       await this.selectCalendarDialog.selectCalendar(name);
       await this.verifyCorrectTitle(name);
@@ -116,6 +117,26 @@ export class CalendarPage {
     await test.step('Update Year', async () => {
       await this.menuComponent.selectEditCalendar();
       await this.editCalendarDialog.updateYearForm(updatedYear);
+      await this.editCalendarDialog.clickEditButton();
+    });
+  }
+
+  async createCalendar(calendar: CalendarForm) {
+    await test.step('Create New Calendar', async () => {
+      await this.menuComponent.selectCreateCalendar();
+      await this.createCalendarDialog.fillForm(calendar);
+      await this.createCalendarDialog.clickCreateButton();
+    });
+  }
+
+  async updateCalendarName(updatedName: string, updatedYear?: number) {
+    await test.step('Update Calendar Calendar Name', async () => {
+      await this.menuComponent.selectEditCalendar();
+      await this.editCalendarDialog.updateNameForm(updatedName);
+
+      if (updatedYear) {
+        await this.editCalendarDialog.updateYearForm(updatedYear);
+      }
       await this.editCalendarDialog.clickEditButton();
     });
   }
@@ -143,13 +164,18 @@ export class CalendarPage {
     });
   }
 
-  async verifyTitleUpdatesOnEdit(updatedName: string, updatedYear: number) {
-    await test.step('Verify Title On Page Updates On Edit', async () => {
-      await this.menuComponent.selectEditCalendar();
-      await this.editCalendarDialog.updateNameForm(updatedName);
-      await this.editCalendarDialog.updateYearForm(updatedYear);
-      await this.editCalendarDialog.clickEditButton();
-      await this.verifyCorrectTitle(updatedName, updatedYear);
+  async verifyCalendarInSelectDialog(
+    calendarName: string,
+    expectVisible: boolean,
+  ) {
+    await test.step('Verify Calendar is Selectable in the Select Dialog', async () => {
+      await this.menuComponent.selectSelectCalendar();
+      await this.selectCalendarDialog.verifyCalendarIsAnOption(
+        calendarName,
+        expectVisible,
+      );
+      await this.selectCalendarDialog.escapeSelector();
+      await this.selectCalendarDialog.clickCancelButton();
     });
   }
 
@@ -197,7 +223,7 @@ export class CalendarPage {
 
   async loadCalendar(filePath: string) {
     await test.step('Load Calendar', async () => {
-      await this.openMenu();
+      await this.menuComponent.open();
       const handle = this.page.locator('input[type="file"]');
       await handle.setInputFiles(filePath);
       await this.page.keyboard.press('Escape');

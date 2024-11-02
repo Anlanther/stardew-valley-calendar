@@ -191,4 +191,19 @@ export class WelcomePage {
     await this.verifyNoExistingCalendarsMessage();
     return;
   }
+
+  async verifyCalendarInSelectDialog(
+    calendarName: string,
+    expectVisible: boolean,
+  ) {
+    await test.step('Verify Calendar is Selectable in the Select Dialog', async () => {
+      await this.clickSelectCalendar();
+      await this.selectCalendarDialog.verifyCalendarIsAnOption(
+        calendarName,
+        expectVisible,
+      );
+      await this.selectCalendarDialog.escapeSelector();
+      await this.selectCalendarDialog.clickCancelButton();
+    });
+  }
 }

@@ -61,4 +61,18 @@ export class SelectCalendarDialog {
       await expect(nameDisplayed).not.toBeVisible();
     });
   }
+
+  async verifyCalendarIsAnOption(name: string, expectVisible: boolean) {
+    await test.step('Verify Calendar is Selectable', async () => {
+      await this.calendarSelector.click();
+      const nameDisplayed = this.page.getByRole('option', {
+        name: new RegExp(`^${name}$`),
+      });
+
+      if (expectVisible) {
+        return await expect(nameDisplayed).toBeVisible();
+      }
+      return await expect(nameDisplayed).not.toBeVisible();
+    });
+  }
 }

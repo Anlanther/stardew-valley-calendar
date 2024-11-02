@@ -4,15 +4,14 @@ import { Tag } from '../src/app/models/tag.model';
 import { test } from './fixtures/app-fixture';
 import { CalendarForm } from './models/calendar-form.model';
 import { EventForm } from './models/event-form.model';
-import { MOCK_CALENDAR_FORM } from './utils/mocks/calendar-form';
+import { getMockCalendarForm } from './utils/util-functions';
 
-const mockCalendarWithAllSystem: CalendarForm = {
-  ...MOCK_CALENDAR_FORM,
-  name: `${MOCK_CALENDAR_FORM.name} with All System`,
+const mockCalendarWithAllSystem: CalendarForm = getMockCalendarForm({
+  name: `Mock Calendar with All System`,
   includeBirthdays: true,
   includeCrops: true,
   includeFestivals: true,
-};
+});
 const mockGameDate = {
   day: 3,
   season: Season.FALL,
@@ -40,8 +39,18 @@ test('Day form drawer opens', async ({ welcomePage, calendarPage }) => {
   await calendarPage.deleteCalendar();
 });
 
-test('Add game event', async ({ welcomePage, calendarPage }) => {
-  await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
+test('Add game event should only apply to active calendar', async ({
+  welcomePage,
+  calendarPage,
+}) => {
+  const plainCalendar1 = getMockCalendarForm({
+    name: 'Create Game Event Test',
+  });
+  const plainCalendar2 = getMockCalendarForm({
+    name: 'Create Game Event Test2',
+  });
+
+  await welcomePage.selectOrCreateCalendar(plainCalendar1);
   await calendarPage.createGameEvent(
     mockGameDate.day,
     mockGameDate.season,
@@ -59,6 +68,16 @@ test('Add game event', async ({ welcomePage, calendarPage }) => {
     mockEventPlain.title,
     true,
   );
+  await calendarPage.createCalendar(plainCalendar2);
+  await calendarPage.verifyEventOnCalendar(
+    mockGameDate.day,
+    mockGameDate.season,
+    mockEventPlain.title,
+    false,
+  );
+
+  await calendarPage.deleteCalendar();
+  await welcomePage.openExistingCalendar(plainCalendar1.name);
   await calendarPage.deleteCalendar();
 });
 
@@ -163,7 +182,7 @@ test('Game event recurs if set', async ({ welcomePage, calendarPage }) => {
   await calendarPage.deleteCalendar();
 });
 
-test('Validate game event form requires name and tag', async ({
+test('Game event form requires name and tag', async ({
   welcomePage,
   calendarPage,
 }) => {
