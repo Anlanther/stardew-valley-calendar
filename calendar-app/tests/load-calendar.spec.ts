@@ -1,17 +1,18 @@
 import { test } from './fixtures/app-fixture';
 import { MOCK_BIRTHDAY_EVENTS } from './utils/mocks/birthday-events.mock';
-import { MOCK_CALENDAR_FORM } from './utils/mocks/calendar-form';
 import { MOCK_CROP_EVENTS } from './utils/mocks/crop-events.mock';
 import { MOCK_USER_EVENTS } from './utils/mocks/user-events.mock';
+import { getMockCalendarForm } from './utils/util-functions';
 
 test('Calendar downloads with the correct name and type', async ({
   welcomePage,
   calendarPage,
 }) => {
+  const mockDownloadedCalendar = getMockCalendarForm();
   const expectedDownloadFileType = '.txt';
-  const expectedDownloadedFileName = `${MOCK_CALENDAR_FORM.name}${expectedDownloadFileType}`;
+  const expectedDownloadedFileName = `${mockDownloadedCalendar.name}${expectedDownloadFileType}`;
 
-  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
+  await welcomePage.selectOrCreateCalendar(mockDownloadedCalendar);
   await calendarPage.downloadAndVerifyCalendar(expectedDownloadedFileName);
   await calendarPage.deleteCalendar();
 });
@@ -29,7 +30,7 @@ test('Calendar is created correctly from upload', async ({
     ...MOCK_CROP_EVENTS,
   ];
 
-  await welcomePage.openPage();
+  await welcomePage.open();
   await welcomePage.clickOfflineMode();
   await welcomePage.loadCalendar(mockCalendarToLoadPath);
   await calendarPage.verifyCorrectTitle(expectedCalendarTitle, 1);
@@ -60,7 +61,7 @@ test('Calendar is named correctly on upload when duplicates exist', async ({
     `${expectedCalendarBaseName}[3]`,
   ];
 
-  await welcomePage.openPage();
+  await welcomePage.open();
   await welcomePage.clickOfflineMode();
   await welcomePage.loadCalendar(mockCalendarToLoadPath);
 

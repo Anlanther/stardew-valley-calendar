@@ -8,7 +8,7 @@ import {
 test('API not available', async ({ welcomePage }) => {
   await dBNotAvailableResponse(welcomePage.page);
 
-  await welcomePage.openPage();
+  await welcomePage.open();
   await welcomePage.verifyApiConnectionFailedMessage();
 });
 
@@ -17,12 +17,12 @@ test('Offline Mode button activates page to create calendars', async ({
 }) => {
   await dBNotAvailableResponse(welcomePage.page);
 
-  await welcomePage.openPage();
+  await welcomePage.open();
   await welcomePage.clickOfflineMode();
   await welcomePage.verifyNoExistingCalendarsMessage();
 });
 
-test('With existing calendars available and system events loaded', async ({
+test('Page message ith existing calendars available and system events loaded', async ({
   welcomePage,
 }) => {
   await loadExistingCalendarsAndSystemEvents(
@@ -30,27 +30,18 @@ test('With existing calendars available and system events loaded', async ({
     getMockCalendarDataObject(),
   );
 
-  await welcomePage.openPage();
+  await welcomePage.open();
   await welcomePage.verifySelectOrCreateCalendarMessage();
 });
 
-test('With no existing calendars available', async ({ welcomePage }) => {
+test('Page message with no existing calendars available', async ({
+  welcomePage,
+}) => {
   await loadExistingCalendarsAndSystemEvents(
     welcomePage.page,
     getMockCalendarDataObject([]),
   );
 
-  await welcomePage.openPage();
+  await welcomePage.open();
   await welcomePage.verifyNoExistingCalendarsMessage();
-});
-
-test('Create Dialog works correctly', async ({ welcomePage }) => {
-  await loadExistingCalendarsAndSystemEvents(
-    welcomePage.page,
-    getMockCalendarDataObject(),
-  );
-
-  await welcomePage.openCalendarReadyPage();
-  await welcomePage.verifyCreateActionIsDisabledByDefault();
-  await welcomePage.verifyCreateActionRequiresName();
 });

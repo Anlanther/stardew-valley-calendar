@@ -47,7 +47,7 @@ export class CreateEventDialogComponent {
   constructor() {
     this.eventForm = this.fb.group(
       {
-        title: ['', [Validators.required]],
+        title: ['', [Validators.required, Validators.maxLength(50)]],
         description: [''],
         tag: [null, [Validators.required]],
         isRecurring: [false],

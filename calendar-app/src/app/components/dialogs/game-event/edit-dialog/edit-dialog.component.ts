@@ -42,7 +42,10 @@ export class EditEventDialogComponent {
     this.selectedTag = this.getTagDisplayName(this.data.gameEvent.tag);
     this.eventForm = this.fb.group(
       {
-        title: [this.data.gameEvent.title, [Validators.required]],
+        title: [
+          this.data.gameEvent.title,
+          [Validators.required, Validators.maxLength(50)],
+        ],
         description: [this.data.gameEvent.description],
         tag: [this.data.gameEvent.tag, [Validators.required]],
         isRecurring: [this.data.gameEvent.gameDate.isRecurring],

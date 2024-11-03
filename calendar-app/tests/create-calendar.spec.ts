@@ -1,32 +1,31 @@
 import { test } from './fixtures/app-fixture';
 import { CalendarForm } from './models/calendar-form.model';
 import { MOCK_BIRTHDAY_EVENTS } from './utils/mocks/birthday-events.mock';
-import { MOCK_CALENDAR_FORM } from './utils/mocks/calendar-form';
 import { MOCK_CROP_EVENTS } from './utils/mocks/crop-events.mock';
 import { MOCK_FESTIVAL_EVENTS } from './utils/mocks/festival-events.mock';
+import { getMockCalendarForm } from './utils/util-functions';
 
-const mockCalendarWithBirthdays: CalendarForm = {
-  ...MOCK_CALENDAR_FORM,
-  name: `${MOCK_CALENDAR_FORM.name} with Birthdays`,
+const mockCalendarWithBirthdays: CalendarForm = getMockCalendarForm({
+  name: `Mock Calendar with Birthdays`,
   includeBirthdays: true,
-};
-const mockCalendarWithCrops: CalendarForm = {
-  ...MOCK_CALENDAR_FORM,
-  name: `${MOCK_CALENDAR_FORM.name} with Crops`,
+});
+const mockCalendarWithCrops: CalendarForm = getMockCalendarForm({
+  name: `Mock Calendar with Crops`,
   includeCrops: true,
-};
-const mockCalendarWithFestivals: CalendarForm = {
-  ...MOCK_CALENDAR_FORM,
-  name: `${MOCK_CALENDAR_FORM.name} with Festivals`,
+});
+const mockCalendarWithFestivals: CalendarForm = getMockCalendarForm({
+  name: `Mock Calendar with Festivals`,
   includeFestivals: true,
-};
+});
 
 test('App heading to have calendar name and default to year 1 Spring', async ({
   welcomePage,
   calendarPage,
 }) => {
-  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
-  await calendarPage.verifyCorrectTitle(MOCK_CALENDAR_FORM.name, 1);
+  const plainCalendar = getMockCalendarForm();
+
+  await welcomePage.selectOrCreateCalendar(plainCalendar);
+  await calendarPage.verifyCorrectTitle(plainCalendar.name, 1);
   await calendarPage.deleteCalendar();
 });
 
@@ -129,12 +128,15 @@ test('Only festivals are included', async ({ welcomePage, calendarPage }) => {
   await calendarPage.deleteCalendar();
 });
 
-test('Verify Calendar Settings', async ({ welcomePage, calendarPage }) => {
-  await welcomePage.selectOrCreateCalendar(MOCK_CALENDAR_FORM);
-  await calendarPage.verifyCalendarDetailsInEditDialog(MOCK_CALENDAR_FORM);
+test('Verify calendar settings reflect state of the calendar', async ({
+  welcomePage,
+  calendarPage,
+}) => {
+  const plainCalendar = getMockCalendarForm();
+
+  await welcomePage.selectOrCreateCalendar(plainCalendar);
+  await calendarPage.verifyCalendarDetailsInEditDialog(plainCalendar);
   await calendarPage.verifyCanOpenCreateDialog();
-  await calendarPage.verifyActiveCalendarIsMarkedAsSelected(
-    MOCK_CALENDAR_FORM.name,
-  );
+  await calendarPage.verifyActiveCalendarIsMarkedAsSelected(plainCalendar.name);
   await calendarPage.deleteCalendar();
 });

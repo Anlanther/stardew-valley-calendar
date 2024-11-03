@@ -9,10 +9,14 @@
             type="text"
             matInput
             formControlName="title"
+            maxlength="51"
             placeholder="Defeat 5 slimes"
           />
-          @if (eventForm.hasError("required")) {
-            <mat-error>Title is <strong>required</strong></mat-error>
+          @if (eventForm.get("title")!.hasError("required")) {
+            <mat-error>Title is required</mat-error>
+          }
+          @if (eventForm.get("title")!.hasError("maxlength")) {
+            <mat-error>Over 50 character limit</mat-error>
           }
         </mat-form-field>
 

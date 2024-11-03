@@ -18,7 +18,7 @@ export class EditEventDialog {
     this.page = page;
 
     this.titleForm = page.getByPlaceholder('Defeat 5 slimes');
-    this.tagMenu = page.getByRole('button', { name: 'Tag*' });
+    this.tagMenu = page.locator('button.tag-menu--button');
     this.descriptionForm = page.getByText('Description');
     this.recurringToggle = page.getByLabel('Recurring');
     this.editButton = page.getByRole('button', { name: 'Edit' });
@@ -36,6 +36,45 @@ export class EditEventDialog {
   async updateTitleForm(title: string) {
     await test.step('Edit Mock Event Title', async () => {
       await this.titleForm.fill(title);
+    });
+  }
+
+  async fillForm(eventForm: EventForm) {
+    await test.step('Edit Mock Event', async () => {
+      await this.updateTitleForm(eventForm.title);
+      await this.updateTagMenu(eventForm.tagCategory, eventForm.tag);
+      await this.updateDescriptionForm(eventForm.description);
+      await this.recurringToggle.setChecked(eventForm.isRecurring);
+    });
+  }
+
+  async verifyErrorState(
+    eventForm: EventForm,
+    errorMessage: string,
+    isVisible: boolean,
+  ) {
+    await test.step('Verify Error State Appears Correctly', async () => {
+      const messageLocator = this.page.getByText(errorMessage);
+
+      await this.fillForm(eventForm);
+      if (isVisible) {
+        await this.verifyEditButtonStatus(false);
+        await expect(messageLocator).toBeVisible();
+        await this.clickCancelButton();
+        return;
+      }
+      await this.verifyEditButtonStatus(true);
+      await expect(messageLocator).not.toBeVisible();
+      await this.clickCancelButton();
+    });
+  }
+
+  async verifyEditButtonStatus(isEnabled: boolean) {
+    await test.step('Verify Edit Button is in Correct State', async () => {
+      if (isEnabled) {
+        return await expect(this.editButton).toBeEnabled();
+      }
+      await expect(this.editButton).toBeDisabled();
     });
   }
 

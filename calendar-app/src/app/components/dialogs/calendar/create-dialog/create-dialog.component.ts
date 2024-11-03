@@ -21,6 +21,7 @@ export class CreateCalendarDialogComponent {
         '',
         [
           Validators.required,
+          Validators.maxLength(50),
           duplicateNameValidator(this.data.existingCalendars),
         ],
       ],
