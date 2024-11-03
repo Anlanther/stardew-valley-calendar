@@ -8,7 +8,7 @@ test('Calendar downloads with the correct name and type', async ({
   welcomePage,
   calendarPage,
 }) => {
-  const mockDownloadedCalendar = getMockCalendarForm({});
+  const mockDownloadedCalendar = getMockCalendarForm();
   const expectedDownloadFileType = '.txt';
   const expectedDownloadedFileName = `${mockDownloadedCalendar.name}${expectedDownloadFileType}`;
 
@@ -30,7 +30,7 @@ test('Calendar is created correctly from upload', async ({
     ...MOCK_CROP_EVENTS,
   ];
 
-  await welcomePage.openPage();
+  await welcomePage.open();
   await welcomePage.clickOfflineMode();
   await welcomePage.loadCalendar(mockCalendarToLoadPath);
   await calendarPage.verifyCorrectTitle(expectedCalendarTitle, 1);
@@ -61,7 +61,7 @@ test('Calendar is named correctly on upload when duplicates exist', async ({
     `${expectedCalendarBaseName}[3]`,
   ];
 
-  await welcomePage.openPage();
+  await welcomePage.open();
   await welcomePage.clickOfflineMode();
   await welcomePage.loadCalendar(mockCalendarToLoadPath);
 

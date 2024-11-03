@@ -7,10 +7,17 @@
         type="text"
         matInput
         formControlName="name"
+        maxlength="51"
         placeholder="My First Calendar"
       />
+      @if (calendarForm.get("name")!.hasError("required")) {
+        <mat-error>Name is required</mat-error>
+      }
       @if (calendarForm.get("name")!.hasError("duplicateName")) {
         <mat-error>Duplicate Name</mat-error>
+      }
+      @if (calendarForm.get("name")!.hasError("maxlength")) {
+        <mat-error>Over 50 character limit</mat-error>
       }
     </mat-form-field>
     <mat-form-field class="w-100">

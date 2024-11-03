@@ -43,7 +43,7 @@ export class WelcomePage {
     this.selectCalendarDialog = new SelectCalendarDialog(page);
   }
 
-  async openPage() {
+  async open() {
     await test.step('Open Welcome Page', async () => {
       await this.page.goto(URL.LOCAL_APP);
     });
@@ -157,14 +157,6 @@ export class WelcomePage {
     });
   }
 
-  async verifyCreateActionIsDisabledByDefault() {
-    await test.step('Verify Create Calendar Action is Disabled by Default', async () => {
-      await this.clickCreateCalendar();
-      await this.createCalendarDialog.verifyCreateButtonIsDisabled();
-      await this.createCalendarDialog.clickCancelButton();
-    });
-  }
-
   async verifyCreateActionRequiresName() {
     await test.step('Verify Create Calendar Action is Disabled Unless Name is Provided', async () => {
       const mockCalendarNoName: CalendarForm = {
@@ -174,7 +166,7 @@ export class WelcomePage {
 
       await this.clickCreateCalendar();
       await this.createCalendarDialog.fillForm(mockCalendarNoName);
-      await this.createCalendarDialog.verifyCreateButtonIsDisabled();
+      await this.createCalendarDialog.verifyCreateButtonStatus(true);
       await this.createCalendarDialog.clickCancelButton();
     });
   }

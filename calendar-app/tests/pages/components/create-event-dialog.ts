@@ -18,7 +18,7 @@ export class CreateEventDialog {
     this.page = page;
 
     this.titleForm = page.getByPlaceholder('Defeat 5 slimes');
-    this.tagMenu = page.getByRole('button', { name: 'Tag*' });
+    this.tagMenu = page.locator('button.tag-menu--button');
     this.descriptionForm = page.getByText('Description');
     this.recurringToggle = page.getByLabel('Recurring');
     this.createButton = page.getByRole('button', { name: 'Create' });
@@ -34,24 +34,48 @@ export class CreateEventDialog {
     });
   }
 
+  async verifyErrorState(
+    eventForm: EventForm,
+    errorMessage: string,
+    isVisible: boolean,
+  ) {
+    await test.step('Verify Error State Appears Correctly', async () => {
+      const messageLocator = this.page.getByText(errorMessage);
+
+      await this.fillForm(eventForm);
+      if (isVisible) {
+        await this.verifyCreateButtonStatus(false);
+        await expect(messageLocator).toBeVisible();
+        await this.clickCancelButton();
+        return;
+      }
+      await this.verifyCreateButtonStatus(true);
+      await expect(messageLocator).not.toBeVisible();
+      await this.clickCancelButton();
+    });
+  }
+
+  async verifyCreateButtonStatus(isEnabled: boolean) {
+    await test.step('Verify Create Button is in Correct State', async () => {
+      if (isEnabled) {
+        return await expect(this.createButton).toBeEnabled();
+      }
+      await expect(this.createButton).toBeDisabled();
+    });
+  }
+
   async clickCancelButton() {
     await test.step('Click Cancel Button', async () => {
       await this.cancelButton.click();
     });
   }
 
-  async fillForm(
-    title: string,
-    tagCategory: TagCategory,
-    tag: Tag,
-    description: string,
-    isRecurring: boolean,
-  ) {
+  async fillForm(eventForm: EventForm) {
     await test.step('Create Mock Event', async () => {
-      await this.fillTitleForm(title);
-      await this.selectTag(tagCategory, tag);
-      await this.descriptionForm.fill(description);
-      await this.recurringToggle.setChecked(isRecurring);
+      await this.fillTitleForm(eventForm.title);
+      await this.selectTag(eventForm.tagCategory, eventForm.tag);
+      await this.descriptionForm.fill(eventForm.description);
+      await this.recurringToggle.setChecked(eventForm.isRecurring);
     });
   }
 
@@ -77,13 +101,7 @@ export class CreateEventDialog {
 
   async createEvent(formDetails: EventForm) {
     await test.step('Create Calendar', async () => {
-      await this.fillForm(
-        formDetails.title,
-        formDetails.tagCategory,
-        formDetails.tag,
-        formDetails.description,
-        formDetails.isRecurring,
-      );
+      await this.fillForm(formDetails);
       await this.clickCreateButton();
     });
   }

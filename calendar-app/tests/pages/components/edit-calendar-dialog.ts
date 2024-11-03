@@ -26,9 +26,47 @@ export class EditCalendarDialog {
     this.yearForm = page.getByPlaceholder('1');
   }
 
-  async verifyEditButtonIsDisabled() {
-    await test.step('Verify Edit Button is Disabled', async () => {
+  async verifyEditButtonStatus(isEnabled: boolean) {
+    await test.step('Verify Edit Button is in Correct State', async () => {
+      if (isEnabled) {
+        await expect(this.editButton).toBeEnabled();
+      }
       await expect(this.editButton).toBeDisabled();
+    });
+  }
+
+  async verifyErrorState(
+    calendar: CalendarForm,
+    errorMessage: string,
+    isVisible: boolean,
+  ) {
+    await test.step('Verify Error State Appears Correctly', async () => {
+      const messageLocator = this.page.getByText(errorMessage);
+
+      await this.fillForm(calendar);
+      if (isVisible) {
+        await this.verifyEditButtonStatus(false);
+        await expect(messageLocator).toBeVisible();
+        await this.clickCancelButton();
+        return;
+      }
+      await this.verifyEditButtonStatus(true);
+      await expect(messageLocator).not.toBeVisible();
+      await this.clickCancelButton();
+    });
+  }
+
+  async fillForm(calendarForm: CalendarForm) {
+    await test.step('Edit Mock Calendar', async () => {
+      await this.nameForm.fill(calendarForm.name);
+      await this.descriptionForm.fill(calendarForm.description);
+      await this.includeBirthdaysToggle.setChecked(
+        calendarForm.includeBirthdays,
+      );
+      await this.includeFestivalsToggle.setChecked(
+        calendarForm.includeFestivals,
+      );
+      await this.includeCropsToggle.setChecked(calendarForm.includeCrops);
     });
   }
 

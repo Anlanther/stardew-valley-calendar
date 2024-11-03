@@ -27,6 +27,7 @@ export class EditCalendarDialogComponent {
         this.data.activeCalendar.name,
         [
           Validators.required,
+          Validators.maxLength(50),
           duplicateNameValidator(
             this.data.existingCalendars.filter(
               (name) => name !== this.data.activeCalendar.name,

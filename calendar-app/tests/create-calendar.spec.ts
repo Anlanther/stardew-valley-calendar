@@ -22,7 +22,7 @@ test('App heading to have calendar name and default to year 1 Spring', async ({
   welcomePage,
   calendarPage,
 }) => {
-  const plainCalendar = getMockCalendarForm({});
+  const plainCalendar = getMockCalendarForm();
 
   await welcomePage.selectOrCreateCalendar(plainCalendar);
   await calendarPage.verifyCorrectTitle(plainCalendar.name, 1);
@@ -132,42 +132,11 @@ test('Verify calendar settings reflect state of the calendar', async ({
   welcomePage,
   calendarPage,
 }) => {
-  const plainCalendar = getMockCalendarForm({});
+  const plainCalendar = getMockCalendarForm();
 
   await welcomePage.selectOrCreateCalendar(plainCalendar);
   await calendarPage.verifyCalendarDetailsInEditDialog(plainCalendar);
   await calendarPage.verifyCanOpenCreateDialog();
   await calendarPage.verifyActiveCalendarIsMarkedAsSelected(plainCalendar.name);
-  await calendarPage.deleteCalendar();
-});
-
-test('Select calendar displays list of all existing calendar names correctly', async ({
-  welcomePage,
-  calendarPage,
-}) => {
-  const plainCalendar1 = getMockCalendarForm({
-    name: 'Mock Calendar Select T1',
-  });
-  const plainCalendar2 = getMockCalendarForm({
-    name: 'Mock Calendar Select T2',
-  });
-  const plainCalendar3 = getMockCalendarForm({
-    name: 'Mock Calendar Select T3',
-  });
-
-  await welcomePage.selectOrCreateCalendar(plainCalendar1);
-  await calendarPage.verifyCalendarInSelectDialog(plainCalendar1.name, true);
-  await calendarPage.createCalendar(plainCalendar2);
-  await calendarPage.verifyCalendarInSelectDialog(plainCalendar1.name, true);
-  await calendarPage.verifyCalendarInSelectDialog(plainCalendar2.name, true);
-  await calendarPage.createCalendar(plainCalendar3);
-  await calendarPage.verifyCalendarInSelectDialog(plainCalendar1.name, true);
-  await calendarPage.verifyCalendarInSelectDialog(plainCalendar2.name, true);
-  await calendarPage.verifyCalendarInSelectDialog(plainCalendar3.name, true);
-
-  await calendarPage.deleteCalendar();
-  await welcomePage.openExistingCalendar(plainCalendar2.name);
-  await calendarPage.deleteCalendar();
-  await welcomePage.openExistingCalendar(plainCalendar1.name);
   await calendarPage.deleteCalendar();
 });

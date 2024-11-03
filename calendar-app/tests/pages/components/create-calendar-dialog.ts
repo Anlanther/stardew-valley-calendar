@@ -24,15 +24,33 @@ export class CreateCalendarDialog {
     this.cancelButton = page.getByRole('button', { name: 'Cancel' });
   }
 
-  async verifyCreateButtonIsDisabled() {
-    await test.step('Verify Create Button is Disabled', async () => {
+  async verifyCreateButtonStatus(isEnabled: boolean) {
+    await test.step('Verify Create Button is in Correct State', async () => {
+      if (isEnabled) {
+        return await expect(this.createButton).toBeEnabled();
+      }
       await expect(this.createButton).toBeDisabled();
     });
   }
 
-  async verifyCreateButtonIsEnabled() {
-    await test.step('Verify Create Button is Enabled', async () => {
-      await expect(this.createButton).toBeEnabled();
+  async verifyErrorState(
+    calendar: CalendarForm,
+    errorMessage: string,
+    isVisible: boolean,
+  ) {
+    await test.step('Verify Error State Appears Correctly', async () => {
+      const messageLocator = this.page.getByText(errorMessage);
+
+      await this.fillForm(calendar);
+      if (isVisible) {
+        await this.verifyCreateButtonStatus(false);
+        await expect(messageLocator).toBeVisible();
+        await this.clickCancelButton();
+        return;
+      }
+      await this.verifyCreateButtonStatus(true);
+      await expect(messageLocator).not.toBeVisible();
+      await this.clickCancelButton();
     });
   }
 
