@@ -1,4 +1,11 @@
-import { Component, inject, Renderer2, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  Renderer2,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
 import { Observable, skip, Subscription } from 'rxjs';
@@ -12,7 +19,7 @@ import { AppFeature } from '../../state/app.state';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })
-export class MainComponent {
+export class MainComponent implements OnDestroy {
   store = inject(Store<AppStore>);
   renderer = inject(Renderer2);
 
@@ -20,16 +27,27 @@ export class MainComponent {
   disableDelete = signal<boolean>(false);
   subs = new Subscription();
 
-  @ViewChild('drawer') sideNav!: MatSidenav;
+  @ViewChild('eventNav') eventNav!: MatSidenav;
+  @ViewChild('seasonNav') seasonNav!: MatSidenav;
 
   constructor() {
     this.navTitle$ = this.store.select(AppFeature.selectNavTitle);
     this.subs.add(
       this.store
-        .select(AppFeature.selectNavBarOpen)
+        .select(AppFeature.selectEventNavOpen)
         .pipe(skip(1))
-        .subscribe((isOpen) => this.toggleSideNav(isOpen)),
+        .subscribe((isOpen) => this.toggleEventNav(isOpen)),
     );
+    this.subs.add(
+      this.store
+        .select(AppFeature.selectSeasonNavOpen)
+        .pipe(skip(1))
+        .subscribe((isOpen) => this.toggleSeasonNav(isOpen)),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   openCreateDialog() {
@@ -44,8 +62,17 @@ export class MainComponent {
     this.store.dispatch(AppActions.deleteCalendar());
   }
 
-  toggleSideNav(isOpen: boolean) {
-    isOpen ? this.sideNav.open() : this.sideNav.close();
+  toggleEventNav(isOpen: boolean) {
+    isOpen ? this.eventNav.open() : this.eventNav.close();
+  }
+
+  toggleSeasonNav(isOpen: boolean) {
+    isOpen ? this.seasonNav.open() : this.seasonNav.close();
+  }
+
+  openSeasonNav() {
+    this.store.dispatch(AppActions.updateActiveSeasonGoals());
+    this.store.dispatch(AppActions.toggleSeasonNav(true));
   }
 
   openEditCalendarDialog() {

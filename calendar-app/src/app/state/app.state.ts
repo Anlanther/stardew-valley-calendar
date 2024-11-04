@@ -26,7 +26,7 @@ export const AppFeature = createFeature({
           : [],
     ),
     selectIsDateSelected: createSelector(
-      baseSelectors.selectNavBarOpen,
+      baseSelectors.selectEventNavOpen,
       baseSelectors.selectSelectedDate,
       (navBarOpen, date) => ({ navBarOpen, day: date.day }),
     ),

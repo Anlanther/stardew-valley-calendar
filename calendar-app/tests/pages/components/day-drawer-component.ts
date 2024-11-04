@@ -5,10 +5,10 @@ import { Selectors } from '../../models/selectors.model';
 import { CreateEventDialog } from './create-event-dialog';
 import { EditEventDialog } from './edit-event-dialog';
 
-export class DrawerComponent {
+export class DayDrawerComponent {
   readonly page: Page;
 
-  private readonly dayFormDrawer: Locator;
+  private readonly dayDrawer: Locator;
   private readonly createEventButton: Locator;
 
   private readonly createEventDialog: CreateEventDialog;
@@ -17,7 +17,7 @@ export class DrawerComponent {
   constructor(page: Page) {
     this.page = page;
 
-    this.dayFormDrawer = page.locator(Selectors.DAY_FORM_COMPONENT);
+    this.dayDrawer = page.locator(Selectors.DAY_FORM_COMPONENT);
     this.createEventButton = page.getByRole('button', { name: 'Create Event' });
 
     this.createEventDialog = new CreateEventDialog(page);
@@ -26,12 +26,12 @@ export class DrawerComponent {
 
   async verifyIsVisibleWithDate(day: number, season: Season) {
     await test.step('Validate Day Form Drawer Is Open', async () => {
-      await expect(this.dayFormDrawer).toBeVisible();
+      await expect(this.dayDrawer).toBeVisible();
       const selectedDateTitle = new RegExp(
         `${day}(?:st|nd|rd|th)\\s+${season}`,
         'i',
       );
-      await expect(this.dayFormDrawer).toHaveText(selectedDateTitle);
+      await expect(this.dayDrawer).toHaveText(selectedDateTitle);
     });
   }
 
@@ -68,7 +68,7 @@ export class DrawerComponent {
 
   async clickCreateEventButton() {
     await test.step('Create Event', async () => {
-      await expect(this.dayFormDrawer).toBeVisible();
+      await expect(this.dayDrawer).toBeVisible();
       await this.createEventButton.click();
     });
   }
@@ -100,7 +100,7 @@ export class DrawerComponent {
   }
 
   async verifyEventNameAndTagAreUnique(eventForm: EventForm) {
-    await test.step('Verify Even Name and Tag are Unique', async () => {
+    await test.step('Verify Form Name and Tag are Unique', async () => {
       await this.clickCreateEventButton();
       await this.createEventDialog.fillTitleForm(eventForm.title);
       await this.createEventDialog.verifyCreateButtonState(false);

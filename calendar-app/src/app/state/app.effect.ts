@@ -185,11 +185,16 @@ export class AppEffects {
       ofType(AppActions.updateEvent),
       concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectSelectedDate)),
-        this.store.pipe(select(AppFeature.selectActiveFormEvents)),
+        this.store.pipe(select(AppFeature.selectActiveDayEvents)),
       ]),
       exhaustMap(([{ gameEvent }, selectedDate, existingEvents]) => {
         const dialogRef = this.dialog.open(EditEventDialogComponent, {
-          data: { gameEvent, activeYear: selectedDate.year, existingEvents },
+          data: {
+            gameEvent,
+            activeYear: selectedDate.year,
+            existingEvents,
+            object: 'event',
+          },
           minHeight: 420,
         });
         return dialogRef.afterClosed();
@@ -207,6 +212,42 @@ export class AppEffects {
             )
           : this.gameEventDataService.update(dialogRes.gameEvent)
         ).pipe(map((calendar) => AppActions.updateEventSuccess(calendar))),
+      ),
+    ),
+  );
+
+  updateGoal$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.updateGoal),
+      concatLatestFrom(() => [
+        this.store.pipe(select(AppFeature.selectSelectedDate)),
+        this.store.pipe(select(AppFeature.selectActiveSeasonGoals)),
+      ]),
+      exhaustMap(([{ gameEvent }, selectedDate, existingGoals]) => {
+        const dialogRef = this.dialog.open(EditEventDialogComponent, {
+          data: {
+            gameEvent,
+            activeYear: selectedDate.year,
+            existingEvents: existingGoals,
+            object: 'goal',
+          },
+          minHeight: 420,
+        });
+        return dialogRef.afterClosed();
+      }),
+      filter((dialogRes: { gameEvent: GameEvent }) => !!dialogRes),
+      concatLatestFrom(() => [
+        this.store.pipe(select(AppFeature.selectOfflineMode)),
+        this.store.pipe(select(AppFeature.selectActiveCalendar)),
+      ]),
+      switchMap(([dialogRes, offlineMode, activeCalendar]) =>
+        (offlineMode
+          ? this.offlineDataService.updateGameEvent(
+              dialogRes.gameEvent,
+              activeCalendar!,
+            )
+          : this.gameEventDataService.update(dialogRes.gameEvent)
+        ).pipe(map((calendar) => AppActions.updateGoalSuccess(calendar))),
       ),
     ),
   );
@@ -229,6 +270,28 @@ export class AppEffects {
           ? this.offlineDataService.deleteGameEvent(dialogRes.id)
           : this.gameEventDataService.delete(dialogRes.id)
         ).pipe(map((id) => AppActions.deleteEventSuccess(id))),
+      ),
+    ),
+  );
+
+  deleteGoal$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.deleteGoal),
+      exhaustMap((action) => {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+          data: { id: action.id, name: action.name, object: 'goal' },
+        });
+        return dialogRef.afterClosed();
+      }),
+      filter((dialogRes: { id: string }) => !!dialogRes),
+      concatLatestFrom(() => [
+        this.store.pipe(select(AppFeature.selectOfflineMode)),
+      ]),
+      switchMap(([dialogRes, offlineMode]) =>
+        (offlineMode
+          ? this.offlineDataService.deleteGameEvent(dialogRes.id)
+          : this.gameEventDataService.delete(dialogRes.id)
+        ).pipe(map((id) => AppActions.deleteGoalSuccess(id))),
       ),
     ),
   );
@@ -292,7 +355,7 @@ export class AppEffects {
       ofType(AppActions.createEvent),
       concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectSelectedDate)),
-        this.store.pipe(select(AppFeature.selectActiveFormEvents)),
+        this.store.pipe(select(AppFeature.selectActiveDayEvents)),
       ]),
       exhaustMap(([, date, existingEvents]) => {
         const dialogRef = this.dialog.open(CreateEventDialogComponent, {
@@ -301,6 +364,7 @@ export class AppEffects {
             season: date.season,
             year: date.year,
             existingEvents,
+            object: 'event',
           },
           minHeight: 420,
         });
@@ -316,6 +380,67 @@ export class AppEffects {
           : this.gameEventDataService.create(dialogRes.gameEvent)
         ).pipe(map((calendar) => AppActions.createEventSuccess(calendar))),
       ),
+    ),
+  );
+
+  createSeasonGoal$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.createGoal),
+      concatLatestFrom(() => [
+        this.store.pipe(select(AppFeature.selectSelectedDate)),
+        this.store.pipe(select(AppFeature.selectActiveSeasonGoals)),
+      ]),
+      exhaustMap(([, date, existingGoals]) => {
+        const dialogRef = this.dialog.open(CreateEventDialogComponent, {
+          data: {
+            day: 0,
+            season: date.season,
+            year: date.year,
+            existingEvents: existingGoals,
+            object: 'goal',
+          },
+          minHeight: 420,
+        });
+        return dialogRef.afterClosed();
+      }),
+      filter((dialogRes: { gameEvent: UnsavedGameEvent }) => !!dialogRes),
+      concatLatestFrom(() =>
+        this.store.pipe(select(AppFeature.selectOfflineMode)),
+      ),
+      switchMap(([dialogRes, offlineMode]) =>
+        (offlineMode
+          ? this.offlineDataService.createGameEvent(dialogRes.gameEvent)
+          : this.gameEventDataService.create(dialogRes.gameEvent)
+        ).pipe(map((calendar) => AppActions.createGoalSuccess(calendar))),
+      ),
+    ),
+  );
+
+  addGoalToCurrentCalendar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.createGoalSuccess),
+      concatLatestFrom(() => [
+        this.store.pipe(select(AppFeature.selectActiveCalendar)),
+        this.store.pipe(select(AppFeature.selectOfflineMode)),
+      ]),
+      switchMap(([action, activeCalendar, offlineMode]) => {
+        const updatedCalendar: Partial<Calendar> = {
+          id: activeCalendar?.id,
+          gameEvents: [...(activeCalendar?.gameEvents ?? []), action.gameEvent],
+        };
+        return (
+          offlineMode
+            ? this.offlineDataService.updateCalendarEvents(
+                updatedCalendar,
+                activeCalendar!,
+              )
+            : this.calendarDataService.updateEvents(updatedCalendar)
+        ).pipe(
+          map((calendar) =>
+            AppActions.addedGoalToCalendar(calendar, action.gameEvent),
+          ),
+        );
+      }),
     ),
   );
 

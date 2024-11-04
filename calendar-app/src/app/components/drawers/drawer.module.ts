@@ -7,11 +7,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { OrdinalSuffixPipe } from '../../pipes/ordinal-suffix.pipe';
-import { DayFormComponent } from './day-form.component';
+import { DayFormComponent } from './day-form/day-form.component';
+import { SeasonFormComponent } from './season-form/season-form.component';
 
 @NgModule({
-  declarations: [DayFormComponent],
-  exports: [DayFormComponent],
+  declarations: [DayFormComponent, SeasonFormComponent],
+  exports: [DayFormComponent, SeasonFormComponent],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -23,4 +24,4 @@ import { DayFormComponent } from './day-form.component';
   ],
   providers: [OrdinalSuffixPipe],
 })
-export class DayFormModule {}
+export class DrawerModule {}

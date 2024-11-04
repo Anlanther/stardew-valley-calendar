@@ -26,6 +26,7 @@ export class CreateEventDialogComponent {
     season: Season;
     year: number;
     existingEvents: GameEvent[];
+    object: 'event' | 'goal';
   } = inject(MAT_DIALOG_DATA);
 
   eventForm!: FormGroup;

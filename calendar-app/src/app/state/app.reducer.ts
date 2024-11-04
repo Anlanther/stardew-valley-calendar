@@ -10,23 +10,27 @@ import { AppActions } from './app.actions';
 
 export interface AppState {
   activeCalendar: CalendarState;
-  activeFormEvents: EventState;
+  activeDayEvents: EventState;
+  activeSeasonGoals: GameEvent[];
   selectedDate: SelectedDate;
   availableCalendars: Calendar[];
   savedSystemEvents: GameEvent[];
   apiFailed: boolean;
-  navBarOpen: boolean;
+  eventNavOpen: boolean;
+  seasonNavOpen: boolean;
   offlineMode: boolean;
 }
 
 export const initialState: AppState = {
   activeCalendar: null,
-  activeFormEvents: null,
+  activeDayEvents: null,
+  activeSeasonGoals: [],
   selectedDate: { day: 1, year: 1, season: Season.SPRING },
   availableCalendars: [],
   savedSystemEvents: [],
   apiFailed: false,
-  navBarOpen: false,
+  eventNavOpen: false,
+  seasonNavOpen: false,
   offlineMode: false,
 };
 
@@ -45,7 +49,8 @@ export const appReducer = createReducer<AppState>(
       activeCalendar: { ...action.calendar, filteredGameEvents },
       availableCalendars: [...state.availableCalendars, action.calendar],
       selectedDate: initialState.selectedDate,
-      navBarOpen: false,
+      eventNavOpen: false,
+      seasonNavOpen: false,
     };
   }),
   on(AppActions.updateActiveCalendar, (state, action) => {
@@ -60,21 +65,23 @@ export const appReducer = createReducer<AppState>(
       ...state,
       activeCalendar: { ...action.calendar, filteredGameEvents },
       availableCalendars: [...state.availableCalendars],
-      navBarOpen: false,
+      eventNavOpen: false,
+      seasonNavOpen: false,
     };
   }),
   on(AppActions.getCalendarsSuccess, (state, action) => ({
     ...state,
     availableCalendars: action.calendars,
   })),
-  on(AppActions.updateActiveFormEvents, (state, action) => ({
+  on(AppActions.updateActiveDayEvents, (state, action) => ({
     ...state,
-    activeFormEvents: [...action.gameEvents],
+    activeDayEvents: [...action.gameEvents],
   })),
   on(AppActions.updateSeason, (state, action) => ({
     ...state,
     selectedDate: { ...state.selectedDate, season: action.season },
-    navBarOpen: false,
+    eventNavOpen: false,
+    seasonNavOpen: false,
   })),
   on(AppActions.addedEventToCalendar, (state, action) => ({
     ...state,
@@ -88,8 +95,8 @@ export const appReducer = createReducer<AppState>(
           ],
         }
       : null,
-    activeFormEvents: state.activeFormEvents
-      ? [...state.activeFormEvents, action.gameEvent]
+    activeDayEvents: state.activeDayEvents
+      ? [...state.activeDayEvents, action.gameEvent]
       : null,
     availableCalendars: [
       ...state.availableCalendars.filter(
@@ -100,6 +107,29 @@ export const appReducer = createReducer<AppState>(
         gameEvents: [...action.calendar.gameEvents],
       },
     ],
+  })),
+  on(AppActions.addedGoalToCalendar, (state, action) => ({
+    ...state,
+    activeCalendar: state.activeCalendar
+      ? {
+          ...state.activeCalendar,
+          gameEvents: [...state.activeCalendar.gameEvents, action.gameEvent],
+          filteredGameEvents: [
+            ...state.activeCalendar.filteredGameEvents,
+            action.gameEvent,
+          ],
+        }
+      : null,
+    availableCalendars: [
+      ...state.availableCalendars.filter(
+        (calendar) => calendar.id !== action.calendar.id,
+      ),
+      {
+        ...action.calendar,
+        gameEvents: [...action.calendar.gameEvents],
+      },
+    ],
+    activeSeasonGoals: [...state.activeSeasonGoals, action.gameEvent],
   })),
   on(AppActions.deleteEventSuccess, (state, action) => ({
     ...state,
@@ -114,9 +144,38 @@ export const appReducer = createReducer<AppState>(
           ),
         }
       : null,
-    activeFormEvents: state.activeFormEvents
-      ? state.activeFormEvents.filter((event) => event.id !== action.id)
+    activeDayEvents: state.activeDayEvents
+      ? state.activeDayEvents.filter((event) => event.id !== action.id)
       : null,
+    availableCalendars: [
+      ...state.availableCalendars.map((calendar) =>
+        calendar.id !== state.activeCalendar!.id
+          ? calendar
+          : {
+              ...calendar,
+              gameEvents: calendar.gameEvents.filter(
+                (event) => event.id !== action.id,
+              ),
+            },
+      ),
+    ],
+  })),
+  on(AppActions.deleteGoalSuccess, (state, action) => ({
+    ...state,
+    activeCalendar: state.activeCalendar
+      ? {
+          ...state.activeCalendar,
+          gameEvents: state.activeCalendar?.gameEvents.filter(
+            (calendar) => calendar.id !== action.id,
+          ),
+          filteredGameEvents: state.activeCalendar.filteredGameEvents.filter(
+            (calendar) => calendar.id !== action.id,
+          ),
+        }
+      : null,
+    activeSeasonGoals: state.activeSeasonGoals.filter(
+      (event) => event.id !== action.id,
+    ),
     availableCalendars: [
       ...state.availableCalendars.map((calendar) =>
         calendar.id !== state.activeCalendar!.id
@@ -137,7 +196,8 @@ export const appReducer = createReducer<AppState>(
     return {
       ...state,
       activeCalendar: null,
-      activeFormEvents: null,
+      activeDayEvents: null,
+      activeSeasonGoals: [],
       availableCalendars: updatedAvailableCalendars,
     };
   }),
@@ -164,9 +224,9 @@ export const appReducer = createReducer<AppState>(
           ],
         }
       : null,
-    activeFormEvents: state.activeFormEvents
+    activeDayEvents: state.activeDayEvents
       ? [
-          ...state.activeFormEvents.filter(
+          ...state.activeDayEvents.filter(
             (event) => event.id !== action.gameEvent.id,
           ),
           action.gameEvent,
@@ -188,9 +248,50 @@ export const appReducer = createReducer<AppState>(
       ),
     ],
   })),
-  on(AppActions.toggleNavBar, (state, action) => ({
+  on(AppActions.updateGoalSuccess, (state, action) => ({
     ...state,
-    navBarOpen: action.isOpen,
+    activeCalendar: state.activeCalendar
+      ? {
+          ...state.activeCalendar,
+          gameEvents: [
+            ...state.activeCalendar?.gameEvents.filter(
+              (calendar) => calendar.id !== action.gameEvent.id,
+            ),
+            action.gameEvent,
+          ],
+          filteredGameEvents: [
+            ...state.activeCalendar?.filteredGameEvents.filter(
+              (calendar) => calendar.id !== action.gameEvent.id,
+            ),
+            action.gameEvent,
+          ],
+        }
+      : null,
+    activeSeasonGoals: [
+      ...state.activeSeasonGoals.filter(
+        (event) => event.id !== action.gameEvent.id,
+      ),
+      action.gameEvent,
+    ],
+    availableCalendars: [
+      ...state.availableCalendars.map((calendar) =>
+        calendar.id !== state.activeCalendar!.id
+          ? calendar
+          : {
+              ...calendar,
+              gameEvents: [
+                ...calendar.gameEvents.filter(
+                  (event) => event.id !== action.gameEvent.id,
+                ),
+                action.gameEvent,
+              ],
+            },
+      ),
+    ],
+  })),
+  on(AppActions.toggleEventNav, (state, action) => ({
+    ...state,
+    eventNavOpen: action.isOpen,
   })),
   on(AppActions.createDefaultGameEventsSuccess, (state, action) => ({
     ...state,
@@ -213,6 +314,8 @@ export const appReducer = createReducer<AppState>(
         ),
         action.calendar,
       ],
+      eventNavOpen: false,
+      seasonNavOpen: false,
     };
   }),
   on(AppActions.aPIFailed, (state) => ({
@@ -223,4 +326,20 @@ export const appReducer = createReducer<AppState>(
     ...state,
     offlineMode: true,
   })),
+  on(AppActions.toggleSeasonNav, (state, action) => ({
+    ...state,
+    seasonNavOpen: action.isOpen,
+  })),
+  on(AppActions.updateActiveSeasonGoals, (state) => {
+    const filteredSeasonGoals = CalendarUtils.getEventsForDate(
+      state.selectedDate.season,
+      state.selectedDate.year,
+      state.activeCalendar!,
+      0,
+    );
+    return {
+      ...state,
+      activeSeasonGoals: filteredSeasonGoals,
+    };
+  }),
 );

@@ -29,7 +29,7 @@ test('Delete game event', async ({ welcomePage, calendarPage }) => {
     mockEventPlain.title,
     true,
   );
-  await calendarPage.verifyEventOnDayFormDrawer(
+  await calendarPage.verifyEventOnDayDrawer(
     mockGameDate.day,
     mockGameDate.season,
     mockEventPlain.title,
@@ -41,7 +41,7 @@ test('Delete game event', async ({ welcomePage, calendarPage }) => {
     mockGameDate.season,
     mockEventPlain.title,
   );
-  await calendarPage.verifyEventOnDayFormDrawer(
+  await calendarPage.verifyEventOnDayDrawer(
     mockGameDate.day,
     mockGameDate.season,
     mockEventPlain.title,
@@ -71,16 +71,15 @@ test('Edit game event has correct input when opened', async ({
 
 test('Edit game dialog does not allow for titles with more than 50 characters', async ({
   welcomePage,
-  drawerComponent,
+  dayDrawerComponent: drawerComponent,
   editEventDialog,
   calendarPage,
 }) => {
   const plainCalendar = getMockCalendarForm();
   const characterLimitErrorMessage = 'Over 50 character limit';
-  const eventWithInvalidTitleLength = {
-    ...mockEventPlain,
+  const eventWithInvalidTitleLength = getMockEventForm({
     title: 'A fail test title that is fifty one characters long',
-  };
+  });
 
   await welcomePage.selectOrCreateCalendar(plainCalendar);
   await calendarPage.createGameEvent(

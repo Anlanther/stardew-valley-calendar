@@ -456,7 +456,7 @@ describe('AppEffects', () => {
       mockStore.overrideSelector(AppFeature.selectOfflineMode, false);
       mockStore.overrideSelector(AppFeature.selectSelectedDate, mockActiveDate);
       mockStore.overrideSelector(
-        AppFeature.selectActiveFormEvents,
+        AppFeature.selectActiveDayEvents,
         MOCK_GAME_EVENTS,
       );
       mockStore.overrideSelector(
@@ -484,6 +484,7 @@ describe('AppEffects', () => {
             gameEvent: mockGameEventToBeEdited,
             activeYear: mockActiveDate.year,
             existingEvents: mockExistingEvents,
+            object: 'event',
           },
           minHeight: 420,
         });
@@ -531,6 +532,107 @@ describe('AppEffects', () => {
     });
   });
 
+  describe('updateGoal$', () => {
+    const mockGoalToBeEdited: GameEvent = {
+      ...MOCK_GAME_EVENTS[0],
+      gameDate: { ...MOCK_GAME_EVENTS[0].gameDate, day: 0 },
+    };
+    const mockDialogReturnValue = {
+      gameEvent: { ...mockGoalToBeEdited, name: 'Edited Mock Game Event' },
+    };
+    const mockGameEventResponseFromApi: GameEvent =
+      mockDialogReturnValue.gameEvent;
+    const mockActiveDate: SelectedDate = {
+      day: 1,
+      season: Season.SPRING,
+      year: 1,
+    };
+    const mockExistingGoals: GameEvent[] = MOCK_GAME_EVENTS.map((e) => ({
+      ...e,
+      gameDate: { ...e.gameDate, day: 0 },
+    }));
+    const mockActiveCalendar: Calendar = MOCK_CALENDARS[0];
+
+    beforeEach(() => {
+      mockStore.overrideSelector(AppFeature.selectOfflineMode, false);
+      mockStore.overrideSelector(AppFeature.selectSelectedDate, mockActiveDate);
+      mockStore.overrideSelector(
+        AppFeature.selectActiveSeasonGoals,
+        mockExistingGoals,
+      );
+      mockStore.overrideSelector(
+        AppFeature.selectActiveCalendar,
+        mockActiveCalendar,
+      );
+
+      mockOfflineDataService.updateGameEvent.mockReturnValue(
+        of(mockGameEventResponseFromApi),
+      );
+      mockGameEventDataService.update.mockReturnValue(
+        of(mockGameEventResponseFromApi),
+      );
+      setMockDialogToReturn<{ gameEvent: GameEvent }>(mockDialogReturnValue);
+    });
+
+    it('should trigger the EditEventDialogComponent to open with the min height of 420 and event to be edited, active year, and array of existing events', () => {
+      mockActions$ = hot('-a', {
+        a: AppActions.updateGoal(mockGoalToBeEdited),
+      });
+
+      spectator.service.updateGoal$.subscribe(() => {
+        expect(mockDialog.open).toHaveBeenCalledWith(EditEventDialogComponent, {
+          data: {
+            gameEvent: mockGoalToBeEdited,
+            activeYear: mockActiveDate.year,
+            existingEvents: mockExistingGoals,
+            object: 'goal',
+          },
+          minHeight: 420,
+        });
+      });
+    });
+
+    it('should trigger the updateGoalSuccess action with the response obtained by the API based on the dialog input', () => {
+      mockGameEventDataService.update.mockReturnValue(
+        of(mockGameEventResponseFromApi),
+      );
+      const expected = cold('-a', {
+        a: AppActions.updateGoalSuccess(mockGameEventResponseFromApi),
+      });
+
+      mockActions$ = hot('-a', {
+        a: AppActions.updateGoal(mockGoalToBeEdited),
+      });
+
+      expect(spectator.service.updateGoal$).toBeObservable(expected);
+      spectator.service.updateGameEvent$.subscribe(() => {
+        expect(mockGameEventDataService.update).toHaveBeenCalledWith(
+          mockDialogReturnValue.gameEvent,
+        );
+      });
+    });
+
+    it('should trigger the updateGoalSuccess action with the response obtained by the offlineDataService based on the dialog input when in offline mode', () => {
+      mockStore.overrideSelector(AppFeature.selectOfflineMode, true);
+
+      const expected = cold('-a', {
+        a: AppActions.updateGoalSuccess(mockGameEventResponseFromApi),
+      });
+
+      mockActions$ = hot('-a', {
+        a: AppActions.updateGoal(mockGoalToBeEdited),
+      });
+
+      expect(spectator.service.updateGoal$).toBeObservable(expected);
+      spectator.service.updateGameEvent$.subscribe(() => {
+        expect(mockOfflineDataService.updateGameEvent).toHaveBeenCalledWith(
+          mockDialogReturnValue.gameEvent,
+          mockActiveCalendar,
+        );
+      });
+    });
+  });
+
   describe('deleteEvent$', () => {
     const mockEventToBeDeleted: GameEvent = MOCK_GAME_EVENTS[0];
     const mockGameEventResponseFromApi: string = mockEventToBeDeleted.id;
@@ -569,7 +671,7 @@ describe('AppEffects', () => {
       });
     });
 
-    it('should trigger the deleteCalendarSuccess action with the response obtained by the API based on the dialog input', () => {
+    it('should trigger the deleteEventSuccess action with the response obtained by the API based on the dialog input', () => {
       const expected = cold('-a', {
         a: AppActions.deleteEventSuccess(mockGameEventResponseFromApi),
       });
@@ -589,7 +691,7 @@ describe('AppEffects', () => {
       });
     });
 
-    it('should trigger the deleteCalendarSuccess action with the response obtained by the offlineDataService based on the dialog input when in offline mode', () => {
+    it('should trigger the deleteEventSuccess action with the response obtained by the offlineDataService based on the dialog input when in offline mode', () => {
       mockStore.overrideSelector(AppFeature.selectOfflineMode, true);
 
       const expected = cold('-a', {
@@ -605,6 +707,90 @@ describe('AppEffects', () => {
 
       expect(spectator.service.deleteEvent$).toBeObservable(expected);
       spectator.service.deleteEvent$.subscribe(() => {
+        expect(mockOfflineDataService.deleteGameEvent).toHaveBeenCalledWith(
+          mockDialogReturnValue.id,
+        );
+      });
+    });
+  });
+
+  describe('deleteGoal$', () => {
+    const mockGoalToBeDeleted: GameEvent = {
+      ...MOCK_GAME_EVENTS[0],
+      gameDate: { ...MOCK_GAME_EVENTS[0].gameDate, day: 0 },
+    };
+    const mockGameEventResponseFromApi: string = mockGoalToBeDeleted.id;
+    const mockDialogReturnValue = {
+      id: mockGoalToBeDeleted.id,
+    };
+
+    beforeEach(() => {
+      mockStore.overrideSelector(AppFeature.selectOfflineMode, false);
+
+      mockGameEventDataService.delete.mockReturnValue(
+        of(mockGameEventResponseFromApi),
+      );
+      mockOfflineDataService.deleteGameEvent.mockReturnValue(
+        of(mockGameEventResponseFromApi),
+      );
+      setMockDialogToReturn<{ id: string }>(mockDialogReturnValue);
+    });
+
+    it('should trigger the DeleteDialogComponent to open with event message and the ID and name of the event to be deleted', () => {
+      mockActions$ = hot('-a', {
+        a: AppActions.deleteGoal(
+          mockGoalToBeDeleted.id,
+          mockGoalToBeDeleted.title,
+        ),
+      });
+
+      spectator.service.deleteGoal$.subscribe(() => {
+        expect(mockDialog.open).toHaveBeenCalledWith(DeleteDialogComponent, {
+          data: {
+            id: mockGoalToBeDeleted.id,
+            name: mockGoalToBeDeleted.title,
+            object: 'goal',
+          },
+        });
+      });
+    });
+
+    it('should trigger the deleteGoalSuccess action with the response obtained by the API based on the dialog input', () => {
+      const expected = cold('-a', {
+        a: AppActions.deleteGoalSuccess(mockGameEventResponseFromApi),
+      });
+
+      mockActions$ = hot('-a', {
+        a: AppActions.deleteGoal(
+          mockGoalToBeDeleted.id,
+          mockGoalToBeDeleted.title,
+        ),
+      });
+
+      expect(spectator.service.deleteGoal$).toBeObservable(expected);
+      spectator.service.deleteGoal$.subscribe(() => {
+        expect(mockGameEventDataService.delete).toHaveBeenCalledWith(
+          mockDialogReturnValue.id,
+        );
+      });
+    });
+
+    it('should trigger the deleteGoalSuccess action with the response obtained by the offlineDataService based on the dialog input when in offline mode', () => {
+      mockStore.overrideSelector(AppFeature.selectOfflineMode, true);
+
+      const expected = cold('-a', {
+        a: AppActions.deleteGoalSuccess(mockGameEventResponseFromApi),
+      });
+
+      mockActions$ = hot('-a', {
+        a: AppActions.deleteGoal(
+          mockGoalToBeDeleted.id,
+          mockGoalToBeDeleted.title,
+        ),
+      });
+
+      expect(spectator.service.deleteGoal$).toBeObservable(expected);
+      spectator.service.deleteGoal$.subscribe(() => {
         expect(mockOfflineDataService.deleteGameEvent).toHaveBeenCalledWith(
           mockDialogReturnValue.id,
         );
@@ -795,7 +981,7 @@ describe('AppEffects', () => {
         mockSelectedDate,
       );
       mockStore.overrideSelector(
-        AppFeature.selectActiveFormEvents,
+        AppFeature.selectActiveDayEvents,
         mockExistingEvents,
       );
 
@@ -822,6 +1008,7 @@ describe('AppEffects', () => {
               season: mockSelectedDate.season,
               year: mockSelectedDate.year,
               existingEvents: mockExistingEvents,
+              object: 'event',
             },
             minHeight: 420,
           },
@@ -855,6 +1042,103 @@ describe('AppEffects', () => {
 
       expect(spectator.service.createGameEvent$).toBeObservable(expected);
       spectator.service.createGameEvent$.subscribe(() => {
+        expect(mockOfflineDataService.createGameEvent).toHaveBeenCalledWith(
+          mockDialogReturnValue.gameEvent,
+        );
+      });
+    });
+  });
+
+  describe('createSeasonGoal$', () => {
+    const mockSeasonGoalToBeCreated: UnsavedGameEvent = {
+      title: 'Collect Kegs',
+      tag: Tag.Artisan,
+      description: 'Pumpkin kegs.',
+      type: Type.User,
+      gameDate: { day: 10, year: 1, isRecurring: false, season: Season.FALL },
+    };
+    const mockSelectedDate: SelectedDate = {
+      day: 1,
+      season: Season.SPRING,
+      year: 2,
+    };
+    const mockExistingGoals: GameEvent[] = MOCK_GAME_EVENTS;
+    const mockDialogReturnValue = { gameEvent: mockSeasonGoalToBeCreated };
+    const mockGameEventResponseFromApi: GameEvent = {
+      ...mockSeasonGoalToBeCreated,
+      gameDate: { ...mockSeasonGoalToBeCreated.gameDate, id: '1' },
+      publishedAt: '',
+      id: '1',
+    };
+
+    beforeEach(() => {
+      mockStore.overrideSelector(AppFeature.selectOfflineMode, false);
+      mockStore.overrideSelector(
+        AppFeature.selectSelectedDate,
+        mockSelectedDate,
+      );
+      mockStore.overrideSelector(
+        AppFeature.selectActiveSeasonGoals,
+        mockExistingGoals,
+      );
+
+      mockGameEventDataService.create.mockReturnValue(
+        of(mockGameEventResponseFromApi),
+      );
+      mockOfflineDataService.createGameEvent.mockReturnValue(
+        of(mockGameEventResponseFromApi),
+      );
+      setMockDialogToReturn<{ gameEvent: UnsavedGameEvent }>(
+        mockDialogReturnValue,
+      );
+    });
+
+    it('should trigger the CreateEventDialogComponent to open with the min height of 420 and with day 0, season, and year, and a list of existing events created', () => {
+      mockActions$ = hot('-a', { a: AppActions.createGoal() });
+
+      spectator.service.createSeasonGoal$.subscribe(() => {
+        expect(mockDialog.open).toHaveBeenCalledWith(
+          CreateEventDialogComponent,
+          {
+            data: {
+              day: 0,
+              season: mockSelectedDate.season,
+              year: mockSelectedDate.year,
+              existingEvents: mockExistingGoals,
+              object: 'goal',
+            },
+            minHeight: 420,
+          },
+        );
+      });
+    });
+
+    it('should trigger the createGoalSuccess action with the response obtained by the API based on the dialog input', () => {
+      const expected = cold('-a', {
+        a: AppActions.createGoalSuccess(mockGameEventResponseFromApi),
+      });
+
+      mockActions$ = hot('-a', { a: AppActions.createGoal() });
+
+      expect(spectator.service.createSeasonGoal$).toBeObservable(expected);
+      spectator.service.createSeasonGoal$.subscribe(() => {
+        expect(mockGameEventDataService.create).toHaveBeenCalledWith(
+          mockDialogReturnValue.gameEvent,
+        );
+      });
+    });
+
+    it('should trigger the createGoalSuccess action with the response obtained by the offlineDataService based on the dialog input when in offline mode', () => {
+      mockStore.overrideSelector(AppFeature.selectOfflineMode, true);
+
+      const expected = cold('-a', {
+        a: AppActions.createGoalSuccess(mockGameEventResponseFromApi),
+      });
+
+      mockActions$ = hot('-a', { a: AppActions.createGoal() });
+
+      expect(spectator.service.createSeasonGoal$).toBeObservable(expected);
+      spectator.service.createSeasonGoal$.subscribe(() => {
         expect(mockOfflineDataService.createGameEvent).toHaveBeenCalledWith(
           mockDialogReturnValue.gameEvent,
         );
@@ -1039,6 +1323,86 @@ describe('AppEffects', () => {
           {
             id: mockCurrentlyActiveCalendar.id,
             gameEvents: [...MOCK_CALENDARS[0].gameEvents, mockEventCreated],
+          },
+          mockCurrentlyActiveCalendar,
+        );
+      });
+    });
+  });
+
+  describe('addGoalToCurrentCalendar$', () => {
+    const mockGoalCreated: GameEvent = {
+      ...MOCK_GAME_EVENTS[0],
+      gameDate: { ...MOCK_GAME_EVENTS[0].gameDate, day: 0 },
+    };
+    const mockCurrentlyActiveCalendar: Calendar = MOCK_CALENDARS[0];
+    const mockCalendarResponseFromApi: Calendar = {
+      ...MOCK_CALENDARS[0],
+      gameEvents: [...MOCK_CALENDARS[0].gameEvents, mockGoalCreated],
+    };
+
+    beforeEach(() => {
+      mockStore.overrideSelector(AppFeature.selectOfflineMode, false);
+      mockStore.overrideSelector(
+        AppFeature.selectActiveCalendar,
+        mockCurrentlyActiveCalendar,
+      );
+
+      mockCalendarDataService.updateEvents.mockReturnValue(
+        of(mockCalendarResponseFromApi),
+      );
+      mockOfflineDataService.updateCalendarEvents.mockReturnValue(
+        of(mockCalendarResponseFromApi),
+      );
+    });
+
+    it('should trigger the addedGoalToCalendar action with the response obtained by the API', () => {
+      const expected = cold('-a', {
+        a: AppActions.addedGoalToCalendar(
+          mockCalendarResponseFromApi,
+          mockGoalCreated,
+        ),
+      });
+
+      mockActions$ = hot('-a', {
+        a: AppActions.createGoalSuccess(mockGoalCreated),
+      });
+
+      expect(spectator.service.addGoalToCurrentCalendar$).toBeObservable(
+        expected,
+      );
+      spectator.service.addGoalToCurrentCalendar$.subscribe(() => {
+        expect(mockCalendarDataService.updateEvents).toHaveBeenCalledWith({
+          id: mockCurrentlyActiveCalendar.id,
+          gameEvents: [...MOCK_CALENDARS[0].gameEvents, mockGoalCreated],
+        });
+      });
+    });
+
+    it('should trigger the addedEventToCalendar action with the response obtained by the offlineDataService when in offline mode', () => {
+      mockStore.overrideSelector(AppFeature.selectOfflineMode, true);
+
+      const expected = cold('-a', {
+        a: AppActions.addedGoalToCalendar(
+          mockCalendarResponseFromApi,
+          mockGoalCreated,
+        ),
+      });
+
+      mockActions$ = hot('-a', {
+        a: AppActions.createGoalSuccess(mockGoalCreated),
+      });
+
+      expect(spectator.service.addGoalToCurrentCalendar$).toBeObservable(
+        expected,
+      );
+      spectator.service.addGoalToCurrentCalendar$.subscribe(() => {
+        expect(
+          mockOfflineDataService.updateCalendarEvents,
+        ).toHaveBeenCalledWith(
+          {
+            id: mockCurrentlyActiveCalendar.id,
+            gameEvents: [...MOCK_CALENDARS[0].gameEvents, mockGoalCreated],
           },
           mockCurrentlyActiveCalendar,
         );
