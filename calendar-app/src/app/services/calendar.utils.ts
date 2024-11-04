@@ -13,6 +13,7 @@ export class CalendarUtils {
     season: Season,
     year: number,
     calendar: Calendar,
+    day?: number,
   ): GameEvent[] {
     return calendar.filteredGameEvents.filter((event) => {
       let normalCondition = false;
@@ -20,8 +21,9 @@ export class CalendarUtils {
       const isCorrectYear = event.gameDate.isRecurring
         ? true
         : event.gameDate.year === year;
+      const isCorrectDay = day ? event.gameDate.day === day : true;
 
-      if (isCorrectSeason && isCorrectYear) {
+      if (isCorrectSeason && isCorrectYear && isCorrectDay) {
         normalCondition = true;
       }
 

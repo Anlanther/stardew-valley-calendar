@@ -1,5 +1,6 @@
 <div class="body container-fluid h-100">
-  <nav class="navbar navbar-expand-lg bg-light d-flex justify-content-center">
+  <nav class="navbar navbar-expand-lg bg-light d-flex justify-content-between">
+    <button class="btn btn-secondary" (click)="openSeasonNav()">Goals</button>
     @if (navTitle$ | async; as navTitle) {
       <h1 class="navbar--heading">{{ navTitle }}</h1>
     }
@@ -37,7 +38,10 @@
   </nav>
 
   <mat-drawer-container class="app max-height" autosize>
-    <mat-drawer class="day-form" #drawer mode="side" position="end">
+    <mat-drawer class="season-form" #seasonNav mode="side" position="start">
+      <app-season-form class="season-form"></app-season-form>
+    </mat-drawer>
+    <mat-drawer class="day-form" #eventNav mode="side" position="end">
       <app-day-form class="day-form"></app-day-form>
     </mat-drawer>
     <app-calendar class="body__calendar"></app-calendar>

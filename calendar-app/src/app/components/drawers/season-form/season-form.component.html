@@ -1,0 +1,56 @@
+<div class="container">
+  @if (activeCalendar$ | async; as activeCalendar) {
+    <button mat-icon-button (click)="closeSideNav()">
+      <mat-icon>close</mat-icon>
+    </button>
+    @if (activeDate$ | async; as activeDate) {
+      <h3>{{ activeDate.season | titlecase }}</h3>
+    }
+    @if (activeSeasonGoals$ | async; as activeGoals) {
+      <div class="form-body">
+        <h4>Goals</h4>
+        <mat-accordion class="accordion" multi>
+          @for (
+            activeGoal of activeGoals;
+            track activeGoal.id;
+            let index = $index
+          ) {
+            @if (!activeGoal.type.includes("system")) {
+              <mat-expansion-panel>
+                <mat-expansion-panel-header class="accordion__header">
+                  <mat-panel-title
+                    ><img
+                      [src]="getEventIcon(activeGoal.tag)"
+                      alt="icon"
+                      class="event-icon"
+                  /></mat-panel-title>
+                  <mat-panel-description>
+                    {{ activeGoal.title }}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="openEditDialog(activeGoal)">
+                    Edit
+                  </button>
+                  <button
+                    mat-menu-item
+                    (click)="openDeleteDialog(activeGoal.id, activeGoal.title)"
+                  >
+                    Delete
+                  </button>
+                </mat-menu>
+                <p class="event--description">{{ activeGoal.description }}</p>
+              </mat-expansion-panel>
+            }
+          }
+        </mat-accordion>
+      </div>
+      <button class="btn btn-primary" (click)="openCreateDialog()">
+        Create Goal
+      </button>
+    }
+  }
+</div>

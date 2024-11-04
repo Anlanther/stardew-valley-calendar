@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CalendarModule } from '../components/calendar/calendar.module';
-import { DayFormModule } from '../components/day-form/day-form.module';
+import { DrawerModule } from '../components/drawers/drawer.module';
 import { MainComponent } from './main/main.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 
@@ -14,7 +14,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
   imports: [
     CommonModule,
     CalendarModule,
-    DayFormModule,
+    DrawerModule,
     MatSidenavModule,
     MatMenuModule,
     MatButtonModule,

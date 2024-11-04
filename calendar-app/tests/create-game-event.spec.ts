@@ -1,15 +1,8 @@
 import { Season } from '../src/app/models/season.model';
 import { test } from './fixtures/app-fixture';
-import { CalendarForm } from './models/calendar-form.model';
 import { EventForm } from './models/event-form.model';
 import { getMockCalendarForm, getMockEventForm } from './utils/util-functions';
 
-const mockCalendarWithAllSystem: CalendarForm = getMockCalendarForm({
-  name: `Mock Calendar with All System`,
-  includeBirthdays: true,
-  includeCrops: true,
-  includeFestivals: true,
-});
 const mockGameDate = {
   day: 3,
   season: Season.FALL,
@@ -43,7 +36,7 @@ test('Add game event should only apply to active calendar', async ({
     mockEventPlain.title,
     true,
   );
-  await calendarPage.verifyEventOnDayFormDrawer(
+  await calendarPage.verifyEventOnDayDrawer(
     mockGameDate.day,
     mockGameDate.season,
     mockEventPlain.title,
@@ -64,8 +57,9 @@ test('Add game event should only apply to active calendar', async ({
 
 test('Game event recurs if set', async ({ welcomePage, calendarPage }) => {
   const mockOtherYearsToTest = [2, 5, 10];
+  const mockCalendarPlain = getMockCalendarForm();
 
-  await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
+  await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
   await calendarPage.createGameEvent(
     mockGameDate.day,
     mockGameDate.season,
@@ -95,18 +89,6 @@ test('Game event recurs if set', async ({ welcomePage, calendarPage }) => {
   }
 
   await calendarPage.updateYear(1);
-
-  await calendarPage.deleteEvent(
-    mockGameDate.day,
-    mockGameDate.season,
-    mockEventPlain.title,
-  );
-  await calendarPage.deleteEvent(
-    mockGameDate.day,
-    mockGameDate.season,
-    mockEventRecurring.title,
-  );
-
   await calendarPage.deleteCalendar();
 });
 
@@ -114,28 +96,29 @@ test('Game event form requires name and tag', async ({
   welcomePage,
   calendarPage,
 }) => {
-  await welcomePage.selectOrCreateCalendar(mockCalendarWithAllSystem);
+  const mockCalendarPlain = getMockCalendarForm();
+
+  await welcomePage.selectOrCreateCalendar(mockCalendarPlain);
   await calendarPage.selectDateForEvents(mockGameDate.day, mockGameDate.season);
-  await calendarPage.verifyEventNameAndTagAreUnique(mockEventPlain);
+  await calendarPage.verifyFormNameAndTagAreUnique(mockEventPlain, 'day');
   await calendarPage.deleteCalendar();
 });
 
 test('Create game dialog does not allow for titles with more than 50 characters', async ({
   welcomePage,
-  drawerComponent,
+  dayDrawerComponent,
   createEventDialog,
   calendarPage,
 }) => {
   const plainCalendar = getMockCalendarForm();
   const characterLimitErrorMessage = 'Over 50 character limit';
-  const eventWithInvalidTitleLength = {
-    ...mockEventPlain,
+  const eventWithInvalidTitleLength = getMockEventForm({
     title: 'A fail test title that is fifty one characters long',
-  };
+  });
 
   await welcomePage.selectOrCreateCalendar(plainCalendar);
   await calendarPage.selectDateForEvents(mockGameDate.day, mockGameDate.season);
-  await drawerComponent.clickCreateEventButton();
+  await dayDrawerComponent.clickCreateEventButton();
   await createEventDialog.fillForm(eventWithInvalidTitleLength);
 
   await createEventDialog.verifyErrorState(

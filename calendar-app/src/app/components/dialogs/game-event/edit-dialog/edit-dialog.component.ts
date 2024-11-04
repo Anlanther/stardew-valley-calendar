@@ -20,6 +20,7 @@ export class EditEventDialogComponent {
     gameEvent: GameEvent;
     activeYear: number;
     existingEvents: GameEvent[];
+    object: 'event' | 'goal';
   } = inject(MAT_DIALOG_DATA);
 
   eventForm!: FormGroup;

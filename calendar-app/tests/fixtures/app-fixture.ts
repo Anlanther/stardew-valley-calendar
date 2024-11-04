@@ -2,11 +2,12 @@ import { test as base } from '@playwright/test';
 import { CalendarPage } from '../pages/calendar-page';
 import { CreateCalendarDialog } from '../pages/components/create-calendar-dialog';
 import { CreateEventDialog } from '../pages/components/create-event-dialog';
+import { DayDrawerComponent } from '../pages/components/day-drawer-component';
 import { DeleteCalendarDialog } from '../pages/components/delete-calendar-dialog';
-import { DrawerComponent } from '../pages/components/drawer-component';
 import { EditCalendarDialog } from '../pages/components/edit-calendar-dialog';
 import { EditEventDialog } from '../pages/components/edit-event-dialog';
 import { MenuComponent } from '../pages/components/menu-component';
+import { SeasonDrawerComponent } from '../pages/components/season-drawer-component';
 import { SelectCalendarDialog } from '../pages/components/select-calendar-dialog';
 import { WelcomePage } from '../pages/welcome-page';
 
@@ -18,7 +19,8 @@ type AppFixtures = {
   createEventDialog: CreateEventDialog;
   editEventDialog: EditEventDialog;
   menuComponent: MenuComponent;
-  drawerComponent: DrawerComponent;
+  dayDrawerComponent: DayDrawerComponent;
+  seasonDrawerComponent: SeasonDrawerComponent;
   editCalendarDialog: EditCalendarDialog;
   deleteCalendarDialog: DeleteCalendarDialog;
 };
@@ -51,7 +53,10 @@ export const test = base.extend<AppFixtures>({
   calendarPage: async ({ page }, use) => {
     await use(new CalendarPage(page));
   },
-  drawerComponent: async ({ page }, use) => {
-    await use(new DrawerComponent(page));
+  dayDrawerComponent: async ({ page }, use) => {
+    await use(new DayDrawerComponent(page));
+  },
+  seasonDrawerComponent: async ({ page }, use) => {
+    await use(new SeasonDrawerComponent(page));
   },
 });

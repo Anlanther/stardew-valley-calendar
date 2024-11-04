@@ -41,12 +41,22 @@ describe('AppReducer', () => {
       expect(actual).toMatchSnapshot();
     });
   });
-  describe(AppActions.updateActiveFormEvents.type, () => {
+  describe(AppActions.updateActiveDayEvents.type, () => {
     it('should update the state', () => {
       const mockGameEventsOnSelectedDate = MOCK_GAME_EVENTS;
-      const action = AppActions.updateActiveFormEvents(
+      const action = AppActions.updateActiveDayEvents(
         mockGameEventsOnSelectedDate,
       );
+
+      const actual = appReducer(state, action);
+
+      expect(actual).toMatchSnapshot();
+    });
+  });
+  describe(AppActions.updateActiveSeasonGoals.type, () => {
+    it('should update the state', () => {
+      state.activeCalendar = MOCK_CALENDARS[0];
+      const action = AppActions.updateActiveSeasonGoals();
 
       const actual = appReducer(state, action);
 
@@ -77,6 +87,20 @@ describe('AppReducer', () => {
       expect(actual).toMatchSnapshot();
     });
   });
+  describe(AppActions.addedGoalToCalendar.type, () => {
+    it('should update the state', () => {
+      const mockGoal = MOCK_GAME_EVENTS[0];
+      const mockCalendarToAddEventTo = MOCK_CALENDARS[0];
+      const action = AppActions.addedGoalToCalendar(
+        mockCalendarToAddEventTo,
+        mockGoal,
+      );
+
+      const actual = appReducer(state, action);
+
+      expect(actual).toMatchSnapshot();
+    });
+  });
   describe(AppActions.deleteEventSuccess.type, () => {
     it('should update the state', () => {
       const mockDeletedGameId = MOCK_GAME_EVENTS[0].id;
@@ -87,10 +111,20 @@ describe('AppReducer', () => {
       expect(actual).toMatchSnapshot();
     });
   });
-  describe(AppActions.deleteEventSuccess.type, () => {
+  describe(AppActions.deleteGoalSuccess.type, () => {
+    it('should update the state', () => {
+      const mockDeletedGoalId = MOCK_CALENDARS[0].id;
+      const action = AppActions.deleteGoalSuccess(mockDeletedGoalId);
+
+      const actual = appReducer(state, action);
+
+      expect(actual).toMatchSnapshot();
+    });
+  });
+  describe(AppActions.deleteCalendarSuccess.type, () => {
     it('should update the state', () => {
       const mockDeletedCalendarId = MOCK_CALENDARS[0].id;
-      const action = AppActions.deleteEventSuccess(mockDeletedCalendarId);
+      const action = AppActions.deleteCalendarSuccess(mockDeletedCalendarId);
 
       const actual = appReducer(state, action);
 
@@ -117,10 +151,30 @@ describe('AppReducer', () => {
       expect(actual).toMatchSnapshot();
     });
   });
-  describe(AppActions.toggleNavBar.type, () => {
+  describe(AppActions.updateGoalSuccess.type, () => {
+    it('should update the state', () => {
+      const mockGameEventUpdated = MOCK_GAME_EVENTS[0];
+      const action = AppActions.updateGoalSuccess(mockGameEventUpdated);
+
+      const actual = appReducer(state, action);
+
+      expect(actual).toMatchSnapshot();
+    });
+  });
+  describe(AppActions.toggleEventNav.type, () => {
     it('should update the state', () => {
       const isToggleOpen = true;
-      const action = AppActions.toggleNavBar(isToggleOpen);
+      const action = AppActions.toggleEventNav(isToggleOpen);
+
+      const actual = appReducer(state, action);
+
+      expect(actual).toMatchSnapshot();
+    });
+  });
+  describe(AppActions.toggleSeasonNav.type, () => {
+    it('should update the state', () => {
+      const isToggleOpen = true;
+      const action = AppActions.toggleSeasonNav(isToggleOpen);
 
       const actual = appReducer(state, action);
 

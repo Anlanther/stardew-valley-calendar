@@ -12,7 +12,7 @@ export class DeleteDialogComponent {
   data: {
     id: string;
     name: string;
-    object: 'calendar' | 'event';
+    object: 'calendar' | 'event' | 'goal';
     gameEvents?: GameEvent[];
   } = inject(MAT_DIALOG_DATA);
 

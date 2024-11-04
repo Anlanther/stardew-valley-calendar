@@ -28,7 +28,7 @@ export const MOCK_GAME_EVENTS: GameEvent[] = [
     gameDate: {
       isRecurring: false,
       year: 3,
-      day: 1,
+      day: 12,
       season: Season.WINTER,
       id: '2',
     },

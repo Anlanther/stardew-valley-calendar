@@ -20,11 +20,16 @@ export const AppActions = createActionGroup({
     'Update Active Calendar': (calendar: Calendar) => ({ calendar }),
     'Update Active Day': (day: number) => ({ day }),
     'Load Calendar': (id: string) => ({ id }),
-    'Update Active Form Events': (gameEvents: GameEvent[]) => ({
+    'Update Active Day Events': (gameEvents: GameEvent[]) => ({
       gameEvents,
     }),
+    'Update Active Season Goals': emptyProps(),
     'Update Season': (season: Season) => ({ season }),
     'Delete Event': (id: string, name: string) => ({
+      id,
+      name,
+    }),
+    'Delete Goal': (id: string, name: string) => ({
       id,
       name,
     }),
@@ -40,6 +45,7 @@ export const AppActions = createActionGroup({
       systemEvents,
     }),
     'Delete Event Success': (id: string) => ({ id }),
+    'Delete Goal Success': (id: string) => ({ id }),
     'Delete Calendar': emptyProps(),
     'Delete Calendar Success': (id: string) => ({ id }),
     'Update Event': (gameEvent: GameEvent) => ({
@@ -48,16 +54,31 @@ export const AppActions = createActionGroup({
     'Update Event Success': (gameEvent: GameEvent) => ({
       gameEvent,
     }),
+    'Update Goal': (gameEvent: GameEvent) => ({
+      gameEvent,
+    }),
+    'Update Goal Success': (gameEvent: GameEvent) => ({
+      gameEvent,
+    }),
     'Create Event': emptyProps(),
+    'Create Goal': emptyProps(),
     'Create Event Success': (gameEvent: GameEvent) => ({
+      gameEvent,
+    }),
+    'Create Goal Success': (gameEvent: GameEvent) => ({
       gameEvent,
     }),
     'Added Event to Calendar': (calendar: Calendar, gameEvent: GameEvent) => ({
       calendar,
       gameEvent,
     }),
+    'Added Goal to Calendar': (calendar: Calendar, gameEvent: GameEvent) => ({
+      calendar,
+      gameEvent,
+    }),
     'API Failed': emptyProps(),
-    'Toggle Nav Bar': (isOpen: boolean) => ({ isOpen }),
+    'Toggle Event Nav': (isOpen: boolean) => ({ isOpen }),
+    'Toggle Season Nav': (isOpen: boolean) => ({ isOpen }),
     Initialise: emptyProps(),
     'Create Uploaded Calendar': (downloadedCalendar: DownloadedCalendar) => ({
       downloadedCalendar,

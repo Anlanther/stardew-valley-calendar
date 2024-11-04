@@ -5,10 +5,11 @@ import { CalendarForm } from '../models/calendar-form.model';
 import { EventForm } from '../models/event-form.model';
 import { Selectors } from '../models/selectors.model';
 import { CreateCalendarDialog } from './components/create-calendar-dialog';
+import { DayDrawerComponent } from './components/day-drawer-component';
 import { DeleteCalendarDialog } from './components/delete-calendar-dialog';
-import { DrawerComponent } from './components/drawer-component';
 import { EditCalendarDialog } from './components/edit-calendar-dialog';
 import { MenuComponent } from './components/menu-component';
+import { SeasonDrawerComponent } from './components/season-drawer-component';
 import { SelectCalendarDialog } from './components/select-calendar-dialog';
 
 export class CalendarPage {
@@ -18,8 +19,11 @@ export class CalendarPage {
   private readonly seasonTab: Locator;
   private readonly dayCell: Locator;
 
+  private readonly seasonGoalTriggerButton: Locator;
+
   private readonly menuComponent: MenuComponent;
-  private readonly drawerComponent: DrawerComponent;
+  private readonly dayDrawerComponent: DayDrawerComponent;
+  private readonly seasonDrawerComponent: SeasonDrawerComponent;
   private readonly editCalendarDialog: EditCalendarDialog;
   private readonly createCalendarDialog: CreateCalendarDialog;
   private readonly selectCalendarDialog: SelectCalendarDialog;
@@ -32,12 +36,21 @@ export class CalendarPage {
     this.seasonTab = page.getByRole('tab');
     this.dayCell = page.locator(Selectors.EVENT_COMPONENT);
 
+    this.seasonGoalTriggerButton = page.getByRole('button', { name: 'Goals' });
+
     this.menuComponent = new MenuComponent(page);
-    this.drawerComponent = new DrawerComponent(page);
+    this.dayDrawerComponent = new DayDrawerComponent(page);
+    this.seasonDrawerComponent = new SeasonDrawerComponent(page);
     this.editCalendarDialog = new EditCalendarDialog(page);
     this.createCalendarDialog = new CreateCalendarDialog(page);
     this.selectCalendarDialog = new SelectCalendarDialog(page);
     this.deleteCalendarDialog = new DeleteCalendarDialog(page);
+  }
+
+  async openSeasonDrawer() {
+    await test.step('Open Season Goals Drawer', async () => {
+      await this.seasonGoalTriggerButton.click();
+    });
   }
 
   async verifySeasonIsSelected(season: Season) {
@@ -86,6 +99,13 @@ export class CalendarPage {
         .locator('div.event')
         .nth(0)
         .click();
+    });
+  }
+
+  async selectSeason(season: Season) {
+    await test.step('Select season', async () => {
+      const selectedSeasonTab = this.seasonTab.filter({ hasText: season });
+      await selectedSeasonTab.click();
     });
   }
 
@@ -179,14 +199,7 @@ export class CalendarPage {
     });
   }
 
-  async verifyDayFormDrawerIsOpenWithDate(day: number, season: Season) {
-    await test.step('Validate Day Form Drawer Is Open', async () => {
-      await this.selectDateForEvents(day, season);
-      await this.drawerComponent.verifyIsVisibleWithDate(day, season);
-    });
-  }
-
-  async verifyEventOnDayFormDrawer(
+  async verifyEventOnDayDrawer(
     day: number,
     season: Season,
     eventTitle: string,
@@ -194,7 +207,21 @@ export class CalendarPage {
   ) {
     await test.step('Verify day form drawer has event', async () => {
       await this.selectDateForEvents(day, season);
-      await this.drawerComponent.verifyEventOnDayFormDrawer(
+      await this.dayDrawerComponent.verifyEventOnDayFormDrawer(
+        eventTitle,
+        toBeVisible,
+      );
+    });
+  }
+
+  async verifyGoalOnSeasonDrawer(
+    season: Season,
+    eventTitle: string,
+    toBeVisible: boolean,
+  ) {
+    await test.step('Verify season form drawer has event', async () => {
+      await this.selectSeason(season);
+      await this.seasonDrawerComponent.verifyGoalOnSeasonDrawer(
         eventTitle,
         toBeVisible,
       );
@@ -204,7 +231,14 @@ export class CalendarPage {
   async deleteEvent(day: number, season: Season, eventTitle: string) {
     await test.step('Delete Event', async () => {
       await this.selectDateForEvents(day, season);
-      await this.drawerComponent.deleteEvent(eventTitle);
+      await this.dayDrawerComponent.deleteEvent(eventTitle);
+    });
+  }
+
+  async deleteGoal(season: Season, eventTitle: string) {
+    await test.step('Delete Goal', async () => {
+      await this.selectSeason(season);
+      await this.seasonDrawerComponent.deleteGoal(eventTitle);
     });
   }
 
@@ -253,7 +287,15 @@ export class CalendarPage {
   async createGameEvent(day: number, season: Season, eventForm: EventForm) {
     await test.step('Create Game Event', async () => {
       await this.selectDateForEvents(day, season);
-      await this.drawerComponent.createGameEvent(eventForm);
+      await this.dayDrawerComponent.createGameEvent(eventForm);
+    });
+  }
+
+  async createSeasonGoal(season: Season, eventForm: EventForm) {
+    await test.step('Create Goal', async () => {
+      await this.selectSeason(season);
+      await this.openSeasonDrawer();
+      await this.seasonDrawerComponent.createGoal(eventForm);
     });
   }
 
@@ -264,13 +306,35 @@ export class CalendarPage {
   ) {
     await test.step('Verify Event Details are Correctly Displayed in Edit Dialog', async () => {
       await this.selectDateForEvents(day, season);
-      await this.drawerComponent.verifyEventDetailsInEditDialog(eventForm);
+      await this.dayDrawerComponent.verifyEventDetailsInEditDialog(eventForm);
     });
   }
 
-  async verifyEventNameAndTagAreUnique(eventForm: EventForm) {
-    await test.step('Verify Even Name and Tag are Unique', async () => {
-      await this.drawerComponent.verifyEventNameAndTagAreUnique(eventForm);
+  async verifyGoalDetailsInEditDialog(season: Season, eventForm: EventForm) {
+    await test.step('Verify Goal Details are Correctly Displayed in Edit Dialog', async () => {
+      await this.selectSeason(season);
+      await this.openSeasonDrawer();
+      await this.seasonDrawerComponent.verifyGoalDetailsInEditDialog(eventForm);
+    });
+  }
+
+  async verifyFormNameAndTagAreUnique(
+    eventForm: EventForm,
+    drawer: 'day' | 'season',
+  ) {
+    await test.step('Verify Form Name and Tag are Unique', async () => {
+      if (drawer === 'day') {
+        await this.dayDrawerComponent.verifyEventNameAndTagAreUnique(eventForm);
+        return;
+      }
+      await this.openSeasonDrawer();
+      await this.seasonDrawerComponent.verifyGoalNameAndTagAreUnique(eventForm);
+    });
+  }
+
+  async verifyGoalNameAndTagAreUnique(eventForm: EventForm) {
+    await test.step('Verify Goal Name and Tag are Unique', async () => {
+      await this.dayDrawerComponent.verifyEventNameAndTagAreUnique(eventForm);
     });
   }
 

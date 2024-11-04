@@ -61,8 +61,8 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   setActiveEvent() {
-    this.store.dispatch(AppActions.updateActiveFormEvents(this.gameEvents));
+    this.store.dispatch(AppActions.updateActiveDayEvents(this.gameEvents));
     this.store.dispatch(AppActions.updateActiveDay(this.day));
-    this.store.dispatch(AppActions.toggleNavBar(true));
+    this.store.dispatch(AppActions.toggleEventNav(true));
   }
 }

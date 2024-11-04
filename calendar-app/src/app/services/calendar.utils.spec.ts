@@ -31,6 +31,25 @@ describe('CalendarUtils', () => {
       );
       expect(result).toEqual(expected);
     });
+
+    it('should return events for the correct season and year and day when passed', () => {
+      const mockSelectedSeason = Season.WINTER;
+      const mockSelectedYear = 3;
+      const mockSelectedDay = 12;
+      const mockActiveCalendar: Calendar = {
+        ...MOCK_CALENDARS[0],
+        filteredGameEvents: MOCK_GAME_EVENTS,
+      };
+      const expected: GameEvent[] = [MOCK_GAME_EVENTS[1]];
+
+      const result = CalendarUtils.getEventsForDate(
+        mockSelectedSeason,
+        mockSelectedYear,
+        mockActiveCalendar,
+        mockSelectedDay,
+      );
+      expect(result).toEqual(expected);
+    });
   });
 
   describe('getGameDateUnion', () => {

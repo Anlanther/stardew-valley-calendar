@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
-import { TAG_METADATA } from '../../constants/tag-metadata.constant';
-import { AppStore } from '../../models/app-store.model';
-import { CalendarState } from '../../models/calendar-state.model';
-import { EventState } from '../../models/event-state.model';
-import { GameEvent } from '../../models/game-event.model';
-import { Tag } from '../../models/tag.model';
-import { OrdinalSuffixPipe } from '../../pipes/ordinal-suffix.pipe';
-import { AppActions } from '../../state/app.actions';
-import { AppFeature } from '../../state/app.state';
+import { TAG_METADATA } from '../../../constants/tag-metadata.constant';
+import { AppStore } from '../../../models/app-store.model';
+import { CalendarState } from '../../../models/calendar-state.model';
+import { EventState } from '../../../models/event-state.model';
+import { GameEvent } from '../../../models/game-event.model';
+import { Tag } from '../../../models/tag.model';
+import { OrdinalSuffixPipe } from '../../../pipes/ordinal-suffix.pipe';
+import { AppActions } from '../../../state/app.actions';
+import { AppFeature } from '../../../state/app.state';
 
 @Component({
   selector: 'app-day-form',
@@ -29,7 +29,7 @@ export class DayFormComponent {
       select(AppFeature.selectActiveCalendar),
     );
     this.activeEvents$ = this.store.pipe(
-      select(AppFeature.selectActiveFormEvents),
+      select(AppFeature.selectActiveDayEvents),
     );
     this.selectedDate$ = this.store.pipe(
       select(AppFeature.selectSelectedDateString),
@@ -55,6 +55,6 @@ export class DayFormComponent {
   }
 
   closeSideNav() {
-    this.store.dispatch(AppActions.toggleNavBar(false));
+    this.store.dispatch(AppActions.toggleEventNav(false));
   }
 }
