@@ -74,19 +74,27 @@ export class CalendarUtils {
 
   static getLoadedCalendarName(name: string, availableCalendars: Calendar[]) {
     const duplicates = availableCalendars.filter((calendar) => {
-      const test = new RegExp(name, 'g').test(calendar.name);
-      return test;
+      const originalCopy = new RegExp(`^${name}$`, 'g').test(calendar.name);
+      const incrementCopy = new RegExp(`^${name}\\[`, 'g').test(calendar.name);
+      return originalCopy || incrementCopy;
     });
-    if (duplicates.length === 0) {
-      const newName = `${name}[1]`;
-      return newName;
+    const isUniqueName = duplicates.length === 0;
+    const hasSingleDuplicate = duplicates.length === 1;
+
+    console.log('duplicates', duplicates);
+    if (isUniqueName) {
+      return name;
     }
+    if (hasSingleDuplicate) {
+      return `${name}[1]`;
+    }
+
     const nonOriginalDuplicates = duplicates.filter((d) => /\d/.test(d.name));
     const duplicateIndicator = /\[(\d+)\]/;
-    const duplicateNumbers = nonOriginalDuplicates
+    const orderedDuplicateNumbers = nonOriginalDuplicates
       .map((d) => +d.name.match(duplicateIndicator)![1])
       .sort((a, b) => b - a);
-    const newName = `${name}[${duplicateNumbers[0] + 1}]`;
+    const newName = `${name}[${orderedDuplicateNumbers[0] + 1}]`;
     return newName;
   }
 }
