@@ -1,5 +1,6 @@
 import {
   Component,
+  ElementRef,
   inject,
   OnDestroy,
   Renderer2,
@@ -29,6 +30,7 @@ export class MainComponent implements OnDestroy {
 
   @ViewChild('eventNav') eventNav!: MatSidenav;
   @ViewChild('seasonNav') seasonNav!: MatSidenav;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor() {
     this.navTitle$ = this.store.select(AppFeature.selectNavTitle);
@@ -123,6 +125,7 @@ export class MainComponent implements OnDestroy {
         this.store.dispatch(
           AppActions.createUploadedCalendar(uploadedCalendar),
         );
+        this.fileInput.nativeElement.value = null;
       }
     };
     fileReader.readAsText(file);

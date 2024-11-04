@@ -43,11 +43,18 @@ export const appReducer = createReducer<AppState>(
       action.calendar.systemConfig.includeFestivals,
       [...state.savedSystemEvents, ...action.calendar.gameEvents],
     );
+    const activeSeasonGoals = CalendarUtils.getEventsForDate(
+      initialState.selectedDate.season,
+      initialState.selectedDate.year,
+      action.calendar,
+      0,
+    );
 
     return {
       ...state,
       activeCalendar: { ...action.calendar, filteredGameEvents },
       availableCalendars: [...state.availableCalendars, action.calendar],
+      activeSeasonGoals,
       selectedDate: initialState.selectedDate,
       eventNavOpen: false,
       seasonNavOpen: false,

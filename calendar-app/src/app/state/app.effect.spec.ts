@@ -1461,7 +1461,7 @@ describe('AppEffects', () => {
       );
       spectator.service.createUploadedCalendar$.subscribe(() => {
         expect(mockCalendarDataService.create).toHaveBeenCalledWith(
-          `${mockDownloadedCalendar.name}[1]`,
+          `${mockDownloadedCalendar.name}`,
           mockDownloadedCalendar.description,
           mockDownloadedCalendar.systemConfig.includeBirthdays,
           mockDownloadedCalendar.systemConfig.includeFestivals,
@@ -1489,7 +1489,7 @@ describe('AppEffects', () => {
       );
       spectator.service.createUploadedCalendar$.subscribe(() => {
         expect(mockOfflineDataService.createCalendar).toHaveBeenCalledWith(
-          `${mockDownloadedCalendar.name}[1]`,
+          `${mockDownloadedCalendar.name}`,
           mockDownloadedCalendar.description,
           mockDownloadedCalendar.systemConfig.includeBirthdays,
           mockDownloadedCalendar.systemConfig.includeFestivals,

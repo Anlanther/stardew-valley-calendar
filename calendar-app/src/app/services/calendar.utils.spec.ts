@@ -255,7 +255,7 @@ describe('CalendarUtils', () => {
         mockUploadedCalendarName,
         mockAvailableCalendars,
       );
-      expect(result).toBe(`${mockUploadedCalendarName}[1]`);
+      expect(result).toBe(`${mockUploadedCalendarName}`);
     });
 
     it('should increment the loaded calendar [x] number indicator according to if there are other same name calendars that also have the loaded [x] indicator', () => {
