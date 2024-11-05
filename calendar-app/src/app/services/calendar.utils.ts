@@ -22,7 +22,7 @@ export class CalendarUtils {
         ? true
         : event.gameDate.year === year;
       const isCorrectDay = day === undefined || event.gameDate.day === day;
-      debugger;
+
       if (isCorrectSeason && isCorrectYear && isCorrectDay) {
         normalCondition = true;
       }
