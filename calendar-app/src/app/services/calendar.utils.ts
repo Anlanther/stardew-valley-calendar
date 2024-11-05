@@ -21,8 +21,8 @@ export class CalendarUtils {
       const isCorrectYear = event.gameDate.isRecurring
         ? true
         : event.gameDate.year === year;
-      const isCorrectDay = day ? event.gameDate.day === day : true;
-
+      const isCorrectDay = day === undefined || event.gameDate.day === day;
+      debugger;
       if (isCorrectSeason && isCorrectYear && isCorrectDay) {
         normalCondition = true;
       }
