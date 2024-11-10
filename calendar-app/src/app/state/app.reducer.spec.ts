@@ -208,7 +208,7 @@ describe('AppReducer', () => {
   });
   describe(AppActions.aPIFailed.type, () => {
     it('should update the state', () => {
-      const action = AppActions.aPIFailed();
+      const action = AppActions.aPIFailed(true);
 
       const actual = appReducer(state, action);
 

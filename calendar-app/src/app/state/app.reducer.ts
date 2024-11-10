@@ -325,9 +325,9 @@ export const appReducer = createReducer<AppState>(
       seasonNavOpen: false,
     };
   }),
-  on(AppActions.aPIFailed, (state) => ({
+  on(AppActions.aPIFailed, (state, action) => ({
     ...state,
-    apiFailed: true,
+    apiFailed: action.failed,
   })),
   on(AppActions.setOfflineMode, (state) => ({
     ...state,
