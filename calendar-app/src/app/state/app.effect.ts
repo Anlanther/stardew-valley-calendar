@@ -53,11 +53,16 @@ export class AppEffects {
         (offlineMode
           ? this.offlineDataService.getAllCalendars()
           : this.calendarDataService.getAll()
-        ).pipe(map((calendars) => AppActions.getCalendarsSuccess(calendars))),
+        ).pipe(
+          switchMap((calendars) => [
+            AppActions.getCalendarsSuccess(calendars),
+            AppActions.aPIFailed(false),
+          ]),
+          catchError(() => {
+            return of(AppActions.aPIFailed(true));
+          }),
+        ),
       ),
-      catchError(() => {
-        return of(AppActions.aPIFailed());
-      }),
     ),
   );
 
@@ -140,9 +145,13 @@ export class AppEffects {
           ? this.offlineDataService.getOrCreateEventDefaults()
           : this.gameEventDataService.getOrCreateDefaults()
         ).pipe(
-          map((gameEvents) =>
+          switchMap((gameEvents) => [
             AppActions.createDefaultGameEventsSuccess(gameEvents),
-          ),
+            AppActions.aPIFailed(false),
+          ]),
+          catchError(() => {
+            return of(AppActions.aPIFailed(true));
+          }),
         ),
       ),
     ),

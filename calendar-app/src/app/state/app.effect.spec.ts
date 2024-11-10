@@ -114,8 +114,9 @@ describe('AppEffects', () => {
       );
     });
     it('should call on getCalendarsSuccess with a list of calendars obtained from calendar data service', () => {
-      const expected = cold('-a', {
+      const expected = cold('-(ab)', {
         a: AppActions.getCalendarsSuccess(mockCalendarsResponseFromApi),
+        b: AppActions.aPIFailed(false),
       });
 
       expect(spectator.service.getAllCalendars$).toBeObservable(expected);
@@ -128,8 +129,9 @@ describe('AppEffects', () => {
     it('should call on getCalendarsSuccess with a list of calendars obtained from offline data service when the app is on offline mode', () => {
       mockStore.overrideSelector(AppFeature.selectOfflineMode, true);
 
-      const expected = cold('-a', {
+      const expected = cold('-(ab)', {
         a: AppActions.getCalendarsSuccess(mockCalendarsResponseFromApi),
+        b: AppActions.aPIFailed(false),
       });
 
       expect(spectator.service.getAllCalendars$).toBeObservable(expected);
@@ -144,8 +146,8 @@ describe('AppEffects', () => {
         throwError(() => mockError),
       );
       mockActions$ = hot('-a', { a: AppActions.getCalendars() });
-      const expected = cold('-(a|)', {
-        a: AppActions.aPIFailed(),
+      const expected = cold('-a', {
+        a: AppActions.aPIFailed(true),
       });
 
       expect(spectator.service.getAllCalendars$).toBeObservable(expected);
@@ -266,6 +268,7 @@ describe('AppEffects', () => {
 
   describe('getOrCreateSystemEvents$', () => {
     const mockGameEventResponseFromApi: GameEvent[] = MOCK_GAME_EVENTS;
+    const mockError = { message: 'Error' };
 
     beforeEach(() => {
       mockStore.overrideSelector(AppFeature.selectOfflineMode, false);
@@ -282,10 +285,11 @@ describe('AppEffects', () => {
       mockGameEventDataService.getOrCreateDefaults.mockReturnValue(
         of(mockGameEventResponseFromApi),
       );
-      const expected = cold('-a', {
+      const expected = cold('-(ab)', {
         a: AppActions.createDefaultGameEventsSuccess(
           mockGameEventResponseFromApi,
         ),
+        b: AppActions.aPIFailed(false),
       });
 
       mockActions$ = hot('-a', { a: AppActions.createDefaultGameEvents() });
@@ -298,10 +302,11 @@ describe('AppEffects', () => {
       });
     });
     it('should trigger gameEventDataService to get or create default game events when updatedSystemEventsSuccess is called', () => {
-      const expected = cold('-a', {
+      const expected = cold('-(ab)', {
         a: AppActions.createDefaultGameEventsSuccess(
           mockGameEventResponseFromApi,
         ),
+        b: AppActions.aPIFailed(false),
       });
 
       mockActions$ = hot('-a', { a: AppActions.updatedSystemEventsSuccess() });
@@ -316,10 +321,11 @@ describe('AppEffects', () => {
     it('should trigger offlineDataService to get or create default game events when updatedSystemEventsSuccess is called and app is set to offline mode', () => {
       mockStore.overrideSelector(AppFeature.selectOfflineMode, true);
 
-      const expected = cold('-a', {
+      const expected = cold('-(ab)', {
         a: AppActions.createDefaultGameEventsSuccess(
           mockGameEventResponseFromApi,
         ),
+        b: AppActions.aPIFailed(false),
       });
 
       mockActions$ = hot('-a', { a: AppActions.updatedSystemEventsSuccess() });
@@ -337,10 +343,11 @@ describe('AppEffects', () => {
     it('should trigger offlineDataService API to get or create default game events when createDefaultGameEvents is called and app is set to offline mode', () => {
       mockStore.overrideSelector(AppFeature.selectOfflineMode, true);
 
-      const expected = cold('-a', {
+      const expected = cold('-(ab)', {
         a: AppActions.createDefaultGameEventsSuccess(
           mockGameEventResponseFromApi,
         ),
+        b: AppActions.aPIFailed(false),
       });
 
       mockActions$ = hot('-a', { a: AppActions.createDefaultGameEvents() });
@@ -353,6 +360,20 @@ describe('AppEffects', () => {
           mockOfflineDataService.getOrCreateEventDefaults,
         ).toHaveBeenCalled();
       });
+    });
+
+    it('should trigger aPIFailed action when game event data service fails to return a list of game events', () => {
+      mockGameEventDataService.getOrCreateDefaults.mockReturnValue(
+        throwError(() => mockError),
+      );
+      mockActions$ = hot('-a', { a: AppActions.createDefaultGameEvents() });
+      const expected = cold('-a', {
+        a: AppActions.aPIFailed(true),
+      });
+
+      expect(spectator.service.getOrCreateSystemEvents$).toBeObservable(
+        expected,
+      );
     });
   });
 

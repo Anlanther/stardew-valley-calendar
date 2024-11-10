@@ -76,7 +76,7 @@ export const AppActions = createActionGroup({
       calendar,
       gameEvent,
     }),
-    'API Failed': emptyProps(),
+    'API Failed': (failed: boolean) => ({ failed }),
     'Toggle Event Nav': (isOpen: boolean) => ({ isOpen }),
     'Toggle Season Nav': (isOpen: boolean) => ({ isOpen }),
     Initialise: emptyProps(),
