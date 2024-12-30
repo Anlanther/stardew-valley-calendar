@@ -5,6 +5,11 @@ import { GameEvent } from '../../models/game-event.model';
 import { CalendarUtils } from '../calendar.utils';
 import { DataService } from '../data.service';
 import { Calendar_Data } from '../models/calendar';
+import { CalendarArray } from '../models/calendar/calendar-array.model';
+import { CalendarCreate } from '../models/calendar/calendar-create.model';
+import { CalendarDelete } from '../models/calendar/calendar-delete.model';
+import { CalendarSingle } from '../models/calendar/calendar-single.model';
+import { CalendarUpdate } from '../models/calendar/calendar-update.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +33,7 @@ export class CalendarDataService {
     };
 
     return this.dataService
-      .graphql(this.createQuery(), variables)
+      .graphql<CalendarCreate>(this.createQuery(), variables)
       .pipe(
         map((response) => this.convertToCalendar(response.createCalendar.data)),
       );
@@ -36,7 +41,7 @@ export class CalendarDataService {
 
   get(id: string): Observable<Calendar> {
     return this.dataService
-      .graphql(this.getOneQuery(), { id })
+      .graphql<CalendarSingle>(this.getOneQuery(), { id })
       .pipe(map((response) => this.convertToCalendar(response.calendar.data)));
   }
 
@@ -44,14 +49,15 @@ export class CalendarDataService {
     const queryName = 'getAllCalendars';
     const settings = `(pagination: { limit: -1 })`;
 
-    return this.dataService.graphql(this.getQuery(queryName, settings)).pipe(
-      map((response) => {
-        return response.calendars.data.map((calendar: Calendar_Data) => ({
-          id: calendar.id,
-          name: calendar.attributes.name,
-        }));
-      }),
-    );
+    return this.dataService
+      .graphql<CalendarArray>(this.getQuery(queryName, settings))
+      .pipe(
+        map((response) => {
+          return response.calendars.data.map((calendar: Calendar_Data) =>
+            this.convertToCalendar(calendar),
+          );
+        }),
+      );
   }
 
   updateDetails(calendar: Partial<Calendar>): Observable<Calendar> {
@@ -62,7 +68,7 @@ export class CalendarDataService {
       systemConfig: calendar.systemConfig,
     };
     return this.dataService
-      .graphql(this.updateDetailsQuery(), variables)
+      .graphql<CalendarUpdate>(this.updateDetailsQuery(), variables)
       .pipe(
         map((response) => this.convertToCalendar(response.updateCalendar.data)),
       );
@@ -74,7 +80,7 @@ export class CalendarDataService {
       gameEvents: calendar.gameEvents?.map((event) => event.id),
     };
     return this.dataService
-      .graphql(this.updateEventsQuery(), variables)
+      .graphql<CalendarUpdate>(this.updateEventsQuery(), variables)
       .pipe(
         map((response) => this.convertToCalendar(response.updateCalendar.data)),
       );
@@ -82,7 +88,7 @@ export class CalendarDataService {
 
   delete(id: string): Observable<string> {
     return this.dataService
-      .graphql(this.deleteQuery(), { id })
+      .graphql<CalendarDelete>(this.deleteQuery(), { id })
       .pipe(map((response) => response.deleteCalendar.data.id));
   }
 

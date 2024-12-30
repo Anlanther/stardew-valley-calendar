@@ -8,12 +8,16 @@ import { GameEvent, UnsavedGameEvent } from '../../models/game-event.model';
 import { CalendarUtils } from '../calendar.utils';
 import { DataService } from '../data.service';
 import { GameEvent_Data, GameEvent_Plain, Type } from '../models/game-event';
+import { GameEventArray } from '../models/game-event/game-event-array.model';
+import { GameEventCreate } from '../models/game-event/game-event-create.model';
+import { GameEventDelete } from '../models/game-event/game-event-delete.model';
+import { GameEventUpdate } from '../models/game-event/game-event-update.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameEventDataService {
-  private dataService = inject(DataService);
+  dataService = inject(DataService);
 
   getOrCreateDefaults(): Observable<GameEvent[]> {
     return this.getSystem().pipe(
@@ -23,7 +27,7 @@ export class GameEventDataService {
             [...BIRTHDAY_EVENTS, ...FESTIVAL_EVENTS, ...CROPS_DEADLINES].map(
               (event) => this.create(event, event.type),
             ),
-          ).pipe(map((createdEvent) => createdEvent));
+          );
           return createdSystemEvents;
         }
         return of(systemEvents);
@@ -42,23 +46,28 @@ export class GameEventDataService {
       type,
     };
 
-    return this.dataService.graphql(this.createQuery(), variables).pipe(
-      map((response) => {
-        return {
-          ...response.createGameEvent.data.attributes,
-          id: response.createGameEvent.data.id,
-        };
-      }),
-    );
+    return this.dataService
+      .graphql<GameEventCreate>(this.createQuery(), variables)
+      .pipe(
+        map((response) => {
+          return {
+            ...response.createGameEvent.data.attributes,
+            gameDate: CalendarUtils.getGameDateUnion(
+              response.createGameEvent.data.attributes.gameDate,
+            ),
+            publishedAt:
+              response.createGameEvent.data.attributes.publishedAt ?? '',
+            id: response.createGameEvent.data.id,
+          };
+        }),
+      );
   }
 
   createMultiple(gameEvents: UnsavedGameEvent[]): Observable<GameEvent[]> {
     if (gameEvents.length === 0) {
       return of([]);
     }
-    return forkJoin(gameEvents.map((gameEvent) => this.create(gameEvent))).pipe(
-      map((gameEvents) => gameEvents),
-    );
+    return forkJoin(gameEvents.map((gameEvent) => this.create(gameEvent)));
   }
 
   update(gameEvent: GameEvent): Observable<GameEvent> {
@@ -74,7 +83,7 @@ export class GameEventDataService {
     };
 
     return this.dataService
-      .graphql(this.updateQuery(), variables)
+      .graphql<GameEventUpdate>(this.updateQuery(), variables)
       .pipe(
         map((response) =>
           this.convertToGameEvent(response.updateGameEvent.data),
@@ -86,22 +95,20 @@ export class GameEventDataService {
     if (ids.length === 0) {
       return of([]);
     }
-    return forkJoin(ids.map((id) => this.delete(id))).pipe(
-      map((deletedIds) => deletedIds),
-    );
+    return forkJoin(ids.map((id) => this.delete(id)));
   }
 
   delete(id: string): Observable<string> {
     const variables: DeepPartial<GameEvent> = { id };
 
     return this.dataService
-      .graphql(this.deleteQuery(), variables)
+      .graphql<GameEventDelete>(this.deleteQuery(), variables)
       .pipe(map((response) => response.deleteGameEvent.data.id));
   }
 
   getSystem(): Observable<GameEvent[]> {
     return this.dataService
-      .graphql(this.getSystemQuery(), { type: 'system' })
+      .graphql<GameEventArray>(this.getSystemQuery(), { type: 'system' })
       .pipe(
         map((response) =>
           response.gameEvents.data.map((event: GameEvent_Data) =>
@@ -145,11 +152,10 @@ export class GameEventDataService {
           }
           return prev;
         }, []);
-
         return { savedEvents, updatedEvents };
       }),
       switchMap(({ savedEvents, updatedEvents }) =>
-        this.updateSystemDetails(updatedEvents).pipe(
+        this.updateMany(updatedEvents).pipe(
           concatMap(() => this.deleteSystemEvents(savedEvents)),
           concatMap(() => this.createSystemEvents(savedEvents)),
         ),
@@ -157,15 +163,11 @@ export class GameEventDataService {
     );
   }
 
-  private updateSystemDetails(gameEvents: GameEvent[]) {
-    return forkJoin(
-      gameEvents.map((event) =>
-        this.update(event).pipe(map((gameEvents) => gameEvents)),
-      ),
-    );
+  updateMany(gameEvents: GameEvent[]) {
+    return forkJoin(gameEvents.map((event) => this.update(event)));
   }
 
-  private deleteSystemEvents(gameEvents: GameEvent[]) {
+  deleteSystemEvents(gameEvents: GameEvent[]) {
     const eventsDeleted = gameEvents.filter(
       (event) =>
         ![...BIRTHDAY_EVENTS, ...FESTIVAL_EVENTS, ...CROPS_DEADLINES].some(
@@ -177,14 +179,10 @@ export class GameEventDataService {
     if (eventsDeleted.length === 0) {
       return of([]);
     }
-    return forkJoin(
-      eventsDeleted.map((event) =>
-        this.delete(event.id).pipe(map((deletedIds) => deletedIds)),
-      ),
-    );
+    return forkJoin(eventsDeleted.map((event) => this.delete(event.id)));
   }
 
-  private createSystemEvents(gameEvents: GameEvent[]) {
+  createSystemEvents(gameEvents: GameEvent[]) {
     const eventsCreated = [
       ...BIRTHDAY_EVENTS,
       ...FESTIVAL_EVENTS,
@@ -200,14 +198,10 @@ export class GameEventDataService {
       return of([]);
     }
 
-    return forkJoin(
-      eventsCreated.map((event) =>
-        this.create(event).pipe(map((deletedIds) => deletedIds)),
-      ),
-    );
+    return forkJoin(eventsCreated.map((event) => this.create(event)));
   }
 
-  private getSystemQuery() {
+  getSystemQuery() {
     const getAll = -1;
     return `
     query getGameSystemEvents($type: String) {
@@ -221,7 +215,7 @@ export class GameEventDataService {
     `;
   }
 
-  private updateQuery() {
+  updateQuery() {
     return `
     mutation updateGameEvent($id: ID!, $gameEvent: GameEventInput!) {
       updateGameEvent(id: $id, data: $gameEvent) {
@@ -231,7 +225,7 @@ export class GameEventDataService {
 `;
   }
 
-  private createQuery() {
+  createQuery() {
     return ` 
     mutation createGameEvent(
       $title: String
@@ -257,7 +251,7 @@ export class GameEventDataService {
 `;
   }
 
-  private deleteQuery() {
+  deleteQuery() {
     return `
     mutation deleteGameEvent($id: ID!) {
       deleteGameEvent(id: $id) {
@@ -269,7 +263,7 @@ export class GameEventDataService {
 `;
   }
 
-  private baseDataQuery() {
+  baseDataQuery() {
     return `
       data {
         id
@@ -288,9 +282,4 @@ export class GameEventDataService {
         }
       }`;
   }
-}
-function concatLatestFrom(
-  arg0: () => any,
-): import('rxjs').OperatorFunction<GameEvent[], unknown> {
-  throw new Error('Function not implemented.');
 }
