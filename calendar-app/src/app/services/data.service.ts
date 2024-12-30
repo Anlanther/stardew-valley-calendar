@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { KEYS } from '../constants/keys.constant';
 
 @Injectable({
@@ -16,7 +16,10 @@ export class DataService {
     this.apiKey = token;
   }
 
-  graphql(query: string, variables?: { [key: string]: any }) {
+  graphql<Response>(
+    query: string,
+    variables?: { [key: string]: any },
+  ): Observable<Response> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.apiKey}`,
