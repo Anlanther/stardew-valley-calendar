@@ -15,7 +15,7 @@ import { CalendarUpdate } from '../models/calendar/calendar-update.model';
   providedIn: 'root',
 })
 export class CalendarDataService {
-  private dataService = inject(DataService);
+  dataService = inject(DataService);
 
   create(
     name: string,
@@ -124,7 +124,7 @@ export class CalendarDataService {
     return calendar;
   }
 
-  private updateDetailsQuery() {
+  updateDetailsQuery() {
     return `
       mutation updateCalendarDetails(
         $id: ID!
@@ -145,7 +145,7 @@ export class CalendarDataService {
     }`;
   }
 
-  private updateEventsQuery() {
+  updateEventsQuery() {
     return `
     mutation updateCalendarEvents($id: ID!, $gameEvents: [ID]) {
       updateCalendar(id: $id, data: { gameEvents: $gameEvents }) {
@@ -154,7 +154,7 @@ export class CalendarDataService {
     }`;
   }
 
-  private getOneQuery() {
+  getOneQuery() {
     return `
     query getCalendar($id: ID) {
       calendar(id: $id) {
@@ -164,7 +164,7 @@ export class CalendarDataService {
 `;
   }
 
-  private getQuery(queryName: string, settings?: string) {
+  getQuery(queryName: string, settings?: string) {
     return `
     query ${queryName} {
       calendars ${settings ?? ''} {
@@ -179,7 +179,7 @@ export class CalendarDataService {
 `;
   }
 
-  private createQuery() {
+  createQuery() {
     return ` 
     mutation createCalendar(
       $name: String
@@ -203,7 +203,7 @@ export class CalendarDataService {
 `;
   }
 
-  private deleteQuery() {
+  deleteQuery() {
     return `
     mutation deleteCalendar($id: ID!) {
       deleteCalendar(id: $id) {
@@ -215,7 +215,7 @@ export class CalendarDataService {
     `;
   }
 
-  private baseDataQuery() {
+  baseDataQuery() {
     const getAll = -1;
     return `
     data {
