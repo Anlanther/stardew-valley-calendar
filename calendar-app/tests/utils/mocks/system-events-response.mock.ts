@@ -1,6 +1,6 @@
+import { Tag } from '../../../src/app/constants/tag.constant';
 import { DeepPartial } from '../../../src/app/models/deep-partial.model';
 import { Season } from '../../../src/app/models/season.model';
-import { Tag } from '../../../src/app/models/tag.model';
 import {
   GameEvent_Data,
   Type,

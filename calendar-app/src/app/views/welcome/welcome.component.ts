@@ -18,4 +18,8 @@ export class WelcomeComponent {
   setToken() {
     this.store.dispatch(AppActions.setToken());
   }
+
+  disableSamples() {
+    this.store.dispatch(AppActions.disableSamples());
+  }
 }

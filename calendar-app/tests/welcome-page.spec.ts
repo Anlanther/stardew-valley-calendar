@@ -22,7 +22,7 @@ test('Offline Mode button activates page to create calendars', async ({
   await welcomePage.verifyNoExistingCalendarsMessage();
 });
 
-test('Page message ith existing calendars available and system events loaded', async ({
+test('Page message with existing calendars available and system events loaded', async ({
   welcomePage,
 }) => {
   await loadExistingCalendarsAndSystemEvents(

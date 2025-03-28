@@ -17,6 +17,10 @@ jobs:
         with:
           node-version: 20
 
+      - name: Convert Sample Calendar to JSON
+        working-directory: calendar-app
+        run: npm run convert-samples
+
       - name: Build Angular app to prod
         working-directory: calendar-app
         run: npm install && npm run build:prod

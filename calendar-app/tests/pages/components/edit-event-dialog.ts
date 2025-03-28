@@ -1,6 +1,6 @@
 import { Locator, Page, expect, test } from '@playwright/test';
 import { Tag } from 'storybook/internal/types';
-import { TagCategory } from '../../../src/app/models/tag-category.model';
+import { TagCategory } from '../../../src/app/constants/tag-category.constant';
 import { EventForm } from '../../models/event-form.model';
 import { DISPLAYED_CATEGORY } from '../../models/tag-category.model';
 

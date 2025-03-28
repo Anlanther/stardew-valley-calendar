@@ -1,5 +1,5 @@
-import { TagCategory } from '../../src/app/models/tag-category.model';
-import { Tag } from '../../src/app/models/tag.model';
+import { TagCategory } from '../../src/app/constants/tag-category.constant';
+import { Tag } from '../../src/app/constants/tag.constant';
 
 export interface EventForm {
   title: string;

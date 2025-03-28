@@ -3,6 +3,7 @@ import { CalendarForm } from '../models/calendar-form.model';
 import { URL } from '../models/url.model';
 import { MOCK_CALENDAR_FORM } from '../utils/mocks/calendar-form';
 import { CreateCalendarDialog } from './components/create-calendar-dialog';
+import { DevMenuComponent } from './components/dev-menu';
 import { SelectCalendarDialog } from './components/select-calendar-dialog';
 
 export class WelcomePage {
@@ -16,6 +17,7 @@ export class WelcomePage {
   private readonly offlineModeButton: Locator;
   private readonly loadCalendarButton: Locator;
 
+  private readonly devMenu: DevMenuComponent;
   private readonly createCalendarDialog: CreateCalendarDialog;
   private readonly selectCalendarDialog: SelectCalendarDialog;
 
@@ -39,6 +41,7 @@ export class WelcomePage {
       name: 'Load Calendar',
     });
 
+    this.devMenu = new DevMenuComponent(page);
     this.createCalendarDialog = new CreateCalendarDialog(page);
     this.selectCalendarDialog = new SelectCalendarDialog(page);
   }
@@ -46,6 +49,7 @@ export class WelcomePage {
   async open() {
     await test.step('Open Welcome Page', async () => {
       await this.page.goto(URL.LOCAL_APP);
+      await this.devMenu.selectDisableSamples();
     });
   }
 
@@ -54,6 +58,7 @@ export class WelcomePage {
       await this.page.goto(URL.LOCAL_APP);
       const offlineModeButtonIsVisible =
         await this.offlineModeButton.isVisible();
+      await this.devMenu.selectDisableSamples();
 
       if (offlineModeButtonIsVisible) {
         await this.offlineModeButton.click();

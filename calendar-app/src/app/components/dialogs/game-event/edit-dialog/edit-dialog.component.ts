@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TagCategory } from '../../../../constants/tag-category.constant';
 import { TAG_METADATA } from '../../../../constants/tag-metadata.constant';
+import { Tag } from '../../../../constants/tag.constant';
 import { GameDate } from '../../../../models/game-date.model';
 import { GameEvent } from '../../../../models/game-event.model';
-import { TagCategory } from '../../../../models/tag-category.model';
-import { Tag } from '../../../../models/tag.model';
 import { uniqueTitleTagValidator } from '../../../../services/form-validators.utils';
 
 @Component({

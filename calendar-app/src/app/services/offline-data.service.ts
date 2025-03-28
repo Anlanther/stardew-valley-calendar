@@ -3,17 +3,20 @@ import { Observable, of } from 'rxjs';
 import { BIRTHDAY_EVENTS } from '../constants/birthday-events.constant';
 import { CROPS_DEADLINES } from '../constants/crops-deadline.constant';
 import { FESTIVAL_EVENTS } from '../constants/festival-events.constant';
+import sampleCalendars from '../constants/sampleCalendars.json';
+import { Tag } from '../constants/tag.constant';
+import { Type } from '../constants/type.constant';
 import { Calendar } from '../models/calendar.model';
 import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
-import { Type } from '../models/type.model';
+import { Season } from '../models/season.model';
 import { CalendarUtils } from './calendar.utils';
-
 @Injectable({
   providedIn: 'root',
 })
 export class OfflineDataService {
-  getAllCalendars(): Observable<Calendar[]> {
-    return of([]);
+  getAllCalendars(enableSamples: boolean): Observable<Calendar[]> {
+    const convertedCalendars: Calendar[] = this.getSampleCalendars();
+    return of(enableSamples ? [...convertedCalendars] : []);
   }
 
   getCalendar(
@@ -149,5 +152,36 @@ export class OfflineDataService {
 
   deleteCalendar(id: string): Observable<string> {
     return of(id);
+  }
+
+  private getSampleCalendars(): Calendar[] {
+    return sampleCalendars.map((calendar) => {
+      const gameEvents: GameEvent[] = calendar.gameEvents.map((event) => ({
+        ...event,
+        id: crypto.randomUUID(),
+        gameDate: {
+          ...event.gameDate,
+          id: crypto.randomUUID(),
+          season: event.gameDate.season as Season,
+        },
+        publishedAt: '',
+        tag: event.tag as Tag,
+        type: event.type as Type,
+      }));
+
+      const convertedCalendar: Calendar = {
+        ...calendar,
+        id: crypto.randomUUID(),
+        publishedAt: '',
+        filteredGameEvents: CalendarUtils.getFilteredSystemEvents(
+          calendar.systemConfig.includeBirthdays,
+          calendar.systemConfig.includeCrops,
+          calendar.systemConfig.includeFestivals,
+          gameEvents,
+        ),
+        gameEvents,
+      };
+      return convertedCalendar;
+    });
   }
 }

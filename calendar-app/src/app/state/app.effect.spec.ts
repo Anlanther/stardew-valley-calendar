@@ -18,14 +18,14 @@ import { DeleteDialogComponent } from '../components/dialogs/delete/delete-dialo
 import { CreateEventDialogComponent } from '../components/dialogs/game-event/create-dialog/create-dialog.component';
 import { EditEventDialogComponent } from '../components/dialogs/game-event/edit-dialog/edit-dialog.component';
 import { TokenDialogComponent } from '../components/dialogs/token/token-dialog.component';
+import { Tag } from '../constants/tag.constant';
+import { Type } from '../constants/type.constant';
 import { AppStore } from '../models/app-store.model';
 import { Calendar } from '../models/calendar.model';
 import { DownloadedCalendar } from '../models/downloaded-calendar.model';
 import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { SelectedDate } from '../models/selected-date.model';
-import { Tag } from '../models/tag.model';
-import { Type } from '../models/type.model';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
 import { DataService } from '../services/data.service';
 import { GameEventDataService } from '../services/game-event/game-event-data.service';
@@ -105,6 +105,7 @@ describe('AppEffects', () => {
 
     beforeEach(() => {
       mockStore.overrideSelector(AppFeature.selectOfflineMode, false);
+      mockStore.overrideSelector(AppFeature.selectEnableSamples, false);
 
       mockCalendarDataService.getAll.mockReturnValue(
         of(mockCalendarsResponseFromApi),
@@ -121,7 +122,7 @@ describe('AppEffects', () => {
 
       expect(spectator.service.getAllCalendars$).toBeObservable(expected);
       spectator.service.getAllCalendars$.subscribe(() => {
-        expect(mockCalendarDataService.getAll).toHaveBeenCalled();
+        expect(mockCalendarDataService.getAll).toHaveBeenCalledWith(false);
       });
 
       mockActions$ = hot('-a', { a: AppActions.getCalendars() });

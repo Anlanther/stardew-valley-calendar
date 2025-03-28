@@ -1,7 +1,7 @@
 import { UnsavedGameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
-import { Tag } from '../models/tag.model';
-import { Type } from '../models/type.model';
+import { Tag } from './tag.constant';
+import { Type } from './type.constant';
 
 export const FESTIVAL_EVENTS: UnsavedGameEvent[] = [
   {

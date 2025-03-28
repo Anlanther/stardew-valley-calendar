@@ -1,6 +1,6 @@
-import { TagCategory } from '../models/tag-category.model';
 import { TagMetadata } from '../models/tag-metadata.model';
-import { Tag } from '../models/tag.model';
+import { TagCategory } from './tag-category.constant';
+import { Tag } from './tag.constant';
 
 export const TAG_METADATA: Map<Tag, TagMetadata> = new Map([
   [

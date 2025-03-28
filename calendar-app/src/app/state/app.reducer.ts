@@ -19,6 +19,7 @@ export interface AppState {
   eventNavOpen: boolean;
   seasonNavOpen: boolean;
   offlineMode: boolean;
+  enableSamples: boolean;
 }
 
 export const initialState: AppState = {
@@ -32,6 +33,7 @@ export const initialState: AppState = {
   eventNavOpen: false,
   seasonNavOpen: false,
   offlineMode: false,
+  enableSamples: true,
 };
 
 export const appReducer = createReducer<AppState>(
@@ -349,4 +351,8 @@ export const appReducer = createReducer<AppState>(
       activeSeasonGoals: filteredSeasonGoals,
     };
   }),
+  on(AppActions.disableSamples, (state) => ({
+    ...state,
+    enableSamples: false,
+  })),
 );

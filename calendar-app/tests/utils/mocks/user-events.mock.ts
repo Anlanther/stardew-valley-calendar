@@ -1,6 +1,6 @@
+import { Tag } from '../../../src/app/constants/tag.constant';
+import { Type } from '../../../src/app/constants/type.constant';
 import { Season } from '../../../src/app/models/season.model';
-import { Tag } from '../../../src/app/models/tag.model';
-import { Type } from '../../../src/app/models/type.model';
 
 export const MOCK_USER_EVENTS = [
   {

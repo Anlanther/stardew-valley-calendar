@@ -1,6 +1,6 @@
+import { Tag } from '../constants/tag.constant';
+import { Type } from '../constants/type.constant';
 import { GameDate, UnsavedGameDate } from './game-date.model';
-import { Tag } from './tag.model';
-import { Type } from './type.model';
 
 export interface GameEvent {
   id: string;

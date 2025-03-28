@@ -1,11 +1,11 @@
 import { MOCK_CALENDARS } from '../../../tests/utils/mocks/calendars.mock';
 import { MOCK_GAME_EVENTS } from '../../../tests/utils/mocks/game-events.mock';
+import { Tag } from '../constants/tag.constant';
+import { Type } from '../constants/type.constant';
 import { Calendar } from '../models/calendar.model';
 import { GameDate } from '../models/game-date.model';
 import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
-import { Tag } from '../models/tag.model';
-import { Type } from '../models/type.model';
 import { CalendarUtils } from './calendar.utils';
 import { GameDateComponent } from './models/GameDateComponent';
 

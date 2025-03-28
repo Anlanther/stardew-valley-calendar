@@ -1,10 +1,10 @@
 import { MOCK_CALENDARS } from '../../../tests/utils/mocks/calendars.mock';
 import { MOCK_GAME_EVENTS } from '../../../tests/utils/mocks/game-events.mock';
+import { StatusMessage } from '../constants/status-message.constant';
 import { Calendar } from '../models/calendar.model';
 import { GameEvent } from '../models/game-event.model';
 import { Season } from '../models/season.model';
 import { SelectedDate } from '../models/selected-date.model';
-import { StatusMessage } from '../models/status-message.model';
 import { AppFeature } from './app.state';
 
 describe('Extra Selectors', () => {
