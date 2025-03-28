@@ -224,4 +224,13 @@ describe('AppReducer', () => {
       expect(actual).toMatchSnapshot();
     });
   });
+  describe(AppActions.disableSamples.type, () => {
+    it('should update the state', () => {
+      const action = AppActions.disableSamples();
+
+      const actual = appReducer(state, action);
+
+      expect(actual).toMatchSnapshot();
+    });
+  });
 });

@@ -4,6 +4,7 @@ import { CreateCalendarDialog } from '../pages/components/create-calendar-dialog
 import { CreateEventDialog } from '../pages/components/create-event-dialog';
 import { DayDrawerComponent } from '../pages/components/day-drawer-component';
 import { DeleteCalendarDialog } from '../pages/components/delete-calendar-dialog';
+import { DevMenuComponent } from '../pages/components/dev-menu';
 import { EditCalendarDialog } from '../pages/components/edit-calendar-dialog';
 import { EditEventDialog } from '../pages/components/edit-event-dialog';
 import { MenuComponent } from '../pages/components/menu-component';
@@ -19,6 +20,7 @@ type AppFixtures = {
   createEventDialog: CreateEventDialog;
   editEventDialog: EditEventDialog;
   menuComponent: MenuComponent;
+  devMenuComponent: DevMenuComponent;
   dayDrawerComponent: DayDrawerComponent;
   seasonDrawerComponent: SeasonDrawerComponent;
   editCalendarDialog: EditCalendarDialog;
@@ -49,6 +51,9 @@ export const test = base.extend<AppFixtures>({
   },
   menuComponent: async ({ page }, use) => {
     await use(new MenuComponent(page));
+  },
+  devMenuComponent: async ({ page }, use) => {
+    await use(new DevMenuComponent(page));
   },
   calendarPage: async ({ page }, use) => {
     await use(new CalendarPage(page));

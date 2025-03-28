@@ -1,5 +1,5 @@
 import { createFeature, createSelector } from '@ngrx/store';
-import { StatusMessage } from '../models/status-message.model';
+import { StatusMessage } from '../constants/status-message.constant';
 import { CalendarUtils } from '../services/calendar.utils';
 import { appReducer } from './app.reducer';
 

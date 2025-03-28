@@ -81,7 +81,6 @@ export class CalendarUtils {
     const isUniqueName = duplicates.length === 0;
     const hasSingleDuplicate = duplicates.length === 1;
 
-    console.log('duplicates', duplicates);
     if (isUniqueName) {
       return name;
     }

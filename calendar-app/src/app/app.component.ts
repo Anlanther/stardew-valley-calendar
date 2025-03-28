@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { StatusMessage } from './constants/status-message.constant';
 import { AppStore } from './models/app-store.model';
 import { DownloadedCalendar } from './models/downloaded-calendar.model';
-import { StatusMessage } from './models/status-message.model';
 import { AppActions } from './state/app.actions';
 import { AppFeature } from './state/app.state';
 
