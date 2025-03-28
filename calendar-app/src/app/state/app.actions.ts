@@ -102,5 +102,6 @@ export const AppActions = createActionGroup({
     'Set Token': emptyProps(),
     'Set Token Success': (token: string) => ({ token }),
     'Set Offline Mode': emptyProps(),
+    'Disable Samples': emptyProps(),
   },
 });

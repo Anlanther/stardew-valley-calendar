@@ -11,10 +11,10 @@ import { DeleteDialogComponent } from '../components/dialogs/delete/delete-dialo
 import { CreateEventDialogComponent } from '../components/dialogs/game-event/create-dialog/create-dialog.component';
 import { EditEventDialogComponent } from '../components/dialogs/game-event/edit-dialog/edit-dialog.component';
 import { TokenDialogComponent } from '../components/dialogs/token/token-dialog.component';
+import { Type } from '../constants/type.constant';
 import { AppStore } from '../models/app-store.model';
 import { Calendar } from '../models/calendar.model';
 import { GameEvent, UnsavedGameEvent } from '../models/game-event.model';
-import { Type } from '../models/type.model';
 import { CalendarUtils } from '../services/calendar.utils';
 import { CalendarDataService } from '../services/calendar/calendar-data.service';
 import { DataService } from '../services/data.service';
@@ -46,12 +46,13 @@ export class AppEffects {
   getAllCalendars$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.getCalendars),
-      concatLatestFrom(() =>
+      concatLatestFrom(() => [
         this.store.pipe(select(AppFeature.selectOfflineMode)),
-      ),
-      switchMap(([, offlineMode]) =>
+        this.store.pipe(select(AppFeature.selectEnableSamples)),
+      ]),
+      switchMap(([, offlineMode, enableSamples]) =>
         (offlineMode
-          ? this.offlineDataService.getAllCalendars()
+          ? this.offlineDataService.getAllCalendars(enableSamples)
           : this.calendarDataService.getAll()
         ).pipe(
           switchMap((calendars) => [
