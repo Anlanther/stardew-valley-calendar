@@ -93,31 +93,30 @@ export class CalendarDataService {
   }
 
   convertToCalendar(data: Calendar_Data): Calendar {
-    const gameEvents: GameEvent[] = data.attributes.gameEvents.data.map(
-      (event) => ({
+    const gameEvents: GameEvent[] =
+      data.attributes?.gameEvents?.data.map((event) => ({
         id: event.id,
-        title: event.attributes.title,
-        description: event.attributes.description,
-        tag: event.attributes.tag,
-        publishedAt: event.attributes.publishedAt ?? '',
-        type: event.attributes.type,
+        title: event.attributes?.title,
+        description: event.attributes?.description,
+        tag: event.attributes?.tag,
+        publishedAt: event.attributes?.publishedAt ?? '',
+        type: event.attributes?.type,
         gameDate: {
-          ...CalendarUtils.getGameDateUnion(event.attributes.gameDate),
+          ...CalendarUtils.getGameDateUnion(event.attributes?.gameDate),
         },
-      }),
-    );
+      })) ?? [];
     const filteredGameEvents = CalendarUtils.getFilteredSystemEvents(
-      data.attributes.systemConfig.includeBirthdays,
-      data.attributes.systemConfig.includeCrops,
-      data.attributes.systemConfig.includeFestivals,
+      data.attributes?.systemConfig?.includeBirthdays,
+      data.attributes?.systemConfig?.includeCrops,
+      data.attributes?.systemConfig?.includeFestivals,
       gameEvents,
     );
     const calendar: Calendar = {
       id: data.id,
-      name: data.attributes.name,
-      publishedAt: data.attributes.publishedAt?.toString() ?? '',
-      description: data.attributes.description,
-      systemConfig: data.attributes.systemConfig,
+      name: data.attributes?.name,
+      publishedAt: data.attributes?.publishedAt?.toString() ?? '',
+      description: data.attributes?.description,
+      systemConfig: data.attributes?.systemConfig,
       gameEvents,
       filteredGameEvents,
     };
