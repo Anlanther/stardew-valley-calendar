@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { FooterComponent } from '@app/components/footer/footer-component';
 import { CalendarModule } from '../components/calendar/calendar.module';
 import { DrawerModule } from '../components/drawers/drawer.module';
 import { MainComponent } from './main/main.component';
@@ -19,6 +20,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
+    FooterComponent,
   ],
   exports: [MainComponent, WelcomeComponent],
 })
