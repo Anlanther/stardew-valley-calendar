@@ -1,10 +1,14 @@
 import { Locator, Page, expect, test } from '@playwright/test';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { CalendarForm } from '../models/calendar-form.model';
 import { URL } from '../models/url.model';
 import { MOCK_CALENDAR_FORM } from '../utils/mocks/calendar-form';
 import { CreateCalendarDialog } from './components/create-calendar-dialog';
 import { DevMenuComponent } from './components/dev-menu';
 import { SelectCalendarDialog } from './components/select-calendar-dialog';
+
+const testDirectory = dirname(fileURLToPath(import.meta.url));
 
 export class WelcomePage {
   readonly page: Page;
@@ -122,10 +126,12 @@ export class WelcomePage {
     });
   }
 
-  async loadCalendar(filePath: string) {
+  async loadCalendar(fileName: string) {
     await test.step('Load Calendar', async () => {
       const handle = this.page.locator('input[type="file"]');
-      await handle.setInputFiles(filePath);
+      await handle.setInputFiles(
+        join(testDirectory, '../utils/mocks', fileName),
+      );
     });
   }
 

@@ -1,4 +1,6 @@
 import { Locator, Page, expect, test } from '@playwright/test';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { UnsavedGameEvent } from '../../src/app/models/game-event.model';
 import { Season } from '../../src/app/models/season.model';
 import { CalendarForm } from '../models/calendar-form.model';
@@ -11,6 +13,8 @@ import { EditCalendarDialog } from './components/edit-calendar-dialog';
 import { MenuComponent } from './components/menu-component';
 import { SeasonDrawerComponent } from './components/season-drawer-component';
 import { SelectCalendarDialog } from './components/select-calendar-dialog';
+
+const testDirectory = dirname(fileURLToPath(import.meta.url));
 
 export class CalendarPage {
   readonly page: Page;
@@ -32,7 +36,7 @@ export class CalendarPage {
   constructor(page: Page) {
     this.page = page;
 
-    this.calendarTitle = page.locator('h1.navbar--heading');
+    this.calendarTitle = page.locator('.navbar--heading');
     this.seasonTab = page.getByRole('tab');
     this.dayCell = page.locator(Selectors.EVENT_COMPONENT);
 
@@ -248,18 +252,21 @@ export class CalendarPage {
       await this.menuComponent.selectDownloadCalendar();
       const download = await downloadPromise;
       await download.saveAs(
-        './calendar-app/test-results/' + download.suggestedFilename(),
+        join(testDirectory, '../../test-results', download.suggestedFilename()),
       );
 
       expect(download.suggestedFilename()).toBe(fileName);
     });
   }
 
-  async loadCalendar(filePath: string) {
+  async loadCalendar(fileName: string) {
     await test.step('Load Calendar', async () => {
       await this.menuComponent.open();
       const handle = this.page.locator('input[type="file"]');
-      await handle.setInputFiles(filePath);
+      await handle.setInputFiles(
+        join(testDirectory, '../utils/mocks', fileName),
+      );
+      await expect(handle).toHaveValue('');
       await this.page.keyboard.press('Escape');
     });
   }

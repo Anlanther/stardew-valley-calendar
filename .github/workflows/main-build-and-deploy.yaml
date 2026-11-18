@@ -1,29 +1,39 @@
-name: Angular Build and Deploy
+name: Main - Build and Deploy
 
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: calendar-app/package-lock.json
 
       - name: Convert Sample Calendar to JSON
         working-directory: calendar-app
         run: npm run convert-samples
 
+      - name: Install dependencies
+        working-directory: calendar-app
+        run: npm ci
+
       - name: Build Angular app to prod
         working-directory: calendar-app
-        run: npm install && npm run build:prod
+        run: npm run build:prod
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
