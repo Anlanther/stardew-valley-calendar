@@ -1,4 +1,5 @@
 import { Locator, Page, expect, test } from '@playwright/test';
+import { join } from 'path';
 import { CalendarForm } from '../models/calendar-form.model';
 import { URL } from '../models/url.model';
 import { MOCK_CALENDAR_FORM } from '../utils/mocks/calendar-form';
@@ -122,10 +123,11 @@ export class WelcomePage {
     });
   }
 
-  async loadCalendar(filePath: string) {
+  async loadCalendar(fileName: string) {
     await test.step('Load Calendar', async () => {
       const handle = this.page.locator('input[type="file"]');
-      await handle.setInputFiles(filePath);
+      await handle.setInputFiles(join(__dirname, '../utils/mocks', fileName));
+      await expect(handle).toHaveValue('');
     });
   }
 

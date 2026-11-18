@@ -16,12 +16,18 @@ export default defineConfig({
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
   workers: process.env['CI'] ? 1 : undefined,
-  globalTimeout: 60_000,
+  globalTimeout: process.env['CI'] ? 5 * 60_000 : undefined,
   reporter: 'html',
   use: {
     trace: 'on-first-retry',
-    headless: false,
+    // Headed by default for local debugging. The CI workflow sets HEADLESS=true.
+    headless: process.env['HEADLESS'] === 'true',
     screenshot: 'only-on-failure',
+  },
+  webServer: {
+    command: 'npm start',
+    url: 'http://localhost:4200',
+    reuseExistingServer: !process.env['CI'],
   },
   projects: [
     {
