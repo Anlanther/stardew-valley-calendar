@@ -23,8 +23,7 @@ test('Calendar is created correctly from upload', async ({
   calendarPage,
   seasonDrawerComponent,
 }) => {
-  const mockCalendarToLoadPath =
-    './calendar-app/tests/utils/mocks/upload-calendar.mock.txt';
+  const mockCalendarToLoad = 'upload-calendar.mock.txt';
   const expectedCalendarTitle = 'Mock Calendar';
   const expectedEventsOnCalendar = [
     ...MOCK_USER_EVENTS,
@@ -35,7 +34,7 @@ test('Calendar is created correctly from upload', async ({
 
   await welcomePage.open();
   await welcomePage.clickOfflineMode();
-  await welcomePage.loadCalendar(mockCalendarToLoadPath);
+  await welcomePage.loadCalendar(mockCalendarToLoad);
   await calendarPage.verifyCorrectTitle(expectedCalendarTitle, 1);
 
   for (let i = 0; i < expectedEventsOnCalendar.length; i++) {
@@ -70,8 +69,7 @@ test('Calendar is named correctly on upload when duplicates exist', async ({
   welcomePage,
   calendarPage,
 }) => {
-  const mockCalendarToLoadPath =
-    './calendar-app/tests/utils/mocks/upload-calendar.mock.txt';
+  const mockCalendarToLoad = 'upload-calendar.mock.txt';
   const expectedCalendarBaseName = 'Mock Calendar';
   const expectedCalendarNames = [
     `${expectedCalendarBaseName}`,
@@ -83,16 +81,16 @@ test('Calendar is named correctly on upload when duplicates exist', async ({
 
   await welcomePage.open();
   await welcomePage.clickOfflineMode();
-  await welcomePage.loadCalendar(mockCalendarToLoadPath);
+  await welcomePage.loadCalendar(mockCalendarToLoad);
 
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[0], 1);
-  await calendarPage.loadCalendar(mockCalendarToLoadPath);
+  await calendarPage.loadCalendar(mockCalendarToLoad);
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[1], 1);
-  await calendarPage.loadCalendar(mockCalendarToLoadPath);
+  await calendarPage.loadCalendar(mockCalendarToLoad);
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[2], 1);
-  await calendarPage.loadCalendar(mockCalendarToLoadPath);
+  await calendarPage.loadCalendar(mockCalendarToLoad);
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[3], 1);
-  await calendarPage.loadCalendar(mockCalendarToLoadPath);
+  await calendarPage.loadCalendar(mockCalendarToLoad);
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[4], 1);
 
   await calendarPage.deleteCalendar();
@@ -110,8 +108,7 @@ test('Calendar is named correctly after create calender on subsequent upload of 
   welcomePage,
   calendarPage,
 }) => {
-  const mockCalendarToLoadPath =
-    './calendar-app/tests/utils/mocks/upload-calendar.mock.txt';
+  const mockCalendarToLoad = 'upload-calendar.mock.txt';
   const expectedCalendarBaseName = 'Mock Calendar';
   const mockCalendar = getMockCalendarForm({ name: expectedCalendarBaseName });
   const expectedCalendarNames = [
@@ -124,13 +121,13 @@ test('Calendar is named correctly after create calender on subsequent upload of 
 
   await welcomePage.selectOrCreateCalendar(mockCalendar);
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[0], 1);
-  await calendarPage.loadCalendar(mockCalendarToLoadPath);
+  await calendarPage.loadCalendar(mockCalendarToLoad);
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[1], 1);
-  await calendarPage.loadCalendar(mockCalendarToLoadPath);
+  await calendarPage.loadCalendar(mockCalendarToLoad);
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[2], 1);
-  await calendarPage.loadCalendar(mockCalendarToLoadPath);
+  await calendarPage.loadCalendar(mockCalendarToLoad);
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[3], 1);
-  await calendarPage.loadCalendar(mockCalendarToLoadPath);
+  await calendarPage.loadCalendar(mockCalendarToLoad);
   await calendarPage.verifyCorrectTitle(expectedCalendarNames[4], 1);
 
   await calendarPage.deleteCalendar();

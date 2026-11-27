@@ -2,7 +2,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { CalendarModule } from './components/calendar/calendar.module';
 import { DialogsModule } from './components/dialogs/dialogs.module';
 import { DrawerModule } from './components/drawers/drawer.module';
+import { GoogleAnalyticsService } from './services/google-analytics.service';
 import { AppEffects } from './state/app.effect';
 import { AppFeature } from './state/app.state';
 import { ViewsModule } from './views/views.module';
@@ -38,6 +39,12 @@ import { ViewsModule } from './views/views.module';
   providers: [
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (analytics: GoogleAnalyticsService) => () => analytics.init(),
+      deps: [GoogleAnalyticsService],
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
